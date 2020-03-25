@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import queryString from 'query-string';
 import io from "socket.io-client";
-
+import SessionUrl from '../CreateSession/SessionUrl';
 import TextContainer from '../TextContainer/TextContainer';
 import Messages from '../Messages/Messages';
 import InfoBar from '../InfoBar/InfoBar';
@@ -12,23 +12,26 @@ import './Game.css';
 let socket;
 
 const Game = ({ location }) => {
+  const ENDPOINT = 'localhost:5000';
+  const USERTYPE = "player";
+
   const [name, setName] = useState('');
+  const [type, setType] = useState('');
   const [room, setRoom] = useState('');
   const [users, setUsers] = useState('');
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([]);
-  const ENDPOINT = 'localhost:5000';
-  const USERTYPE = "player";
 
   useEffect(() => {
-    const { name, room } = queryString.parse(location.search);
+    const { name, room, type = USERTYPE } = queryString.parse(location.search);
 
     socket = io(ENDPOINT);
 
     setRoom(room);
     setName(name);
+    setType(type);
 
-    socket.emit('join', { name, userType: USERTYPE,room }, (error) => {
+    socket.emit('join', { name, type, room }, (error) => {
       if(error) {
         alert(error);
       }
@@ -58,17 +61,20 @@ const Game = ({ location }) => {
       socket.emit('sendMessage', message, () => setMessage(''));
     }
   };
-
-  return (
-    <div className="outerContainer">
-      <div className="container">
-          <InfoBar room={room} />
-          <Messages messages={messages} name={name} />
-          <Input message={message} setMessage={setMessage} sendMessage={sendMessage} />
-      </div>
-      <TextContainer users={users}/>
-    </div>
-  );
+    return (
+        <div className="outerContainer">
+            {type === "admin" ?
+                <SessionUrl room={room}    />
+                :
+                <div className="container">
+                    <InfoBar room={room} />
+                    <Messages messages={messages} name={name} />
+                    <Input message={message} setMessage={setMessage} sendMessage={sendMessage} />
+                </div>
+            }
+            <TextContainer users={users}/>
+        </div>
+    );
 };
 
 export default Game;
