@@ -10,7 +10,7 @@ export default function FlipCard({ setEstimate, sendEstimate, cardNumber, point 
             setEstimate(cardNumber);
             sendEstimate(e,cardNumber);
             }}
-        >
+        > 
           <div className="flip-card-inner">
             <div className="flip-card-front">
               <img className="img" src={"img_avatar.png"} alt={"Avatar"} />
