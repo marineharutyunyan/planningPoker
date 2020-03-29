@@ -3,12 +3,14 @@ import queryString from 'query-string';
 import io from "socket.io-client";
 import SessionUrl from '../CreateSession/SessionUrl';
 import TextContainer from '../TextContainer/TextContainer';
-import Messages from '../Messages/Messages';
+//import Messages from '../Messages/Messages';
 import InfoBar from '../InfoBar/InfoBar';
 import Input from '../Input/Input';
+import FlipCard from './FlipCard/FlipCard.js';
 
 import './Game.css';
 
+const cards = ['0','1','2','3','5','8','13','20','40','100','?'];
 let socket;
 
 const Game = ({ location }) => {
@@ -19,8 +21,10 @@ const Game = ({ location }) => {
   const [type, setType] = useState('');
   const [room, setRoom] = useState('');
   const [users, setUsers] = useState('');
+  const [point, setEstimate] = useState('?');
+  const [points, setPoints] = useState({});
   const [message, setMessage] = useState('');
-  const [messages, setMessages] = useState([]);
+/*  const [messages, setMessages] = useState([]);*/
 
   useEffect(() => {
     const { name, room, type = USERTYPE } = queryString.parse(location.search);
@@ -38,7 +42,7 @@ const Game = ({ location }) => {
     });
   }, [ENDPOINT, location.search]);
 
-  useEffect(() => {
+ /* useEffect(() => {
     socket.on('message', (message) => {
       setMessages([...messages, message ]);
     });
@@ -52,13 +56,38 @@ const Game = ({ location }) => {
 
       socket.off();
     }
-  }, [messages]);
+  }, [messages]);*/
+    useEffect(() => {
+        socket.on('message', (data) => {
+            console.log("recivedMessage!!!!");
+            debugger;
+            points[data.user] = data.point;
+            setPoints(points);
+        });
+
+        socket.on('roomData', ({ users }) => {
+            setUsers(users);
+        });
+
+        return () => {
+            socket.emit('disconnect');
+
+            socket.off();
+        }
+    }, [point, points]);
 
   const sendMessage = (event) => {
     event.preventDefault();
 
     if(message) {
       socket.emit('sendMessage', message, () => setMessage(''));
+    }
+  };
+  const sendEstimate = (event, estimateNumber) => {
+    event.preventDefault();
+
+    if(estimateNumber) {
+      socket.emit('sendEstimate', estimateNumber, () => setEstimate('?'));
     }
   };
     return (
@@ -68,10 +97,17 @@ const Game = ({ location }) => {
                 :
                 <div className="container">
                     <InfoBar room={room} />
-                    <Messages messages={messages} name={name} />
+                    {cards.map((card, i) =>
+                        <div key={i}>
+                            <FlipCard cardNumber={card}
+                                      setEstimate={setEstimate}
+                                      sendEstimate={sendEstimate}
+                                      name={card}/>
+                        </div>)}
                     <Input message={message} setMessage={setMessage} sendMessage={sendMessage} />
                 </div>
             }
+            {name}
             <TextContainer users={users}/>
         </div>
     );

@@ -2,7 +2,6 @@ import React from "react";
 import './CreateSession.css';
 
 export default function ShowSessionUrl({ room }) {
-   // const windowUrl = window.location.href.split("/");
     const url = `http://localhost:3001/join?room=${room}`;
 
     return (
