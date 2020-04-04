@@ -3,7 +3,13 @@ const express = require('express');
 const socketio = require('socket.io');
 //const cors = require('cors');
 
-const { addUser, removeUser, getUser, getUsersInRoom, getAdminUser } = require('./users');
+const {
+  addUser,
+  removeUser,
+  getUser,
+  getUsersInRoom,
+  getAdminUser
+} = require('./users');
 
 const router = require('./router');
 
@@ -30,10 +36,10 @@ io.on('connect', (socket) => {
     callback();
   });
 
-    socket.on('sendEstimate', (point, callback) => {
+  socket.on('sendEstimate', (point, callback) => {
         const user = getUser(socket.id);
         const admin = getAdminUser();
-        io.to(admin.id).emit('message', { user: user.name, point });
+        io.to(admin.id).emit('setEstimate', { user: user.name, point });
         callback();
     });
 

@@ -3,30 +3,35 @@ import queryString from 'query-string';
 import io from "socket.io-client";
 import SessionUrl from '../CreateSession/SessionUrl';
 import TextContainer from '../TextContainer/TextContainer';
-//import Messages from '../Messages/Messages';
+import Messages from '../Messages/Messages';
 import InfoBar from '../InfoBar/InfoBar';
 import Input from '../Input/Input';
 import FlipCard from './FlipCard/FlipCard.js';
+import Card from './Card/Card.js';
 
 import './Game.css';
+import {
+    FIBONACCI_NUMBERS,
+    DEFAULT_POINT,
+    ENDPOINT,
+    USERTYPE
+} from "../utils";
 
-const cards = ['0','1','2','3','5','8','13','20','40','100','?'];
 let socket;
 
 const Game = ({ location }) => {
-  const ENDPOINT = 'localhost:5000';
-  const USERTYPE = "player";
 
-  const [name, setName] = useState('');
-  const [type, setType] = useState('');
-  const [room, setRoom] = useState('');
-  const [users, setUsers] = useState('');
-  const [point, setEstimate] = useState('?');
-  const [points, setPoints] = useState({});
-  const [message, setMessage] = useState('');
-/*  const [messages, setMessages] = useState([]);*/
+    const [name, setName] = useState('');
+    const [type, setType] = useState('');
+    const [room, setRoom] = useState('');
+    const [users, setUsers] = useState([]);
+    const [selectedPoint, setSelectedPoint] = useState(false);
+    const [points, setPoints] = useState({});
+    const [message, setMessage] = useState('');
+    const [messages, setMessages] = useState([]);
 
-  useEffect(() => {
+    useEffect(() => {
+    console.log('on (join and socet creation) use effect Called');
     const { name, room, type = USERTYPE } = queryString.parse(location.search);
 
     socket = io(ENDPOINT);
@@ -34,13 +39,15 @@ const Game = ({ location }) => {
     setRoom(room);
     setName(name);
     setType(type);
+    points[name] = DEFAULT_POINT;
+    setPoints(points);
 
     socket.emit('join', { name, type, room }, (error) => {
-      if(error) {
-        alert(error);
-      }
+        if(error) {
+            alert(error);
+        }
     });
-  }, [ENDPOINT, location.search]);
+    }, [ENDPOINT, location.search]);
 
  /* useEffect(() => {
     socket.on('message', (message) => {
@@ -58,56 +65,89 @@ const Game = ({ location }) => {
     }
   }, [messages]);*/
     useEffect(() => {
+        console.log('on (message) use effect Called');
         socket.on('message', (data) => {
-            console.log("recivedMessage!!!!");
-            debugger;
-            points[data.user] = data.point;
-            setPoints(points);
+            console.log('From backend -  message  - ', data)
+            // setMessages([...messages, data.point ]);
+            //  points[data.user] = data.point;
+            // setPoints(points);
         });
 
-        socket.on('roomData', ({ users }) => {
+        socket.on('roomData', ({users}) => {
             setUsers(users);
         });
 
         return () => {
             socket.emit('disconnect');
-
             socket.off();
         }
-    }, [point, points]);
+    });
 
-  const sendMessage = (event) => {
-    event.preventDefault();
+    useEffect(() => {
+        console.log('on (setEstimate) use effect Called');
+        socket.on('setEstimate', (data) => {
+            console.log('From backend -  estimate  - ', data );
+            points[data.user] = data.point;
+            setPoints({...points});
+        });
 
-    if(message) {
-      socket.emit('sendMessage', message, () => setMessage(''));
-    }
-  };
-  const sendEstimate = (event, estimateNumber) => {
-    event.preventDefault();
+        return () => {
+            socket.emit('disconnect');
+            socket.off();
+        }
+    });
 
-    if(estimateNumber) {
-      socket.emit('sendEstimate', estimateNumber, () => setEstimate('?'));
-    }
-  };
+    const sendMessage = (event) => {
+        event.preventDefault();
+
+        if(message) {
+          socket.emit('sendMessage', message, () => setMessage(''));
+        }
+    };
+    const sendEstimate = (event, number) => {
+        event.preventDefault();
+
+        if(number) {
+          socket.emit('sendEstimate', number, () => setSelectedPoint(number));
+        }
+    };
+    console.log("trying render");
+    console.log("------------------------");
+    console.log("type - ", type);
+    console.log("room - ", room);
+    console.log("users - ", users);
+    console.log("points - ", points);
+    console.log("------------------------");
     return (
         <div className="outerContainer">
             {type === "admin" ?
-                <SessionUrl room={room}    />
+                (<div>
+                    <SessionUrl room={room} />
+                    {users.length ?
+                        users.map((user,i) => (
+                            <div key={i}>
+                                <FlipCard name={user.name}
+                                          point={points[user.name] || DEFAULT_POINT}
+                                />
+                            </div>))
+                        :
+                        <div>NoUser</div>}
+                </div>)
                 :
-                <div className="container">
-                    <InfoBar room={room} />
-                    {cards.map((card, i) =>
-                        <div key={i}>
-                            <FlipCard cardNumber={card}
-                                      setEstimate={setEstimate}
+                type === "player" ?
+                    (<div className="container">
+                        <InfoBar room={room} />
+                        {FIBONACCI_NUMBERS.map((number, i) =>
+                            <div key={i}>
+                                <Card cardNumber={number}
+                                      selectedPoint={selectedPoint}
                                       sendEstimate={sendEstimate}
-                                      name={card}/>
-                        </div>)}
-                    <Input message={message} setMessage={setMessage} sendMessage={sendMessage} />
-                </div>
+                                />
+                            </div>)}
+                        <Input message={message} setMessage={setMessage} sendMessage={sendMessage} />
+                    </div>)
+                : null
             }
-            {name}
             <TextContainer users={users}/>
         </div>
     );

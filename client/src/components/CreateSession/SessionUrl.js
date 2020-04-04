@@ -2,7 +2,7 @@ import React from "react";
 import './CreateSession.css';
 
 export default function ShowSessionUrl({ room }) {
-    const url = `http://localhost:3001/join?room=${room}`;
+    const url = `http://localhost:3000/join?room=${room}`;
 
     return (
       <div className="joinInnerContainer">
