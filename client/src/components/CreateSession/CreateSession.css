@@ -49,6 +49,11 @@ html, body {
     border: none;
     width: 100%;
 }
+.url-input {
+    position: absolute;
+    top: -500px;
+    left: -500px;
+}
 
 .mt-20 {
   margin-top: 20px;
