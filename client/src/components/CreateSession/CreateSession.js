@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from "react-router-dom";
+import { ADMIN_USER_TYPE } from "../utils";
 
 import './CreateSession.css';
 
@@ -17,7 +18,7 @@ export default function CreateSession() {
                      onChange={(event) => setRoom(event.target.value)}
               />
             </div>
-            <Link onClick={e => (!room) ? e.preventDefault() : null} to={`/game?room=${room}&name=admin&type=admin`}>
+            <Link onClick={e => (!room) ? e.preventDefault() : null} to={`/game?room=${room}&name=admin&type=${ADMIN_USER_TYPE}`}>
               <button className={'button mt-20'} type="submit">Create</button>
             </Link>
           </div>

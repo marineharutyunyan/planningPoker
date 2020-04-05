@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 import queryString from 'query-string';
 import io from "socket.io-client";
 import SessionUrl from '../CreateSession/SessionUrl';
+import UserStory from './UserStory/UserStory';
 import TextContainer from '../TextContainer/TextContainer';
-import Messages from '../Messages/Messages';
+//import Messages from '../Messages/Messages';
 import InfoBar from '../InfoBar/InfoBar';
 import Input from '../Input/Input';
 import FlipCard from './FlipCard/FlipCard.js';
@@ -12,9 +13,10 @@ import Card from './Card/Card.js';
 import './Game.css';
 import {
     FIBONACCI_NUMBERS,
+    DEFAULT_USER_TYPE,
+    ADMIN_USER_TYPE,
     DEFAULT_POINT,
     ENDPOINT,
-    USERTYPE
 } from "../utils";
 
 let socket;
@@ -26,13 +28,20 @@ const Game = ({ location }) => {
     const [room, setRoom] = useState('');
     const [users, setUsers] = useState([]);
     const [selectedPoint, setSelectedPoint] = useState(false);
+    const [isGameStarted, setIsGameStarted] = useState(false);
     const [points, setPoints] = useState({});
+    const [storyNumber, setStoryNumber] = useState('');
+    const [storyTitle, setStoryTitle] = useState('');
     const [message, setMessage] = useState('');
     const [messages, setMessages] = useState([]);
 
     useEffect(() => {
-    console.log('on (join and socet creation) use effect Called');
-    const { name, room, type = USERTYPE } = queryString.parse(location.search);
+    console.log('on (join and socket creation) use effect Called');
+    const {
+        name,
+        room,
+        type = DEFAULT_USER_TYPE
+    } = queryString.parse(location.search);
 
     socket = io(ENDPOINT);
 
@@ -97,6 +106,41 @@ const Game = ({ location }) => {
         }
     });
 
+    useEffect(() => {
+        console.log('on (userJoined) use effect Called');
+        socket.on('userJoined', (data) => {
+            console.log('From backend -  userJoined  - ', data );
+            if (isGameStarted && storyNumber && storyTitle){
+                socket.emit('sendStoryInfo', {
+                    storyNumber,
+                    storyTitle,
+                    isGameStarted: true
+                }, () => {});
+            }
+        });
+
+        return () => {
+            socket.emit('disconnect');
+            socket.off();
+        }
+    });
+
+
+    useEffect(() => {
+        console.log('on (setStoryInfo) use effect Called');
+        socket.on('setStoryInfo', (data) => {
+            console.log('From backend -  story info  - ', data );
+            setStoryNumber(data.storyNumber);
+            setStoryTitle(data.storyTitle);
+            setIsGameStarted(data.isGameStarted);
+        });
+
+        return () => {
+            socket.emit('disconnect');
+            socket.off();
+        }
+    });
+
     const sendMessage = (event) => {
         event.preventDefault();
 
@@ -111,6 +155,19 @@ const Game = ({ location }) => {
           socket.emit('sendEstimate', number, () => setSelectedPoint(number));
         }
     };
+    const startGame = (event) => {
+        event.preventDefault();
+        if(storyNumber && storyTitle) {
+            socket.emit('sendStoryInfo', {
+                storyNumber,
+                storyTitle,
+                isGameStarted: true
+            }, () => {});
+        } else {
+            alert("enter story info ");
+        }
+
+    };
     console.log("trying render");
     console.log("------------------------");
     console.log("type - ", type);
@@ -120,9 +177,16 @@ const Game = ({ location }) => {
     console.log("------------------------");
     return (
         <div className="outerContainer">
-            {type === "admin" ?
-                (<div>
+            {type === ADMIN_USER_TYPE ?
+                (<div className="participants">
                     <SessionUrl room={room} />
+                    <UserStory startGame={startGame}
+                               userType={type}
+                               storyTitle={storyTitle}
+                               storyNumber={storyNumber}
+                               setStoryNumber={setStoryNumber}
+                               setStoryTitle={setStoryTitle}
+                    />
                     {users.length ?
                         users.map((user,i) => (
                             <div key={i}>
@@ -136,10 +200,18 @@ const Game = ({ location }) => {
                 :
                 type === "player" ?
                     (<div className="container">
+                        <h3>
+                            {storyNumber?
+                                `Story - ${storyNumber}: ${storyTitle}`
+                                :
+                                "No Topic"
+                            }
+                        </h3>
                         <InfoBar room={room} />
                         {FIBONACCI_NUMBERS.map((number, i) =>
                             <div key={i}>
                                 <Card cardNumber={number}
+                                      isGameStarted={isGameStarted}
                                       selectedPoint={selectedPoint}
                                       sendEstimate={sendEstimate}
                                 />
