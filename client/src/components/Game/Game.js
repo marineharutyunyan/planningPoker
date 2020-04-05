@@ -17,6 +17,7 @@ import {
     ADMIN_USER_TYPE,
     DEFAULT_POINT,
     ENDPOINT,
+    getAvaragePoint
 } from "../utils";
 
 let socket;
@@ -28,7 +29,9 @@ const Game = ({ location }) => {
     const [room, setRoom] = useState('');
     const [users, setUsers] = useState([]);
     const [selectedPoint, setSelectedPoint] = useState(false);
+    const [avaragePoint, setAvaragePoint] = useState(0);
     const [isGameStarted, setIsGameStarted] = useState(false);
+    const [openCards, setOpenCards] = useState(false);
     const [points, setPoints] = useState({});
     const [storyNumber, setStoryNumber] = useState('');
     const [storyTitle, setStoryTitle] = useState('');
@@ -86,6 +89,13 @@ const Game = ({ location }) => {
             setUsers(users);
         });
 
+        socket.on('removePoint', ({user}) => {
+            if(points[user]){
+                const {[user]: removedPoint, ...updatedPoints} = points;
+                setPoints(updatedPoints);
+            }
+        });
+
         return () => {
             socket.emit('disconnect');
             socket.off();
@@ -98,6 +108,10 @@ const Game = ({ location }) => {
             console.log('From backend -  estimate  - ', data );
             points[data.user] = data.point;
             setPoints({...points});
+            if (users.length>1 && Object.keys(points).length === users.length) {
+                setOpenCards(true);
+                setAvaragePoint(getAvaragePoint(points));
+            }
         });
 
         return () => {
@@ -187,10 +201,14 @@ const Game = ({ location }) => {
                                setStoryNumber={setStoryNumber}
                                setStoryTitle={setStoryTitle}
                     />
+                    <div className="avarage-point" >
+                        Avarage point - {avaragePoint}
+                    </div>
                     {users.length ?
                         users.map((user,i) => (
                             <div key={i}>
                                 <FlipCard name={user.name}
+                                          openCards={openCards}
                                           point={points[user.name] || DEFAULT_POINT}
                                 />
                             </div>))
