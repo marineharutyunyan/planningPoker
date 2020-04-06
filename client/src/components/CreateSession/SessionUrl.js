@@ -10,11 +10,11 @@ export default function ShowSessionUrl({ room }) {
         copyText.setSelectionRange(0, 99999);
         const successful = document.execCommand('copy');
         const msg = successful ? 'successful' : 'unsuccessful';
-        console.log('Copied text command was ' + msg);
+        alert('Copied text command was ' + msg);
     };
 
     return (
-        <div className="joinInnerContainer">
+        <div className="urlContainer">
             <h2 className="heading" id ="heading" >{url}</h2>
             <input ref={urlRef}
                    className="url-input"
@@ -23,7 +23,7 @@ export default function ShowSessionUrl({ room }) {
                    onChange={(event) => setUrl(event.target.value)}
             />
             <button onClick={onCopyUrl}
-                    className={'button mt-20'}
+                    className={'button mt-20 copy-button'}
                     type="submit"
             >Copy</button>
         </div>

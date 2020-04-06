@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import queryString from 'query-string';
 import io from "socket.io-client";
+
 import SessionUrl from '../CreateSession/SessionUrl';
 import UserStory from './UserStory/UserStory';
 import TextContainer from '../TextContainer/TextContainer';
@@ -147,6 +148,9 @@ const Game = ({ location }) => {
             setStoryNumber(data.storyNumber);
             setStoryTitle(data.storyTitle);
             setIsGameStarted(data.isGameStarted);
+            if (!data.isGameStarted){
+                setSelectedPoint(false);
+            }
         });
 
         return () => {
@@ -182,6 +186,20 @@ const Game = ({ location }) => {
         }
 
     };
+    const reStartGame = (event) => {
+        event.preventDefault();
+
+        socket.emit('sendStoryInfo', {
+            storyNumber: "",
+            storyTitle: "",
+            isGameStarted: false
+        }, () => {});
+
+        setAvaragePoint(0);
+        setOpenCards(false);
+        setPoints({admin: '?'});
+    };
+
     console.log("trying render");
     console.log("------------------------");
     console.log("type - ", type);
@@ -195,15 +213,17 @@ const Game = ({ location }) => {
                 (<div className="participants">
                     <SessionUrl room={room} />
                     <UserStory startGame={startGame}
+                               reStartGame={reStartGame}
+                               isGameStarted={isGameStarted}
                                userType={type}
                                storyTitle={storyTitle}
                                storyNumber={storyNumber}
                                setStoryNumber={setStoryNumber}
                                setStoryTitle={setStoryTitle}
                     />
-                    <div className="avarage-point" >
+                    <h4 className="avarage-point heading" >
                         Avarage point - {avaragePoint}
-                    </div>
+                    </h4>
                     {users.length ?
                         users.map((user,i) => (
                             <div key={i}>
@@ -233,8 +253,8 @@ const Game = ({ location }) => {
                                       selectedPoint={selectedPoint}
                                       sendEstimate={sendEstimate}
                                 />
-                            </div>)}
-                        <Input message={message} setMessage={setMessage} sendMessage={sendMessage} />
+                            </div>)
+                        }
                     </div>)
                 : null
             }

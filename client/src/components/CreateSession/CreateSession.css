@@ -25,6 +25,16 @@ html, body {
   width: 20%;
 }
 
+.urlContainer{
+    margin-top: -100px;
+    margin-bottom: 80px;
+}
+
+.copy-button {
+    margin-top: 0 !important;;
+    width: 20% !important;
+}
+
 .joinInput {
   border-radius: 0;
   padding: 15px 20px;
@@ -36,6 +46,12 @@ html, body {
   font-size: 1.5em;
   padding-bottom: 10px;
   border-bottom: 2px solid white;
+}
+h4.heading {
+    color: white;
+    font-size: 17px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid white;
 }
 
 .button {

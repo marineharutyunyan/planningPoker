@@ -3,7 +3,16 @@ import { ADMIN_USER_TYPE } from "../../utils";
 
 import './UserStory.css';
 
-export default function UserStory({startGame, userType, storyNumber, setStoryNumber, storyTitle, setStoryTitle}) {
+export default function UserStory({startGame, reStartGame, isGameStarted, userType, storyNumber, setStoryNumber, storyTitle, setStoryTitle}) {
+    const start = (e) => {
+        e.preventDefault();
+        if (isGameStarted) {
+            reStartGame(e);
+        } else {
+            startGame(e);
+        }
+    };
+
     return (
         <div className="user-story-info-container" >
             <form className="form">
@@ -13,7 +22,7 @@ export default function UserStory({startGame, userType, storyNumber, setStoryNum
                     placeholder="Story Name"
                     value={storyNumber}
                     onChange={({ target: { value } }) => setStoryNumber(value)}
-                    onKeyPress={event => event.key === 'Enter' ? startGame(event) : null}
+                    onKeyPress={event => event.key === 'Enter' ? start(event) : null}
                 />
                 <input
                     className="input"
@@ -21,10 +30,10 @@ export default function UserStory({startGame, userType, storyNumber, setStoryNum
                     placeholder="Story Description"
                     value={storyTitle}
                     onChange={({ target: { value } }) => setStoryTitle(value)}
-                    onKeyPress={event => event.key === 'Enter' ? startGame(event) : null}
+                    onKeyPress={event => event.key === 'Enter' ? start(event) : null}
                 />
 
-                {userType === ADMIN_USER_TYPE && <button className="sendButton" onClick={e => startGame(e)}>Start</button>}
+                {userType === ADMIN_USER_TYPE && <button className="sendButton" onClick={start}>{isGameStarted ? 'Restart' : 'Start Vote'}</button>}
             </form>
         </div>
     )

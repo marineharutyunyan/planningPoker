@@ -12,7 +12,7 @@ export default function CreateSession() {
           <div className="joinInnerContainer">
             <h1 className="heading">Create Session</h1>
             <div>
-              <input placeholder="Room"
+              <input placeholder="Session Name"
                      className="joinInput mt-20"
                      type="text"
                      onChange={(event) => setRoom(event.target.value)}

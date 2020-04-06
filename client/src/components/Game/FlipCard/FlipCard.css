@@ -11,6 +11,8 @@ body {
   width: 150px;
   height: 200px;
   perspective: 1000px;
+  float: left;
+  margin: 5px;
 }
 
 .flip-card-inner {
@@ -24,6 +26,10 @@ body {
 }
 
 .flip-card.open .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+.flip-card:hover .flip-card-inner {
   transform: rotateY(180deg);
 }
 

@@ -3,7 +3,8 @@ import React from "react";
 import './Card.css';
 
 export default function Card({cardNumber, sendEstimate, selectedPoint, isGameStarted}) {
-    const selectedClassName = selectedPoint && selectedPoint === cardNumber ? "card-back selected" : "card-back";
+    let selectedClassName = selectedPoint && selectedPoint === cardNumber ? "card-back selected" : "card-back";
+    selectedClassName = isGameStarted ? selectedClassName : "card-back";
     const onCardClick = (e) => {
         e.preventDefault();
         isGameStarted && sendEstimate(e,cardNumber)

@@ -10,6 +10,8 @@ body {
   background-color: transparent;
   width: 150px;
   height: 200px;
+  margin:5px;
+  float:left;
   perspective: 1000px;
 }
 
