@@ -233,11 +233,12 @@ const Game = ({ location }) => {
                                 />
                             </div>))
                         :
-                        <div>NoUser</div>}
+                        <div>No User</div>}
                 </div>)
                 :
                 type === "player" ?
                     (<div className="container">
+                        <InfoBar room={room} />
                         <h3>
                             {storyNumber?
                                 `Story - ${storyNumber}: ${storyTitle}`
@@ -245,7 +246,6 @@ const Game = ({ location }) => {
                                 "No Topic"
                             }
                         </h3>
-                        <InfoBar room={room} />
                         {FIBONACCI_NUMBERS.map((number, i) =>
                             <div key={i}>
                                 <Card cardNumber={number}
