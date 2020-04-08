@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import queryString from 'query-string';
 import io from "socket.io-client";
+import Cookies from 'js-cookie'
 
 import SessionUrl from '../CreateSession/SessionUrl';
 import UserStory from './UserStory/UserStory';
@@ -41,11 +42,8 @@ const Game = ({ location }) => {
 
     useEffect(() => {
     console.log('on (join and socket creation) use effect Called');
-    const {
-        name,
-        room,
-        type = DEFAULT_USER_TYPE
-    } = queryString.parse(location.search);
+    const {name, room} = queryString.parse(location.search);
+    const type = Cookies.get('userType') || DEFAULT_USER_TYPE;
 
     socket = io(ENDPOINT);
 

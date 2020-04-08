@@ -33,7 +33,7 @@ export default function UserStory({startGame, reStartGame, isGameStarted, userTy
                     onKeyPress={event => event.key === 'Enter' ? start(event) : null}
                 />
 
-                {userType === ADMIN_USER_TYPE && <button className="sendButton" onClick={start}>{isGameStarted ? 'Restart' : 'Start Vote'}</button>}
+                {userType === ADMIN_USER_TYPE && <button className="sendButton" onClick={start}>{isGameStarted ? 'Restart' : 'Start Voting'}</button>}
             </form>
         </div>
     )

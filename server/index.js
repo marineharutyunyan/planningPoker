@@ -4,11 +4,11 @@ const socketio = require('socket.io');
 //const cors = require('cors');
 const {DEFAULT_USER_TYPE} = require('./utils');
 const {
-  addUser,
-  removeUser,
-  getUser,
-  getUsersInRoom,
-  getAdminUser
+    addUser,
+    removeUser,
+    getUser,
+    getUsersInRoom,
+    getAdminUser
 } = require('./users');
 
 const router = require('./router');
