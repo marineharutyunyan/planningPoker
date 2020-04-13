@@ -32,6 +32,7 @@ const Game = ({ location }) => {
     const [users, setUsers] = useState([]);
     const [selectedPoint, setSelectedPoint] = useState(false);
     const [avaragePoint, setAvaragePoint] = useState(0);
+    const [haveVotingPermission, setVotingPermission] = useState(false);
     const [isGameStarted, setIsGameStarted] = useState(false);
     const [openCards, setOpenCards] = useState(false);
     const [points, setPoints] = useState({});
@@ -95,6 +96,8 @@ const Game = ({ location }) => {
             if (users.length>1 && Object.keys(points).length === users.length) {
                 setOpenCards(true);
                 setAvaragePoint(getAvaragePoint(points));
+                setVotingPermission(false);
+                socket.emit('sendVotingPermission', {canVote: false}, () => {});
             }
         });
 
@@ -114,6 +117,7 @@ const Game = ({ location }) => {
                     storyTitle,
                     isGameStarted: true
                 }, () => {});
+                socket.emit('sendVotingPermission', {canVote: !openCards}, () => {});
             }
         });
 
@@ -142,6 +146,19 @@ const Game = ({ location }) => {
         }
     });
 
+    useEffect(() => {
+        console.log('on (setVotingPermission) use effect Called');
+        socket.on('setVotingPermission', (data) => {
+            console.log('From backend -  voting permission  - ', data );
+            setVotingPermission(data.canVote);
+        });
+
+        return () => {
+            socket.emit('disconnect');
+            socket.off();
+        }
+    });
+
     const sendMessage = (event) => {
         event.preventDefault();
 
@@ -156,6 +173,7 @@ const Game = ({ location }) => {
           socket.emit('sendEstimate', number, () => setSelectedPoint(number));
         }
     };
+
     const startGame = (event) => {
         event.preventDefault();
         if(storyNumber && storyTitle) {
@@ -164,6 +182,8 @@ const Game = ({ location }) => {
                 storyTitle,
                 isGameStarted: true
             }, () => {});
+            setVotingPermission(true);
+            socket.emit('sendVotingPermission', {canVote: true}, () => {});
         } else {
             alert("enter story info ");
         }
@@ -189,6 +209,7 @@ const Game = ({ location }) => {
     console.log("room - ", room);
     console.log("users - ", users);
     console.log("points - ", points);
+    console.log("haveVotingPermission - ", haveVotingPermission);
     console.log("------------------------");
     return (
         <div className="outerContainer">
@@ -232,6 +253,7 @@ const Game = ({ location }) => {
                         {FIBONACCI_NUMBERS.map((number, i) =>
                             <div key={i}>
                                 <Card cardNumber={number}
+                                      haveVotingPermission={haveVotingPermission}
                                       isGameStarted={isGameStarted}
                                       selectedPoint={selectedPoint}
                                       sendEstimate={sendEstimate}

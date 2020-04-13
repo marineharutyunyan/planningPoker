@@ -28,7 +28,7 @@ io.on('connect', (socket) => {
         if(error) return callback(error);
 
         socket.join(user.room);
-        console.log(name,"joined - ", type ,room, DEFAULT_USER_TYPE);
+        console.log(name,"joined - ", user.name, room, type);
         socket.emit('message', { user: 'admin', text: `${user.name}, welcome to room ${user.room}.`});
         socket.broadcast.to(user.room).emit('message', { user: 'admin', text: `${user.name} has joined!` });
         io.to(user.room).emit('roomData', { room: user.room, users: getUsersInRoom(user.room) });
@@ -49,6 +49,12 @@ io.on('connect', (socket) => {
     socket.on('sendStoryInfo', ({storyNumber, storyTitle, isGameStarted}, callback) => {
         const user = getUser(socket.id);
         io.to(user.room).emit('setStoryInfo', { storyNumber, storyTitle, isGameStarted });
+        callback();
+    });
+
+    socket.on('sendVotingPermission', ({canVote}, callback) => {
+        const user = getUser(socket.id);
+        io.to(user.room).emit('setVotingPermission', { canVote });
         callback();
     });
 
