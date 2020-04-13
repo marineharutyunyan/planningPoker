@@ -3,7 +3,7 @@ import './CreateSession.css';
 
 export default function ShowSessionUrl({ room }) {
     const urlRef = useRef();
-    const [url, setUrl] = useState(`http://localhost:3000/join?room=${room}`);
+    const [url, setUrl] = useState(`http://localhost:3000/join?id=${room}`);
     const onCopyUrl = () => {
         const copyText = urlRef.current;
         copyText.select();

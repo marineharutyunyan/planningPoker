@@ -42,7 +42,7 @@ const Game = ({ location }) => {
 
     useEffect(() => {
     console.log('on (join and socket creation) use effect Called');
-    const {name, room} = queryString.parse(location.search);
+    const {name, id: room} = queryString.parse(location.search);
     const type = Cookies.get('userType') || DEFAULT_USER_TYPE;
 
     socket = io(ENDPOINT);
@@ -60,21 +60,6 @@ const Game = ({ location }) => {
     });
     }, [ENDPOINT, location.search]);
 
- /* useEffect(() => {
-    socket.on('message', (message) => {
-      setMessages([...messages, message ]);
-    });
-
-    socket.on('roomData', ({ users }) => {
-      setUsers(users);
-    });
-
-    return () => {
-      socket.emit('disconnect');
-
-      socket.off();
-    }
-  }, [messages]);*/
     useEffect(() => {
         console.log('on (message) use effect Called');
         socket.on('message', (data) => {
