@@ -1,9 +1,9 @@
 import React from "react";
 import { ADMIN_USER_TYPE } from "../../utils";
 
-import './UserStory.css';
+import './Topic.css';
 
-export default function UserStory({startGame, reStartGame, isGameStarted, userType, storyNumber, setStoryNumber, storyTitle, setStoryTitle}) {
+export default function Topic({startGame, reStartGame, isGameStarted, userType, storyNumber, setStoryNumber, storyTitle, setStoryTitle}) {
     const start = (e) => {
         e.preventDefault();
         if (isGameStarted) {

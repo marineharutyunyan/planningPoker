@@ -4,8 +4,9 @@ import io from "socket.io-client";
 import Cookies from 'js-cookie'
 
 import SessionUrl from '../CreateSession/SessionUrl';
-import UserStory from './UserStory/UserStory';
-import TextContainer from '../TextContainer/TextContainer';
+import Topic from './Topic/Topic';
+//import InfoContainer from '../InfoContainer/InfoContainer';
+import VotingHistory from '../VotingHistory/VotingHistory';
 //import Messages from '../Messages/Messages';
 import InfoBar from '../InfoBar/InfoBar';
 import Input from '../Input/Input';
@@ -33,8 +34,9 @@ const Game = ({ location }) => {
     const [selectedPoint, setSelectedPoint] = useState(false);
     const [avaragePoint, setAvaragePoint] = useState(0);
     const [haveVotingPermission, setVotingPermission] = useState(false);
+    const [history, setVotingHistory] = useState([]);
     const [isGameStarted, setIsGameStarted] = useState(false);
-    const [openCards, setOpenCards] = useState(false);
+    const [areCardsOpen, setOpenCards] = useState(false);
     const [points, setPoints] = useState({});
     const [storyNumber, setStoryNumber] = useState('');
     const [storyTitle, setStoryTitle] = useState('');
@@ -61,8 +63,52 @@ const Game = ({ location }) => {
     });
     }, [ENDPOINT, location.search]);
 
+
     useEffect(() => {
-        console.log('on (message) use effect Called');
+
+        console.log("big UseEfect called");
+
+        socket.on('setEstimate', (data) => {
+            console.log('From backend -  estimate  - ', data );
+            points[data.user] = data.point;
+            setPoints({...points});
+            if (users.length>1 && Object.keys(points).length === users.length) {
+                openCards();
+            }
+        });
+
+        socket.on('userJoined', (data) => {
+            console.log('From backend -  userJoined  - ', data );
+            if (isGameStarted && storyNumber && storyTitle){
+                socket.emit('sendStoryInfo', {
+                    storyNumber,
+                    storyTitle,
+                    isGameStarted: true
+                }, () => {});
+                socket.emit('sendVotingPermission', {canVote: !areCardsOpen}, () => {});
+            }
+        });
+
+        socket.on('setStoryInfo', (data) => {
+            console.log('From backend -  story info  - ', data );
+            setStoryNumber(data.storyNumber);
+            setStoryTitle(data.storyTitle);
+            setIsGameStarted(data.isGameStarted);
+            if (!data.isGameStarted){
+                setSelectedPoint(false);
+            }
+        });
+
+        socket.on('setVotingPermission', (data) => {
+            console.log('From backend -  voting permission  - ', data );
+            setVotingPermission(data.canVote);
+        });
+
+        socket.on('setVotingHistory', (data) => {
+            console.log('From backend -  voting History  - ', data );
+            setVotingHistory(data.history);
+        });
+
         socket.on('message', (data) => {
             console.log('From backend -  message  - ', data)
             // setMessages([...messages, data.point ]);
@@ -87,78 +133,6 @@ const Game = ({ location }) => {
         }
     });
 
-    useEffect(() => {
-        console.log('on (setEstimate) use effect Called');
-        socket.on('setEstimate', (data) => {
-            console.log('From backend -  estimate  - ', data );
-            points[data.user] = data.point;
-            setPoints({...points});
-            if (users.length>1 && Object.keys(points).length === users.length) {
-                setOpenCards(true);
-                setAvaragePoint(getAvaragePoint(points));
-                setVotingPermission(false);
-                socket.emit('sendVotingPermission', {canVote: false}, () => {});
-            }
-        });
-
-        return () => {
-            socket.emit('disconnect');
-            socket.off();
-        }
-    });
-
-    useEffect(() => {
-        console.log('on (userJoined) use effect Called');
-        socket.on('userJoined', (data) => {
-            console.log('From backend -  userJoined  - ', data );
-            if (isGameStarted && storyNumber && storyTitle){
-                socket.emit('sendStoryInfo', {
-                    storyNumber,
-                    storyTitle,
-                    isGameStarted: true
-                }, () => {});
-                socket.emit('sendVotingPermission', {canVote: !openCards}, () => {});
-            }
-        });
-
-        return () => {
-            socket.emit('disconnect');
-            socket.off();
-        }
-    });
-
-
-    useEffect(() => {
-        console.log('on (setStoryInfo) use effect Called');
-        socket.on('setStoryInfo', (data) => {
-            console.log('From backend -  story info  - ', data );
-            setStoryNumber(data.storyNumber);
-            setStoryTitle(data.storyTitle);
-            setIsGameStarted(data.isGameStarted);
-            if (!data.isGameStarted){
-                setSelectedPoint(false);
-            }
-        });
-
-        return () => {
-            socket.emit('disconnect');
-            socket.off();
-        }
-    });
-
-    useEffect(() => {
-        console.log('on (setVotingPermission) use effect Called');
-        socket.on('setVotingPermission', (data) => {
-            console.log('From backend -  voting permission  - ', data );
-            setVotingPermission(data.canVote);
-        });
-
-        return () => {
-            socket.emit('disconnect');
-            socket.off();
-        }
-    });
-
     const sendMessage = (event) => {
         event.preventDefault();
 
@@ -166,12 +140,22 @@ const Game = ({ location }) => {
           socket.emit('sendMessage', message, () => setMessage(''));
         }
     };
+
     const sendEstimate = (event, number) => {
         event.preventDefault();
 
         if(number) {
           socket.emit('sendEstimate', number, () => setSelectedPoint(number));
         }
+    };
+
+    const openCards = () => {
+        const avaragePoint = getAvaragePoint(points);
+        setOpenCards(true);
+        setAvaragePoint(avaragePoint);
+        setVotingPermission(false);
+        socket.emit('sendVotingPermission', {canVote: false}, () => {});
+        socket.emit('sendVotingHistoryUpdate', {room, users, points, avaragePoint, storyNumber, storyTitle}, () => {});
     };
 
     const startGame = (event) => {
@@ -182,13 +166,14 @@ const Game = ({ location }) => {
                 storyTitle,
                 isGameStarted: true
             }, () => {});
+            setOpenCards(false);
             setVotingPermission(true);
             socket.emit('sendVotingPermission', {canVote: true}, () => {});
         } else {
             alert("enter story info ");
         }
-
     };
+
     const reStartGame = (event) => {
         event.preventDefault();
 
@@ -210,13 +195,14 @@ const Game = ({ location }) => {
     console.log("users - ", users);
     console.log("points - ", points);
     console.log("haveVotingPermission - ", haveVotingPermission);
+    console.log("History - ", history);
     console.log("------------------------");
     return (
         <div className="outerContainer">
             {type === ADMIN_USER_TYPE ?
                 (<div className="participants">
                     <SessionUrl room={room} />
-                    <UserStory startGame={startGame}
+                    <Topic startGame={startGame}
                                reStartGame={reStartGame}
                                isGameStarted={isGameStarted}
                                userType={type}
@@ -225,6 +211,7 @@ const Game = ({ location }) => {
                                setStoryNumber={setStoryNumber}
                                setStoryTitle={setStoryTitle}
                     />
+                    <button className="sendButton" onClick={openCards}>Open Cards</button>
                     <h4 className="avarage-point heading" >
                         Avarage point - {avaragePoint}
                     </h4>
@@ -232,7 +219,7 @@ const Game = ({ location }) => {
                         users.map((user,i) => (
                             <div key={i}>
                                 <FlipCard name={user.name}
-                                          openCards={openCards}
+                                          openCards={areCardsOpen}
                                           point={points[user.name] || DEFAULT_POINT}
                                 />
                             </div>))
@@ -263,7 +250,8 @@ const Game = ({ location }) => {
                     </div>)
                 : null
             }
-            <TextContainer users={users}/>
+            {/*<InfoContainer users={users} points={points}/>*/}
+            <VotingHistory history={history}/>
         </div>
     );
 };

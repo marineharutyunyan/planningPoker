@@ -29,6 +29,10 @@ body {
   transform: rotateY(180deg);
 }
 
+.flip-card.hasPoint {
+  border: solid #2979FF 4px;
+}
+
 .flip-card:hover .flip-card-inner {
   transform: rotateY(180deg);
 }

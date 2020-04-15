@@ -8,7 +8,9 @@ const {
     removeUser,
     getUser,
     getUsersInRoom,
-    getAdminUser
+    getAdminUser,
+    setVotingHistory,
+    getVotingHistory
 } = require('./users');
 
 const router = require('./router');
@@ -32,6 +34,7 @@ io.on('connect', (socket) => {
         socket.emit('message', { user: 'admin', text: `${user.name}, welcome to room ${user.room}.`});
         socket.broadcast.to(user.room).emit('message', { user: 'admin', text: `${user.name} has joined!` });
         io.to(user.room).emit('roomData', { room: user.room, users: getUsersInRoom(user.room) });
+        io.to(user.room).emit('setVotingHistory', { history: getVotingHistory(user.room) });
         if (type === DEFAULT_USER_TYPE) {
             const admin = getAdminUser();
             io.to(admin.id).emit('userJoined', user);
@@ -58,6 +61,12 @@ io.on('connect', (socket) => {
         callback();
     });
 
+    socket.on('sendVotingHistoryUpdate', ({room, users, points, avaragePoint, storyNumber, storyTitle}, callback) => {
+        const history = setVotingHistory({room, users, points, avaragePoint, storyNumber, storyTitle});
+        io.to(room).emit('setVotingHistory', { history: history[room] });
+        callback();
+    });
+
     socket.on('sendMessage', (message, callback) => {
     const user = getUser(socket.id);
 
@@ -71,6 +80,7 @@ io.on('connect', (socket) => {
 
     if(user) {
         io.to(user.room).emit('message', { user: 'Admin', text: `${user.name} has left.` });
+        console.log(`${user.name} has left.`);
         io.to(user.room).emit('roomData', { room: user.room, users: getUsersInRoom(user.room)});
         if (user.type === DEFAULT_USER_TYPE) {
             const admin = getAdminUser();

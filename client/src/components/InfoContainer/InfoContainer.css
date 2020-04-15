@@ -23,7 +23,7 @@
 }
 
 .textContainer h1 {
-  margin-bottom: 0px;
+  margin-bottom: 0;
 }
 
 @media (min-width: 320px) and (max-width: 1200px) {

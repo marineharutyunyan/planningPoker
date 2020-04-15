@@ -21,7 +21,7 @@ export function getAvaragePoint (points) {
             return prev;
         }, []);
 
-        const avarage =  validPoints.reduce((prev, curr) => prev + curr) / validPoints.length;
+        const avarage = validPoints.length && validPoints.reduce((prev, curr) => prev + curr) / validPoints.length;
 
         return avarage
     }
