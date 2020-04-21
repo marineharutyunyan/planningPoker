@@ -3,6 +3,7 @@ const history= {};
 const {ADMIN_USER_TYPE} = require('./utils');
 
 const addUser = ({ id, name, type, room }) => {
+  const displayName = name;
   name = name.trim().toLowerCase();
   room = room.trim().toLowerCase();
 
@@ -10,7 +11,7 @@ const addUser = ({ id, name, type, room }) => {
   if(!name || !room) return { error: 'Username and room are required.' };
   if(existingUser) return { error: 'Username is taken.' };
 
-  const user = { id, name, type, room };
+  const user = { id, name, displayName,  type, room };
 
   users.push(user);
 
@@ -35,7 +36,11 @@ const setVotingHistory = ({room, users, points, avaragePoint, storyNumber, story
     if (users && users.length) {
         const lastEstimation = {users:[], avaragePoint, storyNumber, storyTitle};
         users.forEach((user) => {
-            lastEstimation.users.push({name: user.name, point: points[user.name]});
+            lastEstimation.users.push({
+                name: user.name,
+                displayName:user.displayName,
+                point: points[user.name]
+            });
         });
 
         if (history.hasOwnProperty(room)) {

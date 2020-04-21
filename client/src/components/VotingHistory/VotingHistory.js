@@ -13,11 +13,11 @@ const VotingHistory = ({ history }) => (
                     <div>
                         <h2>{stage.storyNumber}-{stage.storyTitle}</h2>
                         <h2>Avarage Point: {stage.avaragePoint}</h2>
-                        {stage.users.map(({name, point}) => (
+                        {stage.users.map(({displayName, point}) => (
                             <h2>
-                                <div key={name} className="activeItem">
+                                <div key={displayName} className="activeItem">
                                     <img alt="Online Icon" src={onlineIcon}/>
-                                    {name}
+                                    {displayName}
                                     <div>{point}</div>
                                 </div>
                             </h2>

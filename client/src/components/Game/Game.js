@@ -185,7 +185,7 @@ const Game = ({ location }) => {
 
         setAvaragePoint(0);
         setOpenCards(false);
-        setPoints({admin: '?'});
+        setPoints({[name]: '?'});
     };
 
     console.log("trying render");
@@ -199,6 +199,7 @@ const Game = ({ location }) => {
     console.log("------------------------");
     return (
         <div className="outerContainer">
+           {/* <div classNamne="landing-page">*/}
             {type === ADMIN_USER_TYPE ?
                 (<div className="participants">
                     <SessionUrl room={room} />
@@ -218,7 +219,7 @@ const Game = ({ location }) => {
                     {users.length ?
                         users.map((user,i) => (
                             <div key={i}>
-                                <FlipCard name={user.name}
+                                <FlipCard name={user.displayName}
                                           openCards={areCardsOpen}
                                           point={points[user.name] || DEFAULT_POINT}
                                 />
@@ -253,6 +254,7 @@ const Game = ({ location }) => {
             {/*<InfoContainer users={users} points={points}/>*/}
             <VotingHistory history={history}/>
         </div>
+     /*   </div>*/
     );
 };
 

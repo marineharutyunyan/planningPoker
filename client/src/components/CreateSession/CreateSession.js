@@ -6,11 +6,11 @@ import { ADMIN_USER_TYPE, getUnicID } from "../utils";
 import './CreateSession.css';
 
 export default function CreateSession() {
-    const [room, setRoom] = useState('');
+    const [name, setName] = useState('');
     const unicId = getUnicID();
 
     const onCreateSession = (e) => {
-        if(!room) {
+        if(!name) {
             e.preventDefault();
         } else {
             Cookies.set('userType', ADMIN_USER_TYPE);
@@ -20,16 +20,16 @@ export default function CreateSession() {
     return (
         <div className="joinOuterContainer">
             <div className="joinInnerContainer">
-                <h1 className="heading">Create Session</h1>
+                <h1 className="heading">Welcome to Planning Poker</h1>
                 <div>
-                    <input placeholder="Session Name"
+                    <input placeholder="Name"
                          className="joinInput mt-20"
                          type="text"
-                         onChange={(event) => setRoom(event.target.value)}
+                         onChange={(event) => setName(event.target.value)}
                     />
                 </div>
-                <Link onClick={onCreateSession} to={`/game?id=${unicId}&name=admin`}>
-                    <button className={'button mt-20'} type="submit">Create</button>
+                <Link onClick={onCreateSession} to={`/game?id=${unicId}&name=${name}`}>
+                    <button className={'button mt-20'} type="submit">Start</button>
                 </Link>
             </div>
         </div>

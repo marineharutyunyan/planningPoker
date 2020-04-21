@@ -3,6 +3,7 @@ import React from 'react';
 import Game from './components/Game/Game';
 import Join from './components/Join/Join';
 import CreateSession from './components/CreateSession/CreateSession';
+import './App.css';
 
 import { BrowserRouter as Router, Route } from "react-router-dom";
 
