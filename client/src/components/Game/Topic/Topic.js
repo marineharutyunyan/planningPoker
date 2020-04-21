@@ -33,7 +33,9 @@ export default function Topic({startGame, reStartGame, isGameStarted, userType, 
                     onKeyPress={event => event.key === 'Enter' ? start(event) : null}
                 />
 
-                {userType === ADMIN_USER_TYPE && <button className="sendButton" onClick={start}>{isGameStarted ? 'Restart' : 'Start Voting'}</button>}
+                {userType === ADMIN_USER_TYPE && <button className="button send-button" onClick={start}>
+                    {isGameStarted ? 'Restart' : 'Start Voting'}
+                    </button>}
             </form>
         </div>
     )

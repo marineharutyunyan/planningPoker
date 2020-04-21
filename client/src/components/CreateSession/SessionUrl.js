@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import './CreateSession.css';
+import './SessionUrl.css';
 
 export default function ShowSessionUrl({ room }) {
     const urlRef = useRef();
@@ -15,7 +15,7 @@ export default function ShowSessionUrl({ room }) {
 
     return (
         <div className="urlContainer">
-            <h2 className="heading" id ="heading" >{url}</h2>
+            <span className="url fade-background">{url}</span>
             <input ref={urlRef}
                    className="url-input"
                    type="text"

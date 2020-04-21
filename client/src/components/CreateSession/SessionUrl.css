@@ -1,0 +1,16 @@
+.url {
+    padding: 16px;
+    margin: 16px 16px 16px 0;
+}
+
+.url-input {
+    position: absolute;
+    top: -500px;
+    left: -500px;
+}
+
+.copy-button {
+    margin-top: 40px !important;
+    width: 16% !important;
+    padding: 17.5px 16px 16px 16px !important;
+}

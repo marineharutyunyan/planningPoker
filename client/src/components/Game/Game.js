@@ -198,38 +198,44 @@ const Game = ({ location }) => {
     console.log("History - ", history);
     console.log("------------------------");
     return (
-        <div className="outerContainer">
-           {/* <div classNamne="landing-page">*/}
-            {type === ADMIN_USER_TYPE ?
-                (<div className="participants">
+        type === ADMIN_USER_TYPE ?
+            <div>
+                <div className="topicContainer">
                     <SessionUrl room={room} />
                     <Topic startGame={startGame}
-                               reStartGame={reStartGame}
-                               isGameStarted={isGameStarted}
-                               userType={type}
-                               storyTitle={storyTitle}
-                               storyNumber={storyNumber}
-                               setStoryNumber={setStoryNumber}
-                               setStoryTitle={setStoryTitle}
+                           reStartGame={reStartGame}
+                           isGameStarted={isGameStarted}
+                           userType={type}
+                           storyTitle={storyTitle}
+                           storyNumber={storyNumber}
+                           setStoryNumber={setStoryNumber}
+                           setStoryTitle={setStoryTitle}
                     />
-                    <button className="sendButton" onClick={openCards}>Open Cards</button>
+                    <button className="button ml-20 open-cards-button" onClick={openCards}>Open Cards</button>
                     <h4 className="avarage-point heading" >
                         Avarage point - {avaragePoint}
                     </h4>
-                    {users.length ?
-                        users.map((user,i) => (
-                            <div key={i}>
-                                <FlipCard name={user.displayName}
-                                          openCards={areCardsOpen}
-                                          point={points[user.name] || DEFAULT_POINT}
-                                />
-                            </div>))
-                        :
-                        <div>No User</div>}
-                </div>)
-                :
-                type === "player" ?
-                    (<div className="container">
+                </div>
+                <div className="participantsContainer">
+                    <div className="participants">
+                        {users.length ?
+                            users.map((user,i) => (
+                                <div key={i}>
+                                    <FlipCard name={user.displayName}
+                                              openCards={areCardsOpen}
+                                              point={points[user.name] || DEFAULT_POINT}
+                                    />
+                                </div>))
+                            :
+                            <div>No User</div>}
+                    </div>
+                    <VotingHistory history={history}/>
+                </div>
+            </div>
+            :
+            type === "player" ?
+                <div className="outerContainer">
+                    <div className="container">
                         <InfoBar room={room} />
                         <h3>
                             {storyNumber?
@@ -248,13 +254,11 @@ const Game = ({ location }) => {
                                 />
                             </div>)
                         }
-                    </div>)
-                : null
-            }
-            {/*<InfoContainer users={users} points={points}/>*/}
-            <VotingHistory history={history}/>
-        </div>
-     /*   </div>*/
+                    </div>
+                    <VotingHistory history={history}/>
+                </div>
+                :
+                null
     );
 };
 

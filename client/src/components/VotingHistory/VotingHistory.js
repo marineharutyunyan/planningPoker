@@ -5,7 +5,7 @@ import onlineIcon from '../../icons/onlineIcon.png';
 import './VotingHistory.css';
 
 const VotingHistory = ({ history }) => (
-    <div className="textContainer">
+    <div className="historyContainer fade-background">
         <h1>Estimation History:</h1>
         <div className="activeContainer">
             {history && history.length ?

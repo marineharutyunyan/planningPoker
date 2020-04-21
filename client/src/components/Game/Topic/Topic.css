@@ -1,0 +1,19 @@
+.send-button {
+    width: 40% !important;
+}
+
+.topicContainer .form {
+
+}
+
+.topicContainer {
+    display: block;
+    padding-left: 40px;
+    height:35vh;
+}
+
+
+.user-story-info-container{
+    width: 141vh;
+    float: left;
+}

@@ -1,12 +1,73 @@
-body::after {
-    content: "";
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    font-family: 'Roboto', sans-serif;
+    padding: 0;
+    margin: 0;
+}
+
+body {
     display: block;
     position: absolute;
     top: 0;
     width: 100vw;
     height: 100vh;
-    opacity: 0.15;
     background-size: cover;
     background-color: #283037;
-    background-image: url("icons/background.svg")
+    color: #fff;
+}
+
+#root {
+    height: 100vh;
+}
+
+.fade-background{
+    background-color: rgba(255,255,255,0.05);
+}
+
+
+/*Form elements*/
+.button {
+    color: #fff !important;
+    text-transform: uppercase;
+    text-decoration: none;
+    background: #2979FF;
+    padding: 20px;
+    display: inline-block;
+    border: none;
+    width: 100%;
+}
+
+button:focus {
+    outline: 0;
+}
+
+.mt-20 {
+    margin-top: 20px;
+}
+
+.ml-20 {
+    margin-left: 20px;
+}
+
+.form {
+    display: flex;
+    height: 56px;
+}
+
+.input {
+    border: none;
+    border-right-width: 1px;
+    border-right-color: inherit;
+    border-right-style: ridge;
+    border-radius: 0;
+    padding: 1.5%;
+    width: 80%;
+    font-size: 1.2em;
+}
+
+input:focus, textarea:focus, select:focus{
+    outline: none;
 }

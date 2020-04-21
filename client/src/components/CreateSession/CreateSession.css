@@ -1,24 +1,9 @@
-html, body {
-  font-family: 'Roboto', sans-serif;
-  padding: 0;
-  margin: 0;
-}
-
-#root {
-  height: 100vh;
-}
-
-* {
-  box-sizing: border-box;
-}
-
 .joinOuterContainer {
   display: flex;
   justify-content: center;
   text-align: center;
   height: 100vh;
   align-items: center;
-  background-color: #1A1A1D;
 }
 
 .joinInnerContainer {
@@ -26,13 +11,7 @@ html, body {
 }
 
 .urlContainer{
-    margin-top: -100px;
-    margin-bottom: 80px;
-}
-
-.copy-button {
-    margin-top: 0 !important;;
-    width: 20% !important;
+    margin-bottom: 40px;
 }
 
 .joinInput {
@@ -52,23 +31,6 @@ h4.heading {
     font-size: 17px;
     padding-bottom: 10px;
     border-bottom: 2px solid white;
-}
-
-.button {
-    color: #fff !important;
-    text-transform: uppercase;
-    text-decoration: none;
-    background: #2979FF;
-    padding: 20px;
-    border-radius: 5px;
-    display: inline-block;
-    border: none;
-    width: 100%;
-}
-.url-input {
-    position: absolute;
-    top: -500px;
-    left: -500px;
 }
 
 .mt-20 {
