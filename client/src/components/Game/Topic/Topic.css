@@ -4,12 +4,24 @@
 
 .topicContainer .form {
     float: left;
-    width: 141vh;
+    width: 70%;
 }
 
 .topicContainer {
     display: block;
     padding-left: 40px;
     height:35vh;
+}
+
+
+@media (max-height: 600px) {
+    .topicContainer {
+        display: contents;
+    }
+
+    .user-story-info-container {
+        margin: 20px 0 50px 40px;
+    }
+
 }
 

@@ -30,7 +30,7 @@ body {
 }
 
 .flip-card.hasPoint {
-  border: solid #2979FF 4px;
+  border: solid #2980b9 4px;
 }
 
 .flip-card:hover .flip-card-inner {

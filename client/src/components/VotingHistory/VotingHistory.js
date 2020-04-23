@@ -7,8 +7,9 @@ import './VotingHistory.css';
 const VotingHistory = ({ history }) => (
 
         <ScrollToBottom className="historyContainer fade-background">
-            <h2 className="title" >Estimation History</h2>
+
             <div className="activeContainer">
+                <h2 className="title" >Estimation History</h2>
                 {history && history.length ?
                     history.map( stage => (
                         <div className="mb-40">

@@ -1,6 +1,7 @@
 .historyContainer {
-  height: 88%;
+  height: 56vh;
   width: 36%;
+  margin-top: 32px;
 }
 
 .activeContainer {
@@ -9,8 +10,9 @@
 }
 
 .title {
-  position: fixed;
-  margin-top: -50px;
+  position: absolute;
+  top: -60px;
+  left: 0;
 }
 
 /*------scrolling-------*/

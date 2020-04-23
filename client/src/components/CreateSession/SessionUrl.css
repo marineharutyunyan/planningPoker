@@ -14,3 +14,11 @@
     width: 16% !important;
     padding: 17.5px 16px 16px 16px !important;
 }
+
+
+@media (max-height: 600px) {
+    .urlContainer {
+        margin-left: 40px;
+    }
+
+}

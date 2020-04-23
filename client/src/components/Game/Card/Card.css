@@ -7,7 +7,7 @@
   perspective: 1000px;
 }
 
-.card .selected {
+.card.selected {
   background-color: #2ebb98 !important;
 }
 

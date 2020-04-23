@@ -215,7 +215,7 @@ const Game = ({ location }) => {
                     />
                 </div>
                 <div className="content">
-                    <div className="participants">
+                    <div className="cardsContainer">
                         {users.length ?
                             users.map((user,i) => (
                                 <div key={i}>

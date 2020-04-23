@@ -21,11 +21,9 @@ export default function Card(
 
     return (
 
-        <div className="card" onClick={onCardClick}>
+        <div className={`card ${selectedClassName}`} onClick={onCardClick}>
             <div className="card-inner">
-                <div className={selectedClassName}>
                     <h1>{cardNumber}</h1>
-                </div>
             </div>
         </div>
     )
