@@ -160,7 +160,7 @@ const Game = ({ location }) => {
 
     const startGame = (event) => {
         event.preventDefault();
-        if(storyNumber && storyTitle) {
+        if(storyNumber || storyTitle) {
             socket.emit('sendStoryInfo', {
                 storyNumber,
                 storyTitle,
@@ -170,7 +170,7 @@ const Game = ({ location }) => {
             setVotingPermission(true);
             socket.emit('sendVotingPermission', {canVote: true}, () => {});
         } else {
-            alert("enter story info ");
+            alert("enter story information ");
         }
     };
 
@@ -211,10 +211,7 @@ const Game = ({ location }) => {
                            setStoryNumber={setStoryNumber}
                            setStoryTitle={setStoryTitle}
                     />
-                    <button className="button ml-20 open-cards-button" onClick={openCards}>Open Cards</button>
-                    <h4 className="avarage-point heading" >
-                        Avarage point - {avaragePoint}
-                    </h4>
+                    <button className="button ml-20 open-cards-button" onClick={openCards} disabled={!isGameStarted || areCardsOpen}>Open Cards</button>
                 </div>
                 <div className="participantsContainer">
                     <div className="participants">

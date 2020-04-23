@@ -3,15 +3,9 @@
   flex-direction: column;
   margin-left:0;
   padding-left: 25px;
-  color: white;
   height: 88%;
   width: 36%;
   justify-content: space-between;
-  overflow-y: scroll;
-}
-
-.activeContainer img {
-  padding-left: 10px;
 }
 
 .historyContainer h1 {
@@ -19,8 +13,7 @@
 }
 
 .activeContainer {
-  align-items: center;
-  margin-bottom: 20%;
+  margin-bottom: 5%;
 }
 
 .activeItem {
@@ -48,10 +41,6 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
-
-
-
-
 
 @media (min-width: 320px) and (max-width: 1200px) {
   .historyContainer {

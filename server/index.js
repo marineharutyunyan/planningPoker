@@ -37,7 +37,7 @@ io.on('connect', (socket) => {
         io.to(user.room).emit('setVotingHistory', { history: getVotingHistory(user.room) });
         if (type === DEFAULT_USER_TYPE) {
             const admin = getAdminUser();
-            io.to(admin.id).emit('userJoined', user);
+            admin && io.to(admin.id).emit('userJoined', user);
         }
         callback();
     });
@@ -45,7 +45,7 @@ io.on('connect', (socket) => {
     socket.on('sendEstimate', (point, callback) => {
         const user = getUser(socket.id);
         const admin = getAdminUser();
-        io.to(admin.id).emit('setEstimate', { user: user.name, point });
+        admin && io.to(admin.id).emit('setEstimate', { user: user.name, point });
         callback();
     });
 
@@ -84,7 +84,7 @@ io.on('connect', (socket) => {
         io.to(user.room).emit('roomData', { room: user.room, users: getUsersInRoom(user.room)});
         if (user.type === DEFAULT_USER_TYPE) {
             const admin = getAdminUser();
-            io.to(admin.id).emit('removePoint', {user: user.name});
+            admin && io.to(admin.id).emit('removePoint', {user: user.name});
         }
     }
     })

@@ -1,35 +1,31 @@
 import React from 'react';
-
-import onlineIcon from '../../icons/onlineIcon.png';
+import ScrollToBottom from 'react-scroll-to-bottom';
+import ReactEmoji from "react-emoji";
 
 import './VotingHistory.css';
 
 const VotingHistory = ({ history }) => (
-    <div className="historyContainer fade-background">
-        <h1>Estimation History:</h1>
-        <div className="activeContainer">
-            {history && history.length ?
-                history.map( stage => (
-                    <div>
-                        <h2>{stage.storyNumber}-{stage.storyTitle}</h2>
-                        <h2>Avarage Point: {stage.avaragePoint}</h2>
-                        {stage.users.map(({displayName, point}) => (
-                            <h2>
-                                <div key={displayName} className="activeItem">
-                                    <img alt="Online Icon" src={onlineIcon}/>
-                                    {displayName}
-                                    <div>{point}</div>
-                                </div>
-                            </h2>
-                        ))
-                        }
-                    </div>
-                ))
-                :
-                <div>NoData</div>
-            }
-        </div>
-    </div>
+
+        <ScrollToBottom className="historyContainer fade-background">
+            <div className="activeContainer">
+                <h2>Estimation History</h2>
+                {history && history.length ?
+                    history.map( stage => (
+                        <div className="mb-20">
+                            <div>{`${stage.storyNumber} ${stage.storyTitle}`}</div>
+                            <div>Avarage Point: {stage.avaragePoint}</div>
+                            <ul>
+                                {stage.users.map(({displayName, point}) => (
+                                    <li>{ReactEmoji.emojify(displayName)}{`: ${point || " ?" }`}</li>
+                                ))}
+                            </ul>
+                        </div>
+                    ))
+                    :
+                    <div>No history yet</div>
+                }
+            </div>
+        </ScrollToBottom>
 );
 
 export default VotingHistory;
