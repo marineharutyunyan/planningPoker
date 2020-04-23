@@ -7,13 +7,13 @@ import './VotingHistory.css';
 const VotingHistory = ({ history }) => (
 
         <ScrollToBottom className="historyContainer fade-background">
+            <h2 className="title" >Estimation History</h2>
             <div className="activeContainer">
-                <h2>Estimation History</h2>
                 {history && history.length ?
                     history.map( stage => (
-                        <div className="mb-20">
+                        <div className="mb-40">
                             <div>{`${stage.storyNumber} ${stage.storyTitle}`}</div>
-                            <div>Avarage Point: {stage.avaragePoint}</div>
+                            <div>Avarage point: {stage.avaragePoint}</div>
                             <ul>
                                 {stage.users.map(({displayName, point}) => (
                                     <li>{ReactEmoji.emojify(displayName)}{`: ${point || " ?" }`}</li>

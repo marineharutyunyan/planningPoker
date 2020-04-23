@@ -1,26 +1,17 @@
 .historyContainer {
-  display: flex;
-  flex-direction: column;
-  margin-left:0;
-  padding-left: 25px;
   height: 88%;
   width: 36%;
-  justify-content: space-between;
-}
-
-.historyContainer h1 {
-  margin-bottom: 0;
 }
 
 .activeContainer {
-  margin-bottom: 5%;
+  padding-left: 25px;
+  margin: 4.5% 0;
 }
 
-.activeItem {
-  display: flex;
-  align-items: center;
+.title {
+  position: fixed;
+  margin-top: -50px;
 }
-
 
 /*------scrolling-------*/
 ::-webkit-scrollbar {
