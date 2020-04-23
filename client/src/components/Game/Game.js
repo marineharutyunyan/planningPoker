@@ -210,10 +210,11 @@ const Game = ({ location }) => {
                            storyNumber={storyNumber}
                            setStoryNumber={setStoryNumber}
                            setStoryTitle={setStoryTitle}
+                           openCards={openCards}
+                           areCardsOpen={areCardsOpen}
                     />
-                    <button className="button ml-20 open-cards-button" onClick={openCards} disabled={!isGameStarted || areCardsOpen}>Open Cards</button>
                 </div>
-                <div className="participantsContainer">
+                <div className="content">
                     <div className="participants">
                         {users.length ?
                             users.map((user,i) => (
@@ -231,31 +232,27 @@ const Game = ({ location }) => {
             </div>
             :
             type === "player" ?
-                <div className="outerContainer">
-                    <div className="container">
-                        <InfoBar room={room} />
-                        <h3>
-                            {storyNumber?
-                                `Story - ${storyNumber}: ${storyTitle}`
-                                :
-                                "No Topic"
+
+                <div>
+                    <InfoBar storyNumber={storyNumber} storyTitle={storyTitle} room={room} />
+                    <div className="content">
+                        <div className="cardsContainer">
+                            {FIBONACCI_NUMBERS.map((number, i) =>
+                                <div key={i}>
+                                    <Card cardNumber={number}
+                                          haveVotingPermission={haveVotingPermission}
+                                          isGameStarted={isGameStarted}
+                                          selectedPoint={selectedPoint}
+                                          sendEstimate={sendEstimate}
+                                    />
+                                </div>)
                             }
-                        </h3>
-                        {FIBONACCI_NUMBERS.map((number, i) =>
-                            <div key={i}>
-                                <Card cardNumber={number}
-                                      haveVotingPermission={haveVotingPermission}
-                                      isGameStarted={isGameStarted}
-                                      selectedPoint={selectedPoint}
-                                      sendEstimate={sendEstimate}
-                                />
-                            </div>)
-                        }
+                        </div>
+                        <VotingHistory history={history}/>
                     </div>
-                    <VotingHistory history={history}/>
                 </div>
-                :
-                null
+            :
+            null
     );
 };
 

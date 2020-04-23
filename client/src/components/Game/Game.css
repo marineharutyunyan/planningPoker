@@ -1,18 +1,8 @@
-.participantsContainer {
+.content {
   display: flex;
   justify-content: center;
   align-items: center;
   height:65vh;
-}
-
-.container {
-  flex-direction: column;
-  justify-content: space-between;
-  background: #FFFFFF;
-  border-radius: 8px;
-  padding-left: 20px;
-  height: 75%;
-  width: 55%;
 }
 
 .participants {
@@ -22,6 +12,14 @@
   align-items: center;
 }
 
+.cardsContainer {
+  display: inline-block;
+  width: 60%;
+  justify-content: center;
+  align-items: center;
+  padding: 28px;
+}
+
 .open-cards-button {
   height: 56px;
   width: 15% !important;
@@ -29,11 +27,6 @@
 
 @media (min-width: 320px) and (max-width: 480px) {
   .participantsContainer {
-    height: 100%;
-  }
-
-  .container {
-    width: 100%;
     height: 100%;
   }
 }

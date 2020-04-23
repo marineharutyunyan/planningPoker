@@ -3,7 +3,8 @@
 }
 
 .topicContainer .form {
-
+    float: left;
+    width: 141vh;
 }
 
 .topicContainer {
@@ -12,8 +13,3 @@
     height:35vh;
 }
 
-
-.user-story-info-container{
-    width: 141vh;
-    float: left;
-}

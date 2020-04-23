@@ -3,7 +3,19 @@ import { ADMIN_USER_TYPE } from "../../utils";
 
 import './Topic.css';
 
-export default function Topic({startGame, reStartGame, isGameStarted, userType, storyNumber, setStoryNumber, storyTitle, setStoryTitle}) {
+export default function Topic({
+     startGame,
+     reStartGame,
+     isGameStarted,
+     userType,
+     storyNumber,
+     setStoryNumber,
+     storyTitle,
+     setStoryTitle,
+     openCards,
+     areCardsOpen
+
+}) {
     const start = (e) => {
         e.preventDefault();
         if (isGameStarted) {
@@ -33,10 +45,21 @@ export default function Topic({startGame, reStartGame, isGameStarted, userType, 
                     onKeyPress={event => event.key === 'Enter' ? start(event) : null}
                 />
 
-                {userType === ADMIN_USER_TYPE && <button className="button send-button" onClick={start}>
-                    {isGameStarted ? 'Restart' : 'Start Voting'}
-                    </button>}
+                {
+                    userType === ADMIN_USER_TYPE && <button className="button send-button" onClick={start}>
+                        {isGameStarted ? 'Restart' : 'Start Voting'}
+                        </button>
+
+                }
             </form>
+
+            {
+                userType === ADMIN_USER_TYPE && <button className="button ml-20 open-cards-button"
+                                                        onClick={openCards}
+                                                        disabled={!isGameStarted || areCardsOpen}>
+                    Open Cards
+                </button>
+            }
         </div>
     )
 };

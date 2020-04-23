@@ -10,8 +10,8 @@ export default function Card(
      haveVotingPermission
     })
 {
-    let selectedClassName = selectedPoint && selectedPoint === cardNumber ? "card-back selected" : "card-back";
-    selectedClassName = isGameStarted ? selectedClassName : "card-back";
+    let selectedClassName = selectedPoint && selectedPoint === cardNumber ? "selected" : "";
+    selectedClassName = isGameStarted ? selectedClassName : "";
     const onCardClick = (e) => {
         e.preventDefault();
         if (isGameStarted && haveVotingPermission) {
