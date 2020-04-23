@@ -30,22 +30,29 @@ body {
 
 /*Form elements*/
 .button {
-    color: #fff !important;
+    color: rgb(241, 241, 241) !important;
     text-transform: uppercase;
     text-decoration: none;
-    background: #2979FF;
+    background-color: #2980b9;
     padding: 20px;
     display: inline-block;
     border: none;
+    cursor: pointer;
     width: 100%;
 }
 
-.button:disabled {
+button:disabled {
+    cursor: default;
     opacity: 0.5;
+    pointer-events: none;
 }
 
 button:focus {
     outline: 0;
+}
+
+button:hover {
+    background-color: #3498db;
 }
 
 .mt-20 {

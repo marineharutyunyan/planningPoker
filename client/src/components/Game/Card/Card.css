@@ -16,7 +16,7 @@ body {
 }
 
 .card .selected {
-  background-color: red !important;
+  background-color: #2ebb98 !important;
 }
 
 .card-inner {
