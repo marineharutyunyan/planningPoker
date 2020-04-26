@@ -3,6 +3,7 @@ export const ENDPOINT = 'localhost:5000';
 export const DEFAULT_USER_TYPE = "player";
 export const ADMIN_USER_TYPE = "admin";
 export const DEFAULT_POINT = "?";
+export const BrowserTitle = "PP Project";
 
 export function isEmptyObject (object) {
     return !Array.isArray(object) && Object.keys(object).length === 0;

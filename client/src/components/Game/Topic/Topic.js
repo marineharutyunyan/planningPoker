@@ -28,13 +28,12 @@ export default function Topic({
     return (
         <div className="user-story-info-container" >
             <form className="form">
-                <input
+                <input autoFocus
                     className="input"
                     type="text"
                     placeholder="Story Name"
                     value={storyNumber}
                     onChange={({ target: { value } }) => setStoryNumber(value)}
-                    onKeyPress={event => event.key === 'Enter' ? start(event) : null}
                 />
                 <input
                     className="input"
@@ -42,7 +41,7 @@ export default function Topic({
                     placeholder="Story Description"
                     value={storyTitle}
                     onChange={({ target: { value } }) => setStoryTitle(value)}
-                    onKeyPress={event => event.key === 'Enter' ? start(event) : null}
+                    onKeyPress={e => e.key === 'Enter' ? start(e) : null}
                 />
 
                 {
@@ -55,8 +54,8 @@ export default function Topic({
 
             {
                 userType === ADMIN_USER_TYPE && <button className="button ml-20 open-cards-button"
-                                                        onClick={openCards}
-                                                        disabled={!isGameStarted || areCardsOpen}>
+                                                        disabled={!isGameStarted || areCardsOpen}
+                                                        onClick={openCards}>
                     Open Cards
                 </button>
             }

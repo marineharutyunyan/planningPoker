@@ -5,15 +5,13 @@ import Cookies from 'js-cookie'
 
 import SessionUrl from '../CreateSession/SessionUrl';
 import Topic from './Topic/Topic';
-//import InfoContainer from '../InfoContainer/InfoContainer';
 import VotingHistory from '../VotingHistory/VotingHistory';
-//import Messages from '../Messages/Messages';
-import InfoBar from '../InfoBar/InfoBar';
-import Input from '../Input/Input';
+import InfoBar from './InfoBar/InfoBar';
 import FlipCard from './FlipCard/FlipCard.js';
 import Card from './Card/Card.js';
 
 import './Game.css';
+
 import {
     FIBONACCI_NUMBERS,
     DEFAULT_USER_TYPE,
@@ -31,36 +29,33 @@ const Game = ({ location }) => {
     const [type, setType] = useState('');
     const [room, setRoom] = useState('');
     const [users, setUsers] = useState([]);
-    const [selectedPoint, setSelectedPoint] = useState(false);
-    const [avaragePoint, setAvaragePoint] = useState(0);
-    const [haveVotingPermission, setVotingPermission] = useState(false);
-    const [history, setVotingHistory] = useState([]);
-    const [isGameStarted, setIsGameStarted] = useState(false);
-    const [areCardsOpen, setOpenCards] = useState(false);
     const [points, setPoints] = useState({});
-    const [storyNumber, setStoryNumber] = useState('');
+    const [history, setVotingHistory] = useState([]);
     const [storyTitle, setStoryTitle] = useState('');
-    const [message, setMessage] = useState('');
-    const [messages, setMessages] = useState([]);
+    const [storyNumber, setStoryNumber] = useState('');
+    const [areCardsOpen, setOpenCards] = useState(false);
+    const [selectedPoint, setSelectedPoint] = useState(false);
+    const [isGameStarted, setIsGameStarted] = useState(false);
+    const [haveVotingPermission, setVotingPermission] = useState(false);
 
     useEffect(() => {
-    console.log('on (join and socket creation) use effect Called');
-    const {name, id: room} = queryString.parse(location.search);
-    const type = Cookies.get('userType') || DEFAULT_USER_TYPE;
+        console.log('on (join and socket creation) use effect Called');
+        const {name, id: room} = queryString.parse(location.search);
+        const type = Cookies.get('userType') || DEFAULT_USER_TYPE;
 
-    socket = io(ENDPOINT);
+        socket = io(ENDPOINT);
 
-    setRoom(room);
-    setName(name);
-    setType(type);
-    points[name] = DEFAULT_POINT;
-    setPoints(points);
+        setRoom(room);
+        setName(name);
+        setType(type);
+        points[name] = DEFAULT_POINT;
+        setPoints(points);
 
-    socket.emit('join', { name, type, room }, (error) => {
-        if(error) {
-            alert(error);
-        }
-    });
+        socket.emit('join', { name, type, room }, (error) => {
+            if(error) {
+                alert(error);
+            }
+        });
     }, [ENDPOINT, location.search]);
 
 
@@ -133,14 +128,6 @@ const Game = ({ location }) => {
         }
     });
 
-    const sendMessage = (event) => {
-        event.preventDefault();
-
-        if(message) {
-          socket.emit('sendMessage', message, () => setMessage(''));
-        }
-    };
-
     const sendEstimate = (event, number) => {
         event.preventDefault();
 
@@ -152,7 +139,6 @@ const Game = ({ location }) => {
     const openCards = () => {
         const avaragePoint = getAvaragePoint(points);
         setOpenCards(true);
-        setAvaragePoint(avaragePoint);
         setVotingPermission(false);
         socket.emit('sendVotingPermission', {canVote: false}, () => {});
         socket.emit('sendVotingHistoryUpdate', {room, users, points, avaragePoint, storyNumber, storyTitle}, () => {});
@@ -183,7 +169,8 @@ const Game = ({ location }) => {
             isGameStarted: false
         }, () => {});
 
-        setAvaragePoint(0);
+        setVotingPermission(false);
+        socket.emit('sendVotingPermission', {canVote: false}, () => {});
         setOpenCards(false);
         setPoints({[name]: '?'});
     };
@@ -202,16 +189,16 @@ const Game = ({ location }) => {
             <div>
                 <div className="topicContainer">
                     <SessionUrl room={room} />
-                    <Topic startGame={startGame}
-                           reStartGame={reStartGame}
-                           isGameStarted={isGameStarted}
-                           userType={type}
+                    <Topic userType={type}
+                           openCards={openCards}
+                           startGame={startGame}
                            storyTitle={storyTitle}
                            storyNumber={storyNumber}
-                           setStoryNumber={setStoryNumber}
-                           setStoryTitle={setStoryTitle}
-                           openCards={openCards}
+                           reStartGame={reStartGame}
                            areCardsOpen={areCardsOpen}
+                           setStoryTitle={setStoryTitle}
+                           isGameStarted={isGameStarted}
+                           setStoryNumber={setStoryNumber}
                     />
                 </div>
                 <div className="content">
@@ -239,11 +226,12 @@ const Game = ({ location }) => {
                         <div className="cardsContainer">
                             {FIBONACCI_NUMBERS.map((number, i) =>
                                 <div key={i}>
-                                    <Card cardNumber={number}
-                                          haveVotingPermission={haveVotingPermission}
+                                    <Card name={name}
+                                          cardNumber={number}
+                                          sendEstimate={sendEstimate}
                                           isGameStarted={isGameStarted}
                                           selectedPoint={selectedPoint}
-                                          sendEstimate={sendEstimate}
+                                          haveVotingPermission={haveVotingPermission}
                                     />
                                 </div>)
                             }
