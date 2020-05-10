@@ -41,7 +41,8 @@ const Game = ({ location }) => {
     useEffect(() => {
         console.log('on (join and socket creation) use effect Called');
         const {name, id: room} = queryString.parse(location.search);
-        const type = Cookies.get('userType') || DEFAULT_USER_TYPE;
+        const cookieId = Cookies.get('id');
+        const type = cookieId && cookieId === room ?  Cookies.get('userType') : DEFAULT_USER_TYPE;
 
         socket = io(ENDPOINT);
 

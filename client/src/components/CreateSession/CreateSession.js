@@ -15,6 +15,7 @@ export default function CreateSession() {
             e.preventDefault();
         } else {
             Cookies.set('userType', ADMIN_USER_TYPE);
+            Cookies.set('id', unicId);
         }
     };
 
