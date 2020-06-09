@@ -40,6 +40,7 @@ const Game = ({ location }) => {
 
     useEffect(() => {
         console.log('on (join and socket creation) use effect Called');
+
         const {name, id: room} = queryString.parse(location.search);
         const cookieId = Cookies.get('id');
         const type = cookieId && cookieId === room ?  Cookies.get('userType') : DEFAULT_USER_TYPE;
@@ -75,7 +76,7 @@ const Game = ({ location }) => {
 
         socket.on('userJoined', (data) => {
             console.log('From backend -  userJoined  - ', data );
-            if (isGameStarted && storyNumber && storyTitle){
+            if (isGameStarted && (storyNumber || storyTitle)){
                 socket.emit('sendStoryInfo', {
                     storyNumber,
                     storyTitle,
