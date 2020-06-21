@@ -205,14 +205,18 @@ const Game = ({ location }) => {
                 </div>
                 <div className="content">
                     <div className="cardsContainer">
-                        {users.length ?
+                        {users.length && users.length>1 ?
                             users.map((user,i) => (
-                                <div key={i}>
-                                    <FlipCard name={user.displayName}
-                                              openCards={areCardsOpen}
-                                              point={points[user.name] || DEFAULT_POINT}
-                                    />
-                                </div>))
+                                user.type === DEFAULT_USER_TYPE ?
+                                    <div key={i}>
+                                        <FlipCard name={user.displayName}
+                                                  openCards={areCardsOpen}
+                                                  point={points[user.name] || DEFAULT_POINT}
+                                        />
+                                    </div>
+                                    :
+                                    null
+                            ))
                             :
                             <div>No User</div>}
                     </div>

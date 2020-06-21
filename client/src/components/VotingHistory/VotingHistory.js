@@ -1,6 +1,7 @@
 import React from 'react';
 import ScrollToBottom from 'react-scroll-to-bottom';
 import ReactEmoji from "react-emoji";
+import {DEFAULT_USER_TYPE} from "../utils";
 
 import './VotingHistory.css';
 
@@ -16,8 +17,11 @@ const VotingHistory = ({ history }) => (
                             <div>{`${stage.storyNumber} ${stage.storyTitle}`}</div>
                             <div>Avarage point: {stage.avaragePoint}</div>
                             <ul>
-                                {stage.users.map(({displayName, point}) => (
-                                    <li>{ReactEmoji.emojify(displayName)}{`: ${point || " ?" }`}</li>
+                                {stage.users.map(({displayName, type,point}) => (
+                                    type === DEFAULT_USER_TYPE ?
+                                        <li>{ReactEmoji.emojify(displayName)}{`: ${point || " ?" }`}</li>
+                                        :
+                                        null
                                 ))}
                             </ul>
                         </div>

@@ -39,7 +39,8 @@ const setVotingHistory = ({room, users, points, avaragePoint, storyNumber, story
             lastEstimation.users.push({
                 name: user.name,
                 displayName:user.displayName,
-                point: points[user.name]
+                point: points[user.name],
+                type: user.type
             });
         });
 
