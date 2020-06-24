@@ -33,9 +33,9 @@ body {
   border: solid #2980b9 4px;
 }
 
-.flip-card:hover .flip-card-inner {
+/*.flip-card:hover .flip-card-inner {
   transform: rotateY(180deg);
-}
+}*/
 
 .flip-card-front, .flip-card-back {
   position: absolute;
@@ -48,6 +48,7 @@ body {
 .flip-card-front {
   background-color: #bbb;
   color: black;
+  word-wrap: break-word;
 }
 
 .flip-card-back {
