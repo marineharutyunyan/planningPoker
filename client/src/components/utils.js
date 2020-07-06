@@ -14,6 +14,7 @@ export function getUnicID () {
 }
 
 export function getAvaragePoint (points) {
+
     if(isEmptyObject(points)){
         return 0;
     } else {
@@ -23,7 +24,9 @@ export function getAvaragePoint (points) {
         }, []);
 
         const avarage = validPoints.length && validPoints.reduce((prev, curr) => prev + curr) / validPoints.length;
-
-        return avarage
+        const fib = [...FIBONACCI_NUMBERS];
+        fib.pop();
+        const avarageConvertedToFib = fib.find(num => parseInt(num) >= avarage);
+        return avarageConvertedToFib;
     }
 }

@@ -15,7 +15,7 @@ const VotingHistory = ({ history }) => (
                     history.map( stage => (
                         <div className="mb-40">
                             <div>{`${stage.storyNumber} ${stage.storyTitle}`}</div>
-                            <div>Avarage point: {stage.avaragePoint}</div>
+                            <div>Avarage fibonacci number: {stage.avaragePoint}</div>
                             <ul>
                                 {stage.users.map(({displayName, type,point}) => (
                                     type === DEFAULT_USER_TYPE ?
