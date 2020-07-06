@@ -4,7 +4,7 @@
 
 .topicContainer .form {
     float: left;
-    width: 67%;
+    width: 50%;
 }
 
 .topicContainer {
@@ -13,7 +13,7 @@
     height:35vh;
 }
 
-.open-cards-button, .send-button {
+.open-cards-button, .send-button, .stop-game-button {
     height: 56px;
     width: 15% !important;
 }

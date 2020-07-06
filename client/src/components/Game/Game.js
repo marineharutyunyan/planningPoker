@@ -162,6 +162,7 @@ const Game = ({ location }) => {
         event.preventDefault();
 
         socket.emit('sendStoryInfo', {
+            storyTitle,
             isGameStarted: false
         }, () => {});
 

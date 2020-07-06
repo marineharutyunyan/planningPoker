@@ -9,15 +9,10 @@ export default function Topic({
      setStoryTitle,
      openCards,
      areCardsOpen
-
 }) {
     const start = (e) => {
         e.preventDefault();
-        if (isGameStarted) {
-            reStartGame(e);
-        } else {
-            startGame(e);
-        }
+        startGame(e);
     };
 
     return (
@@ -32,13 +27,21 @@ export default function Topic({
                     onKeyPress={e => e.key === 'Enter' ? start(e) : null}
                 />
             </form>
-            <button className="button send-button" onClick={start}>
-                {isGameStarted ? 'Restart' : 'Start Voting'}
+            <button className="button send-button"
+                    disabled={isGameStarted && !areCardsOpen}
+                    onClick={start}
+            >
+                Start Voting
             </button>
             <button className="button ml-20 open-cards-button"
                     disabled={!isGameStarted || areCardsOpen}
                     onClick={openCards}>
                 Open Cards
+            </button>
+            <button className="button ml-20 stop-game-button"
+                    disabled={!isGameStarted || areCardsOpen}
+                    onClick={reStartGame}>
+                Stop Game
             </button>
         </div>
     )
