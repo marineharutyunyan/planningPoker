@@ -83,7 +83,7 @@ button:hover {
 
 .input {
     border: none;
-    border-right-width: 1px;
+    border-right-width: 0;
     border-right-color: inherit;
     border-right-style: ridge;
     border-radius: 0;

@@ -15,6 +15,10 @@ export default function Topic({
         startGame(e);
     };
 
+    const clearStoryTitle = () => {
+        setStoryTitle("");
+    };
+
     return (
         <div className="user-story-info-container" >
             <form className="form">
@@ -23,9 +27,14 @@ export default function Topic({
                     type="text"
                     placeholder="Story Description"
                     value={storyTitle}
-                    onChange={({ target: { value } }) => setStoryTitle(value)}
+                    onChange={({ target: { value } }) => !(isGameStarted && !areCardsOpen) ? setStoryTitle(value): null}
                     onKeyPress={e => e.key === 'Enter' ? start(e) : null}
                 />
+                {
+                    !(isGameStarted && !areCardsOpen) &&
+                    storyTitle &&
+                    <span className="clearIcon" onClick={clearStoryTitle}>X</span>
+                }
             </form>
             <button className="button send-button"
                     disabled={isGameStarted && !areCardsOpen}

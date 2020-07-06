@@ -1,10 +1,6 @@
-.send-button {
-    width: 40% !important;
-}
-
 .topicContainer .form {
     float: left;
-    width: 50%;
+    width: 58%;
 }
 
 .topicContainer {
@@ -12,10 +8,20 @@
     padding-left: 40px;
     height:35vh;
 }
+.clearIcon {
+    border: none;
+    background: white;
+    top: 0;
+    right: 0;
+    color: #888;
+    padding: 18px 15px;
+    font-weight: bold;
+    cursor: pointer;
+}
 
 .open-cards-button, .send-button, .stop-game-button {
     height: 56px;
-    width: 15% !important;
+    width: 12.5% !important;
 }
 
 
