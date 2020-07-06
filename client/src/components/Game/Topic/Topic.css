@@ -4,13 +4,18 @@
 
 .topicContainer .form {
     float: left;
-    width: 70%;
+    width: 67%;
 }
 
 .topicContainer {
     display: block;
     padding-left: 40px;
     height:35vh;
+}
+
+.open-cards-button, .send-button {
+    height: 56px;
+    width: 15% !important;
 }
 
 

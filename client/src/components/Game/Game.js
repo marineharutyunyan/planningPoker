@@ -32,7 +32,6 @@ const Game = ({ location }) => {
     const [points, setPoints] = useState({});
     const [history, setVotingHistory] = useState([]);
     const [storyTitle, setStoryTitle] = useState('');
-    const [storyNumber, setStoryNumber] = useState('');
     const [areCardsOpen, setOpenCards] = useState(false);
     const [selectedPoint, setSelectedPoint] = useState(false);
     const [isGameStarted, setIsGameStarted] = useState(false);
@@ -76,9 +75,8 @@ const Game = ({ location }) => {
 
         socket.on('userJoined', (data) => {
             console.log('From backend -  userJoined  - ', data );
-            if (isGameStarted && (storyNumber || storyTitle)){
+            if (isGameStarted && storyTitle){
                 socket.emit('sendStoryInfo', {
-                    storyNumber,
                     storyTitle,
                     isGameStarted: true
                 }, () => {});
@@ -88,7 +86,6 @@ const Game = ({ location }) => {
 
         socket.on('setStoryInfo', (data) => {
             console.log('From backend -  story info  - ', data );
-            setStoryNumber(data.storyNumber);
             setStoryTitle(data.storyTitle);
             setIsGameStarted(data.isGameStarted);
             if (!data.isGameStarted){
@@ -143,14 +140,13 @@ const Game = ({ location }) => {
         setOpenCards(true);
         setVotingPermission(false);
         socket.emit('sendVotingPermission', {canVote: false}, () => {});
-        socket.emit('sendVotingHistoryUpdate', {room, users, points, avaragePoint, storyNumber, storyTitle}, () => {});
+        socket.emit('sendVotingHistoryUpdate', {room, users, points, avaragePoint, storyTitle}, () => {});
     };
 
     const startGame = (event) => {
         event.preventDefault();
-        if(storyNumber || storyTitle) {
+        if(storyTitle) {
             socket.emit('sendStoryInfo', {
-                storyNumber,
                 storyTitle,
                 isGameStarted: true
             }, () => {});
@@ -166,8 +162,6 @@ const Game = ({ location }) => {
         event.preventDefault();
 
         socket.emit('sendStoryInfo', {
-            storyNumber: "",
-            storyTitle: "",
             isGameStarted: false
         }, () => {});
 
@@ -191,16 +185,13 @@ const Game = ({ location }) => {
             <div>
                 <div className="topicContainer">
                     <SessionUrl room={room} />
-                    <Topic userType={type}
-                           openCards={openCards}
+                    <Topic openCards={openCards}
                            startGame={startGame}
                            storyTitle={storyTitle}
-                           storyNumber={storyNumber}
                            reStartGame={reStartGame}
                            areCardsOpen={areCardsOpen}
                            setStoryTitle={setStoryTitle}
                            isGameStarted={isGameStarted}
-                           setStoryNumber={setStoryNumber}
                     />
                 </div>
                 <div className="content">
@@ -227,7 +218,7 @@ const Game = ({ location }) => {
             type === "player" ?
 
                 <div>
-                    <InfoBar storyNumber={storyNumber} storyTitle={storyTitle} room={room} />
+                    <InfoBar storyTitle={storyTitle} room={room} />
                     <div className="content">
                         <div className="cardsContainer">
                             {FIBONACCI_NUMBERS.map((number, i) =>

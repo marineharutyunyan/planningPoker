@@ -18,11 +18,6 @@
   padding: 28px;
 }
 
-.open-cards-button {
-  height: 56px;
-  width: 15% !important;
-}
-
 @media (min-width: 320px) and (max-width: 480px) {
   .participantsContainer {
     height: 100%;
