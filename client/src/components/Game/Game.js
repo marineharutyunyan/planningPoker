@@ -136,21 +136,21 @@ const Game = ({ location }) => {
     };
 
     const openCards = () => {
-        const avaragePoint = getAvaragePoint(points);
+        const {avarage: avaragePoint, avarageConvertedToFib} = getAvaragePoint(points);
         setOpenCards(true);
         setVotingPermission(false);
         socket.emit('sendVotingPermission', {canVote: false}, () => {});
-        socket.emit('sendVotingHistoryUpdate', {room, users, points, avaragePoint, storyTitle}, () => {});
+        socket.emit('sendVotingHistoryUpdate', {room, users, points, avaragePoint, avarageConvertedToFib, storyTitle}, () => {});
     };
 
     const startGame = (event) => {
         event.preventDefault();
+        reStartGame(event);
         if(storyTitle) {
             socket.emit('sendStoryInfo', {
                 storyTitle,
                 isGameStarted: true
             }, () => {});
-            setOpenCards(false);
             setVotingPermission(true);
             socket.emit('sendVotingPermission', {canVote: true}, () => {});
         } else {

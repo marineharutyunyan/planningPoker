@@ -27,6 +27,6 @@ export function getAvaragePoint (points) {
         const fib = [...FIBONACCI_NUMBERS];
         fib.pop();
         const avarageConvertedToFib = fib.find(num => parseInt(num) >= avarage);
-        return avarageConvertedToFib;
+        return avarage === 0 ? {avarage, avarageConvertedToFib: 0} : {avarage, avarageConvertedToFib};
     }
 }

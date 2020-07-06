@@ -32,9 +32,9 @@ const getUsersInRoom = (room) => users.filter((user) => user.room === room);
 
 const getVotingHistory = room => history[room] || [];
 
-const setVotingHistory = ({room, users, points, avaragePoint, storyNumber, storyTitle}) => {
+const setVotingHistory = ({room, users, points, avaragePoint, avarageConvertedToFib, storyTitle}) => {
     if (users && users.length) {
-        const lastEstimation = {users:[], avaragePoint, storyNumber, storyTitle};
+        const lastEstimation = {users:[], avaragePoint, avarageConvertedToFib, storyTitle};
         users.forEach((user) => {
             lastEstimation.users.push({
                 name: user.name,

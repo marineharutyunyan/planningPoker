@@ -41,7 +41,7 @@ export default function Topic({
             <button className="button ml-20 stop-game-button"
                     disabled={!isGameStarted || areCardsOpen}
                     onClick={reStartGame}>
-                Stop Game
+                Discard
             </button>
         </div>
     )

@@ -49,9 +49,9 @@ io.on('connect', (socket) => {
         callback();
     });
 
-    socket.on('sendStoryInfo', ({storyNumber, storyTitle, isGameStarted}, callback) => {
+    socket.on('sendStoryInfo', ({storyTitle, isGameStarted}, callback) => {
         const user = getUser(socket.id);
-        io.to(user.room).emit('setStoryInfo', { storyNumber, storyTitle, isGameStarted });
+        io.to(user.room).emit('setStoryInfo', {storyTitle, isGameStarted});
         callback();
     });
 
@@ -61,8 +61,8 @@ io.on('connect', (socket) => {
         callback();
     });
 
-    socket.on('sendVotingHistoryUpdate', ({room, users, points, avaragePoint, storyNumber, storyTitle}, callback) => {
-        const history = setVotingHistory({room, users, points, avaragePoint, storyNumber, storyTitle});
+    socket.on('sendVotingHistoryUpdate', ({room, users, points, avaragePoint, avarageConvertedToFib, storyTitle}, callback) => {
+        const history = setVotingHistory({room, users, points, avaragePoint, avarageConvertedToFib, storyTitle});
         io.to(room).emit('setVotingHistory', { history: history[room] });
         callback();
     });
