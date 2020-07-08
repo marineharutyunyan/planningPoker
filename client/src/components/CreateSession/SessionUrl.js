@@ -23,9 +23,6 @@ export default function ShowSessionUrl({ room }) {
                    value={url}
                    onChange={(event) => setUrl(event.target.value)}
             />
-            <button onClick={onCopyUrl}
-                    className={'button mt-20 copy-button'}
-                    type="submit"
-            >Copy</button>
+            <button onClick={onCopyUrl} className={'button mt-20 copy-button'} type="submit">Copy</button>
         </div>
 )};

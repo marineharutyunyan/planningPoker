@@ -38,7 +38,7 @@ export default function Card(
         } else if (!haveVotingPermission && timeoutId) {
             clearBlinking();
         }
-    } , [haveVotingPermission, isGameStarted]);
+    } , [haveVotingPermission, isGameStarted, name]);
 
     return (
 

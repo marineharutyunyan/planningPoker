@@ -18,6 +18,7 @@ import {
     ADMIN_USER_TYPE,
     DEFAULT_POINT,
     ENDPOINT,
+    getUnicID,
     getAvaragePoint
 } from "../utils";
 
@@ -30,11 +31,13 @@ const Game = ({ location }) => {
     const [room, setRoom] = useState('');
     const [users, setUsers] = useState([]);
     const [points, setPoints] = useState({});
+    const [stageId, setStageId] = useState('');
     const [history, setVotingHistory] = useState([]);
     const [storyTitle, setStoryTitle] = useState('');
     const [areCardsOpen, setOpenCards] = useState(false);
     const [selectedPoint, setSelectedPoint] = useState(false);
     const [isGameStarted, setIsGameStarted] = useState(false);
+    const [isBeingReEstimated, setIsBeingReEstimated] = useState(false);
     const [haveVotingPermission, setVotingPermission] = useState(false);
 
     useEffect(() => {
@@ -140,12 +143,26 @@ const Game = ({ location }) => {
         setOpenCards(true);
         setVotingPermission(false);
         socket.emit('sendVotingPermission', {canVote: false}, () => {});
-        socket.emit('sendVotingHistoryUpdate', {room, users, points, avaragePoint, avarageConvertedToFib, storyTitle}, () => {});
+        socket.emit(
+                'sendVotingHistoryUpdate',
+                {
+                    room,
+                    users,
+                    points,
+                    avaragePoint,
+                    avarageConvertedToFib,
+                    storyTitle,
+                    stageId
+                },
+                () => {
+                    setIsBeingReEstimated(false);
+                }
+            );
     };
 
     const startGame = (event) => {
         event.preventDefault();
-        reStartGame(event);
+        !isBeingReEstimated && reStartGame();
         if(storyTitle) {
             socket.emit('sendStoryInfo', {
                 storyTitle,
@@ -153,14 +170,13 @@ const Game = ({ location }) => {
             }, () => {});
             setVotingPermission(true);
             socket.emit('sendVotingPermission', {canVote: true}, () => {});
+            !isBeingReEstimated && setStageId(getUnicID());
         } else {
-            alert("enter story information ");
+            alert("Please enter story information");
         }
     };
 
-    const reStartGame = (event) => {
-        event.preventDefault();
-
+    const reStartGame = () => {
         socket.emit('sendStoryInfo', {
             storyTitle,
             isGameStarted: false
@@ -170,9 +186,22 @@ const Game = ({ location }) => {
         socket.emit('sendVotingPermission', {canVote: false}, () => {});
         setOpenCards(false);
         setPoints({[name]: '?'});
+        setStageId('');
+        setIsBeingReEstimated(false);
     };
 
-    console.log("trying render");
+    const deleteEstimation = (id) => {
+        socket.emit('deleteEstimationFromHistory', {room, id}, () => {});
+    };
+
+    const reEstimate = (id, title) => {
+        reStartGame();
+        setStoryTitle(title);
+        setStageId(id);
+        setIsBeingReEstimated(true);
+    };
+
+    console.log("RENDERING");
     console.log("------------------------");
     console.log("type - ", type);
     console.log("room - ", room);
@@ -212,12 +241,15 @@ const Game = ({ location }) => {
                             :
                             <div>No User</div>}
                     </div>
-                    <VotingHistory history={history}/>
+                    <VotingHistory history={history}
+                                   userType={type}
+                                   deleteEstimation={deleteEstimation}
+                                   reEstimate={reEstimate}
+                    />
                 </div>
             </div>
             :
-            type === "player" ?
-
+            type === DEFAULT_USER_TYPE ?
                 <div>
                     <InfoBar storyTitle={storyTitle} room={room} />
                     <div className="content">
@@ -234,7 +266,11 @@ const Game = ({ location }) => {
                                 </div>)
                             }
                         </div>
-                        <VotingHistory history={history}/>
+                        <VotingHistory history={history}
+                                       userType={type}
+                                       deleteEstimation={deleteEstimation}
+                                       reEstimate={reEstimate}
+                        />
                     </div>
                 </div>
             :

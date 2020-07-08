@@ -32,9 +32,9 @@ const getUsersInRoom = (room) => users.filter((user) => user.room === room);
 
 const getVotingHistory = room => history[room] || [];
 
-const setVotingHistory = ({room, users, points, avaragePoint, avarageConvertedToFib, storyTitle}) => {
+const setVotingHistory = ({room, users, points, avaragePoint, avarageConvertedToFib, storyTitle, stageId}) => {
     if (users && users.length) {
-        const lastEstimation = {users:[], avaragePoint, avarageConvertedToFib, storyTitle};
+        const lastEstimation = {users:[], avaragePoint, avarageConvertedToFib, storyTitle, id:stageId};
         users.forEach((user) => {
             lastEstimation.users.push({
                 name: user.name,
@@ -45,9 +45,24 @@ const setVotingHistory = ({room, users, points, avaragePoint, avarageConvertedTo
         });
 
         if (history.hasOwnProperty(room)) {
-            history[room].push(lastEstimation);
+            const existingHistoryItemIndex = history[room].findIndex(stage => stage.id === stageId);
+            if (existingHistoryItemIndex === -1) {
+                history[room].push(lastEstimation);
+            } else {
+                history[room][existingHistoryItemIndex] = lastEstimation;
+            }
         } else {
             history[room] = [lastEstimation];
+        }
+    }
+    return history
+};
+
+const removeEstimationFromHistory = ({room, id}) => {
+    if (history.hasOwnProperty(room)) {
+        const existingHistoryItemIndex = history[room].findIndex(stage => stage.id === id);
+        if (existingHistoryItemIndex !== -1) {
+            history[room].splice(existingHistoryItemIndex, 1);
         }
     }
     return history
@@ -60,5 +75,6 @@ module.exports = {
     getUsersInRoom,
     getAdminUser,
     getVotingHistory,
-    setVotingHistory
+    setVotingHistory,
+    removeEstimationFromHistory
 };

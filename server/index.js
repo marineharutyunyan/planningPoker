@@ -10,7 +10,8 @@ const {
     getUsersInRoom,
     getAdminUser,
     setVotingHistory,
-    getVotingHistory
+    getVotingHistory,
+    removeEstimationFromHistory
 } = require('./users');
 
 const router = require('./router');
@@ -61,11 +62,26 @@ io.on('connect', (socket) => {
         callback();
     });
 
-    socket.on('sendVotingHistoryUpdate', ({room, users, points, avaragePoint, avarageConvertedToFib, storyTitle}, callback) => {
-        const history = setVotingHistory({room, users, points, avaragePoint, avarageConvertedToFib, storyTitle});
-        io.to(room).emit('setVotingHistory', { history: history[room] });
-        callback();
-    });
+    socket.on(
+        'sendVotingHistoryUpdate',
+        (
+            {room, users, points, avaragePoint, avarageConvertedToFib, storyTitle, stageId},
+            callback
+        ) => {
+            const history = setVotingHistory({room, users, points, avaragePoint, avarageConvertedToFib, storyTitle, stageId});
+            io.to(room).emit('setVotingHistory', { history: history[room] });
+            callback();
+        }
+    );
+
+    socket.on(
+        'deleteEstimationFromHistory',
+        ({room, id}, callback) => {
+            const history = removeEstimationFromHistory({room, id});
+            io.to(room).emit('setVotingHistory', { history: history[room] });
+            callback();
+        }
+    );
 
     socket.on('sendMessage', (message, callback) => {
     const user = getUser(socket.id);
