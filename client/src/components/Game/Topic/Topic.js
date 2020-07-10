@@ -10,14 +10,6 @@ export default function Topic({
      openCards,
      areCardsOpen
 }) {
-    const start = (e) => {
-        e.preventDefault();
-        startGame(e);
-    };
-
-    const clearStoryTitle = () => {
-        setStoryTitle("");
-    };
 
     return (
         <div className="user-story-info-container" >
@@ -27,18 +19,18 @@ export default function Topic({
                     type="text"
                     placeholder="Story Description"
                     value={storyTitle}
-                    onChange={({ target: { value } }) => !(isGameStarted && !areCardsOpen) ? setStoryTitle(value): null}
-                    onKeyPress={e => e.key === 'Enter' ? start(e) : null}
+                    onChange={({target: {value}}) => !(isGameStarted && !areCardsOpen) ? setStoryTitle(value): null}
+                    onKeyPress={e => e.key === 'Enter' ? startGame(e) : null}
                 />
                 {
                     !(isGameStarted && !areCardsOpen) &&
                     storyTitle &&
-                    <span className="clearIcon" onClick={clearStoryTitle}>X</span>
+                    <span className="clearIcon" onClick={() => setStoryTitle("")}>X</span>
                 }
             </form>
             <button className="button send-button"
                     disabled={isGameStarted && !areCardsOpen}
-                    onClick={start}
+                    onClick={startGame}
             >
                 Start Voting
             </button>
@@ -49,7 +41,7 @@ export default function Topic({
             </button>
             <button className="button ml-20 stop-game-button"
                     disabled={!isGameStarted || areCardsOpen}
-                    onClick={reStartGame}>
+                    onClick={()=> reStartGame()}>
                 Discard
             </button>
         </div>

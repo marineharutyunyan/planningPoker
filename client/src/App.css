@@ -76,6 +76,10 @@ button:hover {
     margin-left: 20px;
 }
 
+.inline-block {
+    display: inline-block;
+}
+
 .form {
     display: flex;
     height: 56px;

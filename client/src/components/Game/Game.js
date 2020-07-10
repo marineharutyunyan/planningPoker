@@ -60,12 +60,17 @@ const Game = ({ location }) => {
                 alert(error);
             }
         });
+        reStartGame();
+        return () => {
+            //when unmounts
+            reStartGame();
+        }
     }, [ENDPOINT, location.search]);
 
 
     useEffect(() => {
 
-        console.log("big UseEfect called");
+        console.log("USE EFFECT called");
 
         socket.on('setEstimate', (data) => {
             console.log('From backend -  estimate  - ', data );
@@ -163,7 +168,7 @@ const Game = ({ location }) => {
     const startGame = (event) => {
         event.preventDefault();
         !isBeingReEstimated && reStartGame();
-        if(storyTitle) {
+        if(storyTitle && storyTitle.trim().length) {
             socket.emit('sendStoryInfo', {
                 storyTitle,
                 isGameStarted: true
@@ -176,9 +181,9 @@ const Game = ({ location }) => {
         }
     };
 
-    const reStartGame = () => {
+    const reStartGame = (titleFromHistory) => {
         socket.emit('sendStoryInfo', {
-            storyTitle,
+            storyTitle: titleFromHistory || storyTitle ,
             isGameStarted: false
         }, () => {});
 
@@ -195,8 +200,8 @@ const Game = ({ location }) => {
     };
 
     const reEstimate = (id, title) => {
-        reStartGame();
         setStoryTitle(title);
+        reStartGame(title);
         setStageId(id);
         setIsBeingReEstimated(true);
     };
@@ -243,8 +248,10 @@ const Game = ({ location }) => {
                     </div>
                     <VotingHistory history={history}
                                    userType={type}
-                                   deleteEstimation={deleteEstimation}
                                    reEstimate={reEstimate}
+                                   reStartGame={reStartGame}
+                                   deleteEstimation={deleteEstimation}
+                                   isBeingReEstimated={isBeingReEstimated}
                     />
                 </div>
             </div>
@@ -268,8 +275,10 @@ const Game = ({ location }) => {
                         </div>
                         <VotingHistory history={history}
                                        userType={type}
-                                       deleteEstimation={deleteEstimation}
                                        reEstimate={reEstimate}
+                                       reStartGame={reStartGame}
+                                       deleteEstimation={deleteEstimation}
+                                       isBeingReEstimated={isBeingReEstimated}
                         />
                     </div>
                 </div>

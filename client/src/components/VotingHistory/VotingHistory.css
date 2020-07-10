@@ -15,6 +15,43 @@
   left: 0;
 }
 
+.story-title {
+  float: left;
+  width: 84.5%;
+}
+
+.highlight {
+    background-color: #3498db;
+    padding: 12px 12px 12px 25px;
+    margin-left: -25px;
+}
+
+.highlight .cancle {
+    background-image: url("../../icons/cancle.png");
+}
+
+.delete, .cancle, .replay {
+   width: 26px;
+   height: 26px;
+   border: none;
+   background-color: transparent;
+   background-size: 26px 26px;
+   opacity: 0.5;
+ }
+
+.delete {
+    background-image: url("../../icons/trash.png");
+}
+
+.replay{
+  background-image: url("../../icons/replay.png");
+}
+
+.delete:hover, .replay:hover, .cancle:hover {
+  opacity: 1;
+  background-color: transparent;
+}
+
 /*------scrolling-------*/
 ::-webkit-scrollbar {
   width: 13px;
