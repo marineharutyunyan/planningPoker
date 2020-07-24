@@ -16,7 +16,7 @@ export function getUnicID () {
 export function getAvaragePoint (points) {
 
     if(isEmptyObject(points)){
-        return 0;
+        return {avarage: 0, avarageConvertedToFib: 0};
     } else {
         const validPoints = Object.keys(points).reduce((prev, curr)=> {
             points[curr] !== "?" && prev.push( parseInt(points[curr]));
