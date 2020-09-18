@@ -24,7 +24,7 @@ const VotingHistory = ({ history, userType, deleteEstimation, isBeingReEstimated
     }, [isBeingReEstimated]);
 
     return (
-        <ScrollToBottom className="historyContainer fade-background">
+        <ScrollToBottom mode={"top"} className="historyContainer fade-background">
             <div className="activeContainer">
                 <h2 className="title">Estimation History</h2>
                 {history && history.length ?

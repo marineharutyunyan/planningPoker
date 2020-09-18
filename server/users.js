@@ -47,7 +47,7 @@ const setVotingHistory = ({room, users, points, avaragePoint, avarageConvertedTo
         if (history.hasOwnProperty(room)) {
             const existingHistoryItemIndex = history[room].findIndex(stage => stage.id === stageId);
             if (existingHistoryItemIndex === -1) {
-                history[room].push(lastEstimation);
+                history[room].unshift(lastEstimation);
             } else {
                 history[room][existingHistoryItemIndex] = lastEstimation;
             }
