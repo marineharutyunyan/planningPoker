@@ -12,7 +12,7 @@ export default function FlipCard({name, point, openCards}) {
         <div className={`flip-card ${className}`} onClick={(e) =>{}} >
             <div className="flip-card-inner">
                 <div className="flip-card-front">
-                    <h1>{ReactEmoji.emojify(name)}</h1>
+                    <h2>{ReactEmoji.emojify(name)}</h2>
                 </div>
                 <div className="flip-card-back">
                     <h1>{point}</h1>

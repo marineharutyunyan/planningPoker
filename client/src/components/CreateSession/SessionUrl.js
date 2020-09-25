@@ -16,13 +16,13 @@ export default function ShowSessionUrl({ room }) {
 
     return (
         <div className="urlContainer">
-            <span className="url fade-background">{url}</span>
             <input ref={urlRef}
                    className="url-input"
                    type="text"
                    value={url}
                    onChange={(event) => setUrl(event.target.value)}
             />
-            <button onClick={onCopyUrl} className={'button mt-20 copy-button'} type="submit">Copy</button>
+            <span className="url fade-background">{url}</span>
+            <button onClick={onCopyUrl} className={'button copy-button'} type="submit">Copy</button>
         </div>
 )};

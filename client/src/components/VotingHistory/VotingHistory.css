@@ -1,18 +1,11 @@
 .historyContainer {
-  height: 56vh;
-  width: 36%;
-  margin-top: 32px;
+  height: 65vh;
+  width: 100%;
 }
 
 .activeContainer {
   padding-left: 25px;
-  margin: 4.5% 0;
-}
-
-.title {
-  position: absolute;
-  top: -60px;
-  left: 0;
+  margin: 4.5% 0 4.5% 0;
 }
 
 .story-title {
@@ -24,6 +17,7 @@
     background-color: #3498db;
     padding: 12px 12px 12px 25px;
     margin-left: -25px;
+    color: #ffffffd1;
 }
 
 .highlight .cancle {
@@ -50,6 +44,10 @@
 .delete:hover, .replay:hover, .cancle:hover {
   opacity: 1;
   background-color: transparent;
+}
+
+.delete:hover, .replay:hover, .cancle:hover {
+    box-shadow: none;
 }
 
 /*------scrolling-------*/

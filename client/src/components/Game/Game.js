@@ -217,9 +217,9 @@ const Game = ({ location }) => {
     console.log("------------------------");
     return (
         type === ADMIN_USER_TYPE ?
-            <div>
+        <>
+            <div className="sectionOne">
                 <div className="topicContainer">
-                    <SessionUrl room={room} />
                     <Topic openCards={openCards}
                            startGame={startGame}
                            storyTitle={storyTitle}
@@ -230,7 +230,7 @@ const Game = ({ location }) => {
                     />
                 </div>
                 <div className="content">
-                    <div className="cardsContainer">
+                    <div className="participants">
                         {users.length && users.length>1 ?
                             users.map((user,i) => (
                                 user.type === DEFAULT_USER_TYPE ?
@@ -246,19 +246,26 @@ const Game = ({ location }) => {
                             :
                             <div>No User</div>}
                     </div>
-                    <VotingHistory history={history}
-                                   userType={type}
-                                   reEstimate={reEstimate}
-                                   reStartGame={reStartGame}
-                                   deleteEstimation={deleteEstimation}
-                                   isBeingReEstimated={isBeingReEstimated}
-                    />
                 </div>
             </div>
+            <div className="sectionTwo">
+                <h2 className="title">Estimation History</h2>
+                <VotingHistory history={history}
+                               userType={type}
+                               reEstimate={reEstimate}
+                               reStartGame={reStartGame}
+                               deleteEstimation={deleteEstimation}
+                               isBeingReEstimated={isBeingReEstimated}
+                />
+                <h2 className="title mt-40">Invite teammates</h2>
+                <SessionUrl room={room} />
+            </div>
+            </>
             :
             type === DEFAULT_USER_TYPE ?
-                <div>
-                    <InfoBar storyTitle={storyTitle} room={room} />
+                <>
+                <InfoBar storyTitle={storyTitle} room={room} />
+                <div className="sectionOne">
                     <div className="content">
                         <div className="cardsContainer">
                             {FIBONACCI_NUMBERS.map((number, i) =>
@@ -273,15 +280,19 @@ const Game = ({ location }) => {
                                 </div>)
                             }
                         </div>
-                        <VotingHistory history={history}
-                                       userType={type}
-                                       reEstimate={reEstimate}
-                                       reStartGame={reStartGame}
-                                       deleteEstimation={deleteEstimation}
-                                       isBeingReEstimated={isBeingReEstimated}
-                        />
                     </div>
                 </div>
+                <div className="sectionTwo">
+                    <h2 className="title">Estimation History</h2>
+                    <VotingHistory history={history}
+                                   userType={type}
+                                   reEstimate={reEstimate}
+                                   reStartGame={reStartGame}
+                                   deleteEstimation={deleteEstimation}
+                                   isBeingReEstimated={isBeingReEstimated}
+                    />
+                </div>
+                </>
             :
             null
     );

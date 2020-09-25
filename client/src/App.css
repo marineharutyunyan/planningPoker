@@ -15,16 +15,33 @@ body {
     width: 99vw;
     height: 100vh;
     background-size: cover;
-    background-color: #283037;
-    color: #fff;
+    background-color: #edf2f7;
+    color: #393e3f;
+    /*background-color: #283037;
+    color: #fff;*/
 }
 
 #root {
     height: 100vh;
+    width: 100%;
+}
+
+.sectionOne {
+    width: 65%;
+    float: left;
+    padding: 40px;
+}
+
+.sectionTwo {
+    width: 35%;
+    overflow: hidden;
+    padding-top: 40px;
+    padding-right: 40px;
 }
 
 .fade-background{
-    background-color: rgba(255,255,255,0.05);
+/*    background-color: rgba(255,255,255,0.05);*/
+    background-color: rgba(16,19,22,0.05)
 }
 
 
@@ -34,7 +51,7 @@ body {
     text-transform: uppercase;
     text-decoration: none;
     background-color: #0071bc;
-    padding: 20px;
+    padding: 10px;
     display: inline-block;
     border: none;
     cursor: pointer;
@@ -68,24 +85,28 @@ button:hover {
     margin-bottom: 20px;
 }
 
+.ml-20 {
+    margin-left: 20px;
+}
+
 .mb-40 {
     margin-bottom: 40px;
 }
 
-.ml-20 {
-    margin-left: 20px;
+.mt-40 {
+    margin-top: 40px;
 }
 
 .inline-block {
     display: inline-block;
 }
 
-.form {
+form {
     display: flex;
     height: 56px;
 }
 
-.input {
+input {
     border: none;
     border-right-width: 0;
     border-right-color: inherit;
@@ -98,4 +119,8 @@ button:hover {
 
 input:focus, textarea:focus, select:focus{
     outline: none;
+}
+
+.title {
+    font-size: larger;
 }

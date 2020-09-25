@@ -4,18 +4,19 @@
 }
 
 .participants {
-  display: flex;
-  width: 60%;
+  display: inline-block;
+  width: 75%;
   justify-content: center;
   align-items: center;
+
 }
 
 .cardsContainer {
   display: inline-block;
-  width: 60%;
+  width: 92%;
+  padding-top: 64px;
   justify-content: center;
   align-items: center;
-  padding: 28px;
 }
 
 @media (min-width: 320px) and (max-width: 480px) {

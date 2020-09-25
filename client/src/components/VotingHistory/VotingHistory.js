@@ -26,7 +26,6 @@ const VotingHistory = ({ history, userType, deleteEstimation, isBeingReEstimated
     return (
         <ScrollToBottom mode={"top"} className="historyContainer fade-background">
             <div className="activeContainer">
-                <h2 className="title">Estimation History</h2>
                 {history && history.length ?
                     history.map(stage => (
                         <div className={`"mb-40" ${itemId === stage.id ? 'highlight': ''}`} key={stage.id}>
