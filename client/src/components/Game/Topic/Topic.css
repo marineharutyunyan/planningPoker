@@ -46,14 +46,18 @@
 
 @media (max-width: 555px) {
     .open-cards-button, .send-button, .stop-game-button {
-        width: 30% !important;
+        width: 29% !important;
     }
 }
 
-/*
-@media (max-width: 485px) {
+
+@media (max-width: 490px) {
+    .action-buttons-wrapper {
+        display: flex;
+        justify-content: space-around;
+    }
     .open-cards-button, .send-button, .stop-game-button {
         font-size: 11.5px;
-        height: 33px;
+        height: 47px;
     }
-}*/
+}

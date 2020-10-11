@@ -32,3 +32,10 @@
         font-size: inherit;
     }
 }
+
+
+@media (max-width: 490px) {
+    .copy-button {
+        font-size: 11.5px;
+    }
+}
