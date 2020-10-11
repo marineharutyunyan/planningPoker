@@ -32,6 +32,7 @@ export default function Topic({
                 <CssTextField
                     label="Story Description"
                     fullWidth
+                    multiline={true}
                     value={storyTitle}
                     onChange={({target: {value}}) => !(isGameStarted && !areCardsOpen) ? setStoryTitle(value): null}
                     onKeyPress={e => e.key === 'Enter' ? startGame(e) : null}
@@ -42,22 +43,24 @@ export default function Topic({
                     <span className="clearIcon" onClick={() => setStoryTitle("")}>X</span>
                 }*/}
             </form>
-            <button className="button send-button mt-20"
-                    disabled={isGameStarted && !areCardsOpen}
-                    onClick={startGame}
-            >
-                Start Voting
-            </button>
-            <button className="button ml-20 mt-20 open-cards-button"
-                    disabled={!isGameStarted || areCardsOpen}
-                    onClick={openCards}>
-                Open Cards
-            </button>
-            <button className="button ml-20 mt-20 stop-game-button"
-                    disabled={!isGameStarted || areCardsOpen}
-                    onClick={()=> reStartGame()}>
-                Discard
-            </button>
+            <div className="action-buttons-wrapper">
+                <button className="button send-button mt-20"
+                        disabled={isGameStarted && !areCardsOpen}
+                        onClick={startGame}
+                >
+                    Start Voting
+                </button>
+                <button className="button ml-20 mt-20 open-cards-button"
+                        disabled={!isGameStarted || areCardsOpen}
+                        onClick={openCards}>
+                    Open Cards
+                </button>
+                <button className="button ml-20 mt-20 stop-game-button"
+                        disabled={!isGameStarted || areCardsOpen}
+                        onClick={()=> reStartGame()}>
+                    Discard
+                </button>
+            </div>
         </div>
     )
 };

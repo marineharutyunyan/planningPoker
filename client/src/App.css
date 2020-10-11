@@ -101,11 +101,6 @@ button:hover {
     display: inline-block;
 }
 
-form {
-    display: flex;
-    height: 56px;
-}
-
 input {
     border: none;
     border-right-width: 0;
@@ -123,4 +118,15 @@ input:focus, textarea:focus, select:focus{
 
 .title {
     font-size: larger;
+}
+
+@media (max-width: 1272px) {
+    .sectionOne {
+        width: 100%;
+        float: none;
+    }
+    .sectionTwo {
+        width: 100%;
+        padding: 40px;
+    }
 }

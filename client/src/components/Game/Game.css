@@ -18,15 +18,3 @@
   justify-content: center;
   align-items: center;
 }
-
-@media (min-width: 320px) and (max-width: 480px) {
-  .participantsContainer {
-    height: 100%;
-  }
-}
-
-@media (min-width: 480px) and (max-width: 1200px) {
-  .container {
-    width: 60%;
-  }
-}

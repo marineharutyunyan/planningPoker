@@ -1,6 +1,11 @@
+.urlContainer {
+    display: flex;
+}
+
 .url {
     padding: 10px;
-    margin: 16px 16px 16px 0;
+    margin-right: 16px;
+    width: -webkit-fill-available;
 }
 
 .url-input {
@@ -10,14 +15,20 @@
 }
 
 .copy-button {
+    float: left;
     width: 17.1% !important;
     padding: 11.4px 10px 10px 10px !important;
 }
 
 
-@media (max-height: 600px) {
-    .urlContainer {
-        margin-left: 40px;
+@media (max-width: 1477px) {
+    .url {
+        font-size: smaller;
     }
+}
 
+@media (max-width: 1272px) {
+    .url {
+        font-size: inherit;
+    }
 }
