@@ -38,6 +38,7 @@ const Game = ({ location }) => {
     const [selectedPoint, setSelectedPoint] = useState(false);
     const [isGameStarted, setIsGameStarted] = useState(false);
     const [isBeingReEstimated, setIsBeingReEstimated] = useState(false);
+    const [highlightLastScore, setHighlightLastScore] = useState(false);
     const [haveVotingPermission, setVotingPermission] = useState(false);
 
     useEffect(() => {
@@ -54,7 +55,7 @@ const Game = ({ location }) => {
         setType(type);
         points[name] = DEFAULT_POINT;
         setPoints(points);
-
+        setHighlightLastScore(false);
         socket.emit('join', { name, type, room }, (error) => {
             if(error) {
                 alert(error);
@@ -161,6 +162,7 @@ const Game = ({ location }) => {
                 },
                 () => {
                     setIsBeingReEstimated(false);
+                    setHighlightLastScore(true);
                 }
             );
     };
@@ -255,15 +257,16 @@ const Game = ({ location }) => {
                                reEstimate={reEstimate}
                                reStartGame={reStartGame}
                                deleteEstimation={deleteEstimation}
+                               highlightLastScore={highlightLastScore}
                                isBeingReEstimated={isBeingReEstimated}
                 />
                 <h2 className="title mt-40">Invite teammates</h2>
                 <SessionUrl room={room} />
             </div>
-            </>
-            :
-            type === DEFAULT_USER_TYPE ?
-                <>
+        </>
+        :
+        type === DEFAULT_USER_TYPE ?
+            <>
                 <InfoBar storyTitle={storyTitle} room={room} />
                 <div className="sectionOne">
                     <div className="content">
@@ -289,12 +292,13 @@ const Game = ({ location }) => {
                                    reEstimate={reEstimate}
                                    reStartGame={reStartGame}
                                    deleteEstimation={deleteEstimation}
+                                   highlightLastScore={highlightLastScore}
                                    isBeingReEstimated={isBeingReEstimated}
                     />
                 </div>
-                </>
-            :
-            null
+            </>
+        :
+        null
     );
 };
 

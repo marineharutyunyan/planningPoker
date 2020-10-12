@@ -1,16 +1,36 @@
 .historyContainer {
-  height: 65vh;
-  width: 100%;
+    height: 65vh;
+    width: 100%;
+}
+
+.highlight-last-score > div:first-child {
+    animation: fadeIn ease 4.5s;
+    -webkit-animation: fadeIn ease 4.5s;
+}
+
+@keyframes fadeIn {
+    0% {background-color: #3498db;}
+    100% {background-color: #e2e7eb}
+}
+
+@-webkit-keyframes fadeIn {
+    0% {background-color: #3498db;}
+    100% {background-color: #e2e7eb;}
 }
 
 .activeContainer {
-  padding-left: 25px;
-  margin: 4.5% 0 4.5% 0;
+    padding-left: 25px;
+    margin: 4.5% 0 4.5% 0;
+}
+
+.activeContainer > div {
+    margin-left: -25px;
+    padding: 12px 12px 12px 25px;
 }
 
 .story-title {
-  float: left;
-  width: 84.5%;
+    float: left;
+    width: 84.5%;
 }
 
 .highlight {
@@ -25,12 +45,12 @@
 }
 
 .delete, .cancle, .replay {
-   width: 26px;
-   height: 26px;
-   border: none;
-   background-color: transparent;
-   background-size: 26px 26px;
-   opacity: 0.5;
+    width: 26px;
+    height: 26px;
+    border: none;
+    background-color: transparent;
+    background-size: 26px 26px;
+    opacity: 0.5;
  }
 
 .delete {
@@ -38,12 +58,12 @@
 }
 
 .replay{
-  background-image: url("../../icons/replay.png");
+    background-image: url("../../icons/replay.png");
 }
 
 .delete:hover, .replay:hover, .cancle:hover {
-  opacity: 1;
-  background-color: transparent;
+    opacity: 1;
+    background-color: transparent;
 }
 
 .delete:hover, .replay:hover, .cancle:hover {
@@ -52,20 +72,20 @@
 
 /*------scrolling-------*/
 ::-webkit-scrollbar {
-  width: 13px;
+    width: 13px;
 }
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: #bbb;
+    background: #bbb;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #888;
+    background: #888;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #555;
+    background: #555;
 }

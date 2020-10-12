@@ -5,7 +5,16 @@ import {DEFAULT_USER_TYPE, ADMIN_USER_TYPE} from "../utils";
 
 import './VotingHistory.css';
 
-const VotingHistory = ({ history, userType, deleteEstimation, isBeingReEstimated, reEstimate, reStartGame }) => {
+const VotingHistory = (
+    {
+        history,
+        userType,
+        deleteEstimation,
+        isBeingReEstimated,
+        highlightLastScore,
+        reEstimate,
+        reStartGame
+}) => {
 
     const [itemId, setItemId] = useState(null);
 
@@ -25,7 +34,7 @@ const VotingHistory = ({ history, userType, deleteEstimation, isBeingReEstimated
 
     return (
         <ScrollToBottom mode={"top"} className="historyContainer fade-background">
-            <div className="activeContainer">
+            <div className={`activeContainer ${highlightLastScore ? 'highlight-last-score' : '' }`}>
                 {history && history.length ?
                     history.map(stage => (
                         <div className={`"mb-40" ${itemId === stage.id ? 'highlight': ''}`} key={stage.id}>

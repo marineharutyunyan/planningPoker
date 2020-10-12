@@ -9,7 +9,7 @@ export default function ShowSessionUrl({ room }) {
         copyText.select();
         copyText.setSelectionRange(0, 99999);
         //const successful =
-            document.execCommand('copy');
+        document.execCommand('copy');
         //const msg = successful ? 'successful' : 'unsuccessful';
        // alert('Copied text command was ' + msg);
     };
