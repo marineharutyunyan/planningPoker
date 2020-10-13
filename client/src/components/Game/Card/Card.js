@@ -40,11 +40,11 @@ export default function Card(
         }
     } , [haveVotingPermission, isGameStarted, name]);
 
+    const allowedToVote = isGameStarted && haveVotingPermission;
     return (
-
-        <div className={`card ${selectedClassName}`} onClick={onCardClick}>
+        <div className={`card ${selectedClassName} ${allowedToVote ? 'clickable' : ''}`} onClick={onCardClick}>
             <div className="card-inner">
-                    <h1>{cardNumber}</h1>
+                <h1>{cardNumber}</h1>
             </div>
         </div>
     )
