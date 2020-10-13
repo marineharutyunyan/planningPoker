@@ -3,10 +3,11 @@
   align-items: center;
   justify-content: space-between;
   background: #2980b9;
+  color: white;
   border-radius: 4px 4px 0 0;
   height: 60px;
   margin-bottom: 20px;
-  width: 101%;
+  width: 100%;
 }
 
 .leftInnerContainer {
@@ -14,7 +15,6 @@
   display: flex;
   align-items: center;
   margin-left: 5%;
-  color: white;
 }
 
 .rightInnerContainer {
@@ -24,6 +24,7 @@
   margin-right: 4%;
 }
 
-.onlineIcon {
-  margin-right: 5%;
+.exitIcon {
+  color: white;
+  outline: none;
 }

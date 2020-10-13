@@ -8,14 +8,47 @@
     -webkit-animation: fadeIn ease 4.5s;
 }
 
+.highlight-last-score > div:first-child .avarageNumber{
+    animation: fadeInAvarageNum ease 4.5s;
+    -webkit-animation: fadeInAvarageNum ease 4.5s;
+}
+
 @keyframes fadeIn {
-    0% {background-color: #3498db;}
-    100% {background-color: #e2e7eb}
+    0% {
+        background-color: #3498db;
+        color: #ffffffd1;
+    }
+    60%{
+          color: #ffffffd1;
+    }
+    100% {
+        color: inherit;
+        background-color: inherit;
+    }
 }
 
 @-webkit-keyframes fadeIn {
-    0% {background-color: #3498db;}
-    100% {background-color: #e2e7eb;}
+    0% {
+        background-color: #3498db;
+        color: #ffffffd1;
+    }
+    60%{
+        color: #ffffffd1;
+    }
+    100% {
+        background-color: inherit;
+        color: inherit;
+    }
+}
+
+@keyframes fadeInAvarageNum {
+    0% { color: #24548c; }
+    100% { color: #76a5db; }
+}
+
+@-webkit-keyframes fadeInAvarageNum {
+    0% { color: #24548c;}
+    100% { color: #76a5db; }
 }
 
 .activeContainer {
@@ -28,51 +61,64 @@
     padding: 12px 12px 12px 25px;
 }
 
+.topWrapper, .actionsWrapper {
+    display: flex;
+}
+
+.topWrapper {
+    justify-content: space-between;
+}
+
 .story-title {
-    float: left;
-    width: 84.5%;
+    padding-bottom: 4px;
+    font-variant: none;
+}
+
+.avarageNumber {
+    font-size: smaller;
+    color: #76a5db;
+    font-weight: 600;
+    padding-left: 12px;
+}
+
+.participantsVotes {
+    list-style-type: none;
+    padding-left: 12px;
 }
 
 .highlight {
     background-color: #3498db;
-    padding: 12px 12px 12px 25px;
+    padding: 12px 12px 17px 25px;
     margin-left: -25px;
     color: #ffffffd1;
 }
 
-.highlight .cancle {
-    background-image: url("../../icons/cancle.png");
+.highlight .avarageNumber {
+    color: #24548c;
 }
 
 .delete, .cancle, .replay {
+    cursor: pointer;
     width: 26px;
     height: 26px;
     border: none;
     background-color: transparent;
     background-size: 26px 26px;
     opacity: 0.5;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
  }
-
-.delete {
-    background-image: url("../../icons/trash.png");
-}
-
-.replay{
-    background-image: url("../../icons/replay.png");
-}
 
 .delete:hover, .replay:hover, .cancle:hover {
     opacity: 1;
-    background-color: transparent;
-}
-
-.delete:hover, .replay:hover, .cancle:hover {
     box-shadow: none;
 }
 
 /*------scrolling-------*/
 ::-webkit-scrollbar {
-    width: 13px;
+    width: 15.5px;
 }
 
 /* Track */

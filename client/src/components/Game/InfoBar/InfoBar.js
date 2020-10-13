@@ -1,5 +1,4 @@
 import React from 'react';
-import closeIcon from '../../../icons/closeIcon.png';
 
 import './InfoBar.css';
 
@@ -11,7 +10,9 @@ const InfoBar = ({  room, storyTitle }) => {
                 <h3>{storyTitle ? storyTitle : "No Topic"}</h3>
             </div>
             <div className="rightInnerContainer">
-                <a href={`/join?id=${room}`}><img src={closeIcon} alt="close icon"/></a>
+                <a href={`/join?id=${room}`}>
+                    <span className="material-icons exitIcon" title={"Exit"}>close</span>
+                </a>
             </div>
         </div>
     );

@@ -32,9 +32,11 @@
     width: 16% !important;
 }
 
-@media (max-width: 821px) {
+@media (max-width: 1343px) {
     .open-cards-button, .send-button, .stop-game-button {
-        width: 19.5% !important;
+        width: 22.5% !important;
+        font-size: 11.5px;
+        height: 34px;
     }
 
 }
@@ -50,14 +52,12 @@
     }
 }
 
-
 @media (max-width: 490px) {
     .action-buttons-wrapper {
         display: flex;
         justify-content: space-around;
     }
     .open-cards-button, .send-button, .stop-game-button {
-        font-size: 11.5px;
         height: 47px;
     }
 }

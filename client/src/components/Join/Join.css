@@ -1,41 +1,6 @@
-.joinOuterContainer {
-  display: flex;
-  justify-content: center;
-  text-align: center;
-  height: 100vh;
-  align-items: center;
-}
-
-.joinInnerContainer {
-  width: 20%;
-}
-
-.joinInput {
-  padding: 15px 20px;
-  width: 100%;
-  border: none;
-  border-right-width: 0;
-  border-right-color: inherit;
-  border-right-style: ridge;
-  border-radius: 0;
-}
-
 h1.heading {
   color: #848485;
   font-size: 2.5em;
   padding-bottom: 10px;
   border-bottom: 2px solid #848485;
 }
-
-@media (min-width: 320px) and (max-width: 480px) {
-  .joinOuterContainer {
-    height: 100%;
-  }
-
-  .joinInnerContainer {
-    width: 90%;
-  }
-
-
-}
-
