@@ -17,6 +17,7 @@ import {
     DEFAULT_USER_TYPE,
     ADMIN_USER_TYPE,
     DEFAULT_POINT,
+    NO_POINT,
     ENDPOINT,
     getUnicID,
     getAvaragePoint
@@ -239,7 +240,7 @@ const Game = ({ location }) => {
                                     <div key={i}>
                                         <FlipCard name={user.displayName}
                                                   openCards={areCardsOpen}
-                                                  point={points[user.name] || DEFAULT_POINT}
+                                                  point={points[user.name] || NO_POINT}
                                         />
                                     </div>
                                     :

@@ -1,5 +1,9 @@
 import React from "react";
 import ReactEmoji from "react-emoji";
+import {
+    NO_POINT,
+    DEFAULT_POINT
+} from "../../utils";
 
 import './FlipCard.css';
 
@@ -7,15 +11,15 @@ export default function FlipCard({name, point, openCards}) {
     const className = openCards ?
         'open'
         :
-        point !== '?' ? 'hasPoint' : '';
+        point !== NO_POINT ? 'hasPoint' : '';
     return (
-        <div className={`flip-card ${className}`} onClick={(e) =>{}} >
+        <div className={`flip-card ${className}`} >
             <div className="flip-card-inner">
                 <div className="flip-card-front">
                     <h2>{ReactEmoji.emojify(name)}</h2>
                 </div>
                 <div className="flip-card-back">
-                    <h1>{point}</h1>
+                    <h1>{point === NO_POINT ? DEFAULT_POINT : point}</h1>
                     <p>{null}</p>
                 </div>
             </div>
