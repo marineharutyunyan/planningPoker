@@ -43,7 +43,7 @@ const Game = ({ location }) => {
     const [haveVotingPermission, setVotingPermission] = useState(false);
 
     useEffect(() => {
-        console.log('on (join and socket creation) use effect Called');
+//        console.log('on (join and socket creation) use effect Called');
 
         const {name, id: room} = queryString.parse(location.search);
         const cookieId = Cookies.get('id');
@@ -72,10 +72,10 @@ const Game = ({ location }) => {
 
     useEffect(() => {
 
-        console.log("USE EFFECT called");
+//        console.log("USE EFFECT called");
 
         socket.on('setEstimate', (data) => {
-            console.log('From backend -  estimate  - ', data );
+//            console.log('From backend -  estimate  - ', data );
             points[data.user] = data.point;
             setPoints({...points});
             if (users.length>1 && Object.keys(points).length === users.length) {
@@ -84,7 +84,7 @@ const Game = ({ location }) => {
         });
 
         socket.on('userJoined', (data) => {
-            console.log('From backend -  userJoined  - ', data );
+//            console.log('From backend -  userJoined  - ', data );
             if (isGameStarted && storyTitle){
                 socket.emit('sendStoryInfo', {
                     storyTitle,
@@ -95,7 +95,7 @@ const Game = ({ location }) => {
         });
 
         socket.on('setStoryInfo', (data) => {
-            console.log('From backend -  story info  - ', data );
+//            console.log('From backend -  story info  - ', data );
             setStoryTitle(data.storyTitle);
             setIsGameStarted(data.isGameStarted);
             if (!data.isGameStarted){
@@ -104,17 +104,17 @@ const Game = ({ location }) => {
         });
 
         socket.on('setVotingPermission', (data) => {
-            console.log('From backend -  voting permission  - ', data );
+//            console.log('From backend -  voting permission  - ', data );
             setVotingPermission(data.canVote);
         });
 
         socket.on('setVotingHistory', (data) => {
-            console.log('From backend -  voting History  - ', data );
+//            console.log('From backend -  voting History  - ', data );
             setVotingHistory(data.history);
         });
 
         socket.on('message', (data) => {
-            console.log('From backend -  message  - ', data)
+//            console.log('From backend -  message  - ', data)
             // setMessages([...messages, data.point ]);
             //  points[data.user] = data.point;
             // setPoints(points);
@@ -209,6 +209,7 @@ const Game = ({ location }) => {
         setIsBeingReEstimated(true);
     };
 
+/*
     console.log("RENDERING");
     console.log("------------------------");
     console.log("type - ", type);
@@ -218,6 +219,7 @@ const Game = ({ location }) => {
     console.log("haveVotingPermission - ", haveVotingPermission);
     console.log("History - ", history);
     console.log("------------------------");
+ */
     return (
         type === ADMIN_USER_TYPE ?
         <>
