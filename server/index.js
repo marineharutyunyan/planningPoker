@@ -47,7 +47,7 @@ io.on('connect', (socket) => {
     socket.on('sendEstimate', (point, callback) => {
         const user = getUser(socket.id);
         const admin = getAdminUser();
-        admin && io.to(admin.id).emit('setEstimate', { user: user.name, point });
+        admin && io.to(admin.id).emit('setEstimate', { user: user.name, id: socket.id, point });
         callback();
     });
 
@@ -102,7 +102,7 @@ io.on('connect', (socket) => {
         io.to(user.room).emit('roomData', { room: user.room, users: getUsersInRoom(user.room)});
         if (user.type === DEFAULT_USER_TYPE) {
             const admin = getAdminUser();
-            admin && io.to(admin.id).emit('removePoint', {user: user.name});
+            admin && io.to(admin.id).emit('removePoint', {user: user.name, id: user.id});
         }
     }
     })

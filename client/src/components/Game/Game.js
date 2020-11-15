@@ -27,6 +27,7 @@ let socket;
 
 const Game = ({ location }) => {
 
+    const [id, setId] = useState('');
     const [name, setName] = useState('');
     const [type, setType] = useState('');
     const [room, setRoom] = useState('');
@@ -54,12 +55,16 @@ const Game = ({ location }) => {
         setRoom(room);
         setName(name);
         setType(type);
-        points[name] = DEFAULT_POINT;
-        setPoints(points);
         setHighlightLastScore(false);
-        socket.emit('join', { name, type, room }, (error) => {
+
+        socket.emit('join', { name, type, room }, (error, id) => {
             if(error) {
                 alert(error);
+            }
+            if (id) {
+                setId(id);
+                points[id] = DEFAULT_POINT;
+                setPoints(points);
             }
         });
 
@@ -80,7 +85,7 @@ const Game = ({ location }) => {
 
         socket.on('setEstimate', (data) => {
 //            console.log('From backend -  estimate  - ', data );
-            points[data.user] = data.point;
+            points[data.id] = data.point;
             setPoints({...points});
             if (users.length>1 && Object.keys(points).length === users.length) {
                 openCards();
@@ -128,9 +133,9 @@ const Game = ({ location }) => {
             setUsers(users);
         });
 
-        socket.on('removePoint', ({user}) => {
-            if(points[user]){
-                const {[user]: removedPoint, ...updatedPoints} = points;
+        socket.on('removePoint', ({id}) => {
+            if (points[id]) {
+                const {[id]: removedPoint, ...updatedPoints} = points;
                 setPoints(updatedPoints);
             }
         });
@@ -197,7 +202,7 @@ const Game = ({ location }) => {
         setVotingPermission(false);
         socket.emit('sendVotingPermission', {canVote: false}, () => {});
         setOpenCards(false);
-        setPoints({[name]: '?'});
+        setPoints({[id]: '?'});
         setStageId('');
         setIsBeingReEstimated(false);
     };
@@ -246,7 +251,7 @@ const Game = ({ location }) => {
                                     <div key={i}>
                                         <FlipCard name={user.displayName}
                                                   openCards={areCardsOpen}
-                                                  point={points[user.name] || NO_POINT}
+                                                  point={points[user.id] || NO_POINT}
                                         />
                                     </div>
                                     :

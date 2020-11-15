@@ -7,11 +7,11 @@ const addUser = ({ id, name, type, room }) => {
   name = name.trim().toLowerCase();
   room = room.trim().toLowerCase();
 
-  const existingUser = users.find((user) => user.room === room && user.name === name);
-  if(!name || !room) return { error: 'Username and room are required.' };
-  if(existingUser) return { error: 'Username is taken.' };
+  const existingUser = users.find((user) => user.room === room && user.name === name && user.id === id );
+  if(!name || !room) return { error: 'Name is required.' };
+  if(existingUser) return { error: 'Please close all open PP project tabs in the browser and come back refresh this page' };
 
-  const user = { id, name, displayName,  type, room };
+  const user = { id, name, displayName, type, room };
 
   users.push(user);
 
@@ -39,8 +39,9 @@ const setVotingHistory = ({room, users, points, avaragePoint, avarageConvertedTo
             lastEstimation.users.push({
                 name: user.name,
                 displayName:user.displayName,
-                point: points[user.name],
-                type: user.type
+                point: points[user.id],
+                type: user.type,
+                id: user.id
             });
         });
 
