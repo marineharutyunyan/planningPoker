@@ -31,7 +31,8 @@ io.on('connect', (socket) => {
         if(error) return callback(error);
 
         socket.join(user.room);
-        console.log(name,"joined - ", user.name, room, type);
+        const time = new Date();
+        console.log(name,'joined - ', user.name, room, type, 'time - ', time.toLocaleDateString(), time.toLocaleTimeString());
         socket.emit('message', { user: 'admin', text: `${user.name}, welcome to room ${user.room}.`});
         socket.broadcast.to(user.room).emit('message', { user: 'admin', text: `${user.name} has joined!` });
         io.to(user.room).emit('roomData', { room: user.room, users: getUsersInRoom(user.room) });
@@ -96,7 +97,8 @@ io.on('connect', (socket) => {
 
     if(user) {
         io.to(user.room).emit('message', { user: 'Admin', text: `${user.name} has left.` });
-        console.log(`${user.name} has left.`);
+        const time = new Date();
+        console.log(`${user.name} has left. time - ${time.toLocaleDateString()} ${time.toLocaleTimeString()}`);
         io.to(user.room).emit('roomData', { room: user.room, users: getUsersInRoom(user.room)});
         if (user.type === DEFAULT_USER_TYPE) {
             const admin = getAdminUser();
