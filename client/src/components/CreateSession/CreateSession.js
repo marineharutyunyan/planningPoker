@@ -11,11 +11,11 @@ export default function CreateSession() {
     const unicId = getUnicID();
 
     const onCreateSession = (e) => {
-        if(!name) {
-            e.preventDefault();
-        } else {
+        if(name && name.trim().length) {
             Cookies.set('userType', ADMIN_USER_TYPE);
             Cookies.set('id', unicId);
+        } else {
+            e.preventDefault();
         }
     };
 

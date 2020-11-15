@@ -24,7 +24,7 @@ export default function SignIn({ location }) {
             </div>
                 <Link ref={buttonRef}
                       to={`/game?id=${room}&name=${name}`}
-                      onClick={e => (!name || !room) ? e.preventDefault() : null}
+                      onClick={e => (!name || name.trim().length === 0 || !room) ? e.preventDefault() : null}
                 >
                     <button className={'button mt-20'} type="submit">Join</button>
                 </Link>
