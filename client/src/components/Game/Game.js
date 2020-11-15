@@ -62,7 +62,11 @@ const Game = ({ location }) => {
                 alert(error);
             }
         });
-        reStartGame();
+
+        if (type === ADMIN_USER_TYPE) {
+            reStartGame();
+        }
+
         return () => {
             //when unmounts
             reStartGame();
