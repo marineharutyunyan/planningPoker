@@ -1,7 +1,9 @@
 const http = require('http');
 const express = require('express');
 const socketio = require('socket.io');
-//const cors = require('cors');
+const cors = require('cors');
+const router = require('./router');
+const testAPIRouter = require('./testAPI');
 const {DEFAULT_USER_TYPE} = require('./utils');
 const {
     addUser,
@@ -14,14 +16,14 @@ const {
     removeEstimationFromHistory
 } = require('./users');
 
-const router = require('./router');
 
 const app = express();
 const server = http.createServer(app);
 const io = socketio(server);
 
-//app.use(cors());
+app.use(cors());
 app.use(router);
+app.use('/testAPI', testAPIRouter);
 
 io.on('connect', (socket) => {
 
@@ -66,11 +68,12 @@ io.on('connect', (socket) => {
     socket.on(
         'sendVotingHistoryUpdate',
         (
-            {room, users, points, avaragePoint, avarageConvertedToFib, storyTitle, stageId},
+            {room, users, points, averagePoint, averageConvertedToFib, storyTitle, stageId},
             callback
         ) => {
-            const history = setVotingHistory({room, users, points, avaragePoint, avarageConvertedToFib, storyTitle, stageId});
+            const history = setVotingHistory({room, users, points, averagePoint, averageConvertedToFib, storyTitle, stageId});
             io.to(room).emit('setVotingHistory', { history: history[room] });
+            console.log('----- Voting history', history[room]);
             callback();
         }
     );

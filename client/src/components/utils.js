@@ -14,20 +14,20 @@ export function getUnicID () {
     return Math.random().toString(36).substring(2) + (new Date()).getTime().toString(36);
 }
 
-export function getAvaragePoint (points) {
+export function getAveragePoint (points) {
 
     if(isEmptyObject(points)){
-        return {avarage: 0, avarageConvertedToFib: 0};
+        return {average: 0, averageConvertedToFib: 0};
     } else {
         const validPoints = Object.keys(points).reduce((prev, curr)=> {
             points[curr] !== "?" && prev.push( parseInt(points[curr]));
             return prev;
         }, []);
 
-        const avarage = validPoints.length && validPoints.reduce((prev, curr) => prev + curr) / validPoints.length;
+        const average = validPoints.length && validPoints.reduce((prev, curr) => prev + curr) / validPoints.length;
         const fib = [...FIBONACCI_NUMBERS];
         fib.pop();
-        const avarageConvertedToFib = fib.find(num => parseInt(num) >= avarage);
-        return avarage === 0 ? {avarage, avarageConvertedToFib: 0} : {avarage, avarageConvertedToFib};
+        const averageConvertedToFib = fib.find(num => parseInt(num) >= average);
+        return average === 0 ? {average, averageConvertedToFib: 0} : {average, averageConvertedToFib};
     }
 }

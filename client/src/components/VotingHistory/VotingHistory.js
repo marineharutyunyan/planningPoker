@@ -72,8 +72,8 @@ const VotingHistory = (
                                     </div>
                                 }
                             </div>
-                            <div className="avarageNumber inline-block">Avarage fibonacci number: {stage.avarageConvertedToFib}</div>
-                            <div className="avarageNumber">Avarage number: {stage.avaragePoint}</div>
+                            <div className="averageNumber inline-block">Average fibonacci number: {stage.averageConvertedToFib}</div>
+                            <div className="averageNumber">Average number: {stage.averagePoint}</div>
                             <ul className="participantsVotes">
                                 {
                                     stage.users.map(({displayName, type, point}, i) => (

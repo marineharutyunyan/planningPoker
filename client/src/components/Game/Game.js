@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import queryString from 'query-string';
 import io from "socket.io-client";
 import Cookies from 'js-cookie'
+import { Redirect } from "react-router-dom";
 
 import SessionUrl from '../CreateSession/SessionUrl';
 import Topic from './Topic/Topic';
@@ -20,7 +21,7 @@ import {
     NO_POINT,
     ENDPOINT,
     getUnicID,
-    getAvaragePoint
+    getAveragePoint
 } from "../utils";
 
 let socket;
@@ -34,6 +35,7 @@ const Game = ({ location }) => {
     const [users, setUsers] = useState([]);
     const [points, setPoints] = useState({});
     const [stageId, setStageId] = useState('');
+    const [hasError, setHasError] = useState(false);
     const [history, setVotingHistory] = useState([]);
     const [storyTitle, setStoryTitle] = useState('');
     const [areCardsOpen, setOpenCards] = useState(false);
@@ -59,23 +61,24 @@ const Game = ({ location }) => {
 
         socket.emit('join', { name, type, room }, (error, id) => {
             if(error) {
+                setType(Cookies.get('userType') || type);
+                setHasError(true);
+                socket.emit('disconnect');
+                socket.off();
                 alert(error);
+            } else {
+                if (id) {
+                    setId(id);
+                    points[id] = DEFAULT_POINT;
+                    setPoints(points);
+                }
+                if (type === ADMIN_USER_TYPE && !error) {
+                    reStartGame();
+                }
+
             }
-            if (id) {
-                setId(id);
-                points[id] = DEFAULT_POINT;
-                setPoints(points);
-            }
+
         });
-
-        if (type === ADMIN_USER_TYPE) {
-            reStartGame();
-        }
-
-        return () => {
-            //when unmounts
-            reStartGame();
-        }
     }, [ENDPOINT, location.search]);
 
 
@@ -94,7 +97,7 @@ const Game = ({ location }) => {
 
         socket.on('userJoined', (data) => {
 //            console.log('From backend -  userJoined  - ', data );
-            if (isGameStarted && storyTitle){
+            if (isGameStarted && storyTitle && !hasError){
                 socket.emit('sendStoryInfo', {
                     storyTitle,
                     isGameStarted: true
@@ -155,7 +158,7 @@ const Game = ({ location }) => {
     };
 
     const openCards = () => {
-        const {avarage: avaragePoint, avarageConvertedToFib} = getAvaragePoint(points);
+        const {average: averagePoint, averageConvertedToFib} = getAveragePoint(points);
         setOpenCards(true);
         setVotingPermission(false);
         socket.emit('sendVotingPermission', {canVote: false}, () => {});
@@ -165,8 +168,8 @@ const Game = ({ location }) => {
                     room,
                     users,
                     points,
-                    avaragePoint,
-                    avarageConvertedToFib,
+                    averagePoint,
+                    averageConvertedToFib,
                     storyTitle,
                     stageId
                 },
@@ -194,17 +197,19 @@ const Game = ({ location }) => {
     };
 
     const reStartGame = (titleFromHistory) => {
-        socket.emit('sendStoryInfo', {
-            storyTitle: titleFromHistory || storyTitle ,
-            isGameStarted: false
-        }, () => {});
+        if (!hasError) {
+            socket.emit('sendStoryInfo', {
+                storyTitle: titleFromHistory || storyTitle ,
+                isGameStarted: false
+            }, () => {});
 
-        setVotingPermission(false);
-        socket.emit('sendVotingPermission', {canVote: false}, () => {});
-        setOpenCards(false);
-        setPoints({[id]: '?'});
-        setStageId('');
-        setIsBeingReEstimated(false);
+            setVotingPermission(false);
+            socket.emit('sendVotingPermission', {canVote: false}, () => {});
+            setOpenCards(false);
+            setPoints({[id]: '?'});
+            setStageId('');
+            setIsBeingReEstimated(false);
+        }
     };
 
     const deleteEstimation = (id) => {
@@ -231,54 +236,60 @@ const Game = ({ location }) => {
  */
     return (
         type === ADMIN_USER_TYPE ?
-        <>
-            <div className="sectionOne">
-                <div className="topicContainer">
-                    <Topic openCards={openCards}
-                           startGame={startGame}
-                           storyTitle={storyTitle}
-                           reStartGame={reStartGame}
-                           areCardsOpen={areCardsOpen}
-                           setStoryTitle={setStoryTitle}
-                           isGameStarted={isGameStarted}
-                    />
-                </div>
-                <div className="content">
-                    <div className="participants">
-                        {users.length && users.length>1 ?
-                            users.map((user,i) => (
-                                user.type === DEFAULT_USER_TYPE ?
-                                    <div key={i}>
-                                        <FlipCard name={user.displayName}
-                                                  openCards={areCardsOpen}
-                                                  point={points[user.id] || NO_POINT}
-                                        />
-                                    </div>
-                                    :
-                                    null
-                            ))
-                            :
-                            <div>No User</div>}
+            hasError ?
+                <Redirect to={'/'} />
+                :
+                <>
+                <div className="sectionOne">
+                    <div className="topicContainer">
+                        <Topic openCards={openCards}
+                               startGame={startGame}
+                               storyTitle={storyTitle}
+                               reStartGame={reStartGame}
+                               areCardsOpen={areCardsOpen}
+                               setStoryTitle={setStoryTitle}
+                               isGameStarted={isGameStarted}
+                        />
+                    </div>
+                    <div className="content">
+                        <div className="participants">
+                            {users.length && users.length>1 ?
+                                users.map((user,i) => (
+                                    user.type === DEFAULT_USER_TYPE ?
+                                        <div key={i}>
+                                            <FlipCard name={user.displayName}
+                                                      openCards={areCardsOpen}
+                                                      point={points[user.id] || NO_POINT}
+                                            />
+                                        </div>
+                                        :
+                                        null
+                                ))
+                                :
+                                <div>No User</div>}
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div className="sectionTwo">
-                <h2 className="title">Estimation History</h2>
-                <VotingHistory history={history}
-                               userType={type}
-                               reEstimate={reEstimate}
-                               reStartGame={reStartGame}
-                               deleteEstimation={deleteEstimation}
-                               highlightLastScore={highlightLastScore}
-                               isBeingReEstimated={isBeingReEstimated}
-                />
-                <h2 className="title mt-40">Invite teammates</h2>
-                <SessionUrl room={room} />
-            </div>
-        </>
+                <div className="sectionTwo">
+                    <h2 className="title">Estimation History</h2>
+                    <VotingHistory history={history}
+                                   userType={type}
+                                   reEstimate={reEstimate}
+                                   reStartGame={reStartGame}
+                                   deleteEstimation={deleteEstimation}
+                                   highlightLastScore={highlightLastScore}
+                                   isBeingReEstimated={isBeingReEstimated}
+                    />
+                    <h2 className="title mt-40">Invite teammates</h2>
+                    <SessionUrl room={room} />
+                </div>
+                </>
         :
         type === DEFAULT_USER_TYPE ?
-            <>
+            hasError ?
+                <Redirect to={`/join?id=${room}`} />
+                :
+                <>
                 <InfoBar storyTitle={storyTitle} room={room} />
                 <div className="sectionOne">
                     <div className="content">
@@ -308,7 +319,7 @@ const Game = ({ location }) => {
                                    isBeingReEstimated={isBeingReEstimated}
                     />
                 </div>
-            </>
+                </>
         :
         null
     );

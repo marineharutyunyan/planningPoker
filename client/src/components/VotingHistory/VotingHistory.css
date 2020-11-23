@@ -8,9 +8,9 @@
     -webkit-animation: fadeIn ease 4.5s;
 }
 
-.highlight-last-score > div:first-child .avarageNumber{
-    animation: fadeInAvarageNum ease 4.5s;
-    -webkit-animation: fadeInAvarageNum ease 4.5s;
+.highlight-last-score > div:first-child .averageNumber{
+    animation: fadeInAverageNum ease 4.5s;
+    -webkit-animation: fadeInAverageNum ease 4.5s;
 }
 
 @keyframes fadeIn {
@@ -41,12 +41,12 @@
     }
 }
 
-@keyframes fadeInAvarageNum {
+@keyframes fadeInAverageNum {
     0% { color: #24548c; }
     100% { color: #76a5db; }
 }
 
-@-webkit-keyframes fadeInAvarageNum {
+@-webkit-keyframes fadeInAverageNum {
     0% { color: #24548c;}
     100% { color: #76a5db; }
 }
@@ -74,7 +74,7 @@
     font-variant: none;
 }
 
-.avarageNumber {
+.averageNumber {
     font-size: smaller;
     color: #76a5db;
     font-weight: 600;
@@ -93,7 +93,7 @@
     color: #ffffffd1;
 }
 
-.highlight .avarageNumber {
+.highlight .averageNumber {
     color: #24548c;
 }
 

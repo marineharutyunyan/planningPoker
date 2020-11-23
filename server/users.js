@@ -1,21 +1,23 @@
 const users = [];
 const history= {};
-const {ADMIN_USER_TYPE} = require('./utils');
+const {ADMIN_USER_TYPE, DEFAULT_USER_TYPE} = require('./utils');
 
 const addUser = ({ id, name, type, room }) => {
-  const displayName = name;
-  name = name.trim().toLowerCase();
-  room = room.trim().toLowerCase();
+    if(!name) return { error: 'Name is required.' };
+    if(!room) return { error: 'Game code is missing or incorrect' };
+    const displayName = name;
+    name = name.trim().toLowerCase();
+    room = room.trim().toLowerCase();
 
-  const existingUser = users.find((user) => user.room === room && user.name === name && user.id === id );
-  if(!name || !room) return { error: 'Name is required.' };
-  if(existingUser) return { error: 'Please close all open PP project tabs in the browser and come back refresh this page' };
+    const existingUser = users.find((user) => user.room === room && user.name === name && user.id === id );
+    if(existingUser) return { error: 'Please close all open PP project tabs in the browser and come back refresh this page' };
 
-  const user = { id, name, displayName, type, room };
+    const getAdmin = users.find((user) => user.room === room && user.type === ADMIN_USER_TYPE );
+    if(type === DEFAULT_USER_TYPE && !getAdmin) return { error: 'Wrong url or Admin ended game session please ask admin to send new url' };
 
-  users.push(user);
-
-  return { user };
+    const user = { id, name, displayName, type, room };
+    users.push(user);
+    return { user };
 };
 
 const removeUser = (id) => {
@@ -32,9 +34,9 @@ const getUsersInRoom = (room) => users.filter((user) => user.room === room);
 
 const getVotingHistory = room => history[room] || [];
 
-const setVotingHistory = ({room, users, points, avaragePoint, avarageConvertedToFib, storyTitle, stageId}) => {
+const setVotingHistory = ({room, users, points, averagePoint, averageConvertedToFib, storyTitle, stageId}) => {
     if (users && users.length) {
-        const lastEstimation = {users:[], avaragePoint, avarageConvertedToFib, storyTitle, id:stageId};
+        const lastEstimation = {users:[], averagePoint, averageConvertedToFib, storyTitle, id:stageId};
         users.forEach((user) => {
             lastEstimation.users.push({
                 name: user.name,
