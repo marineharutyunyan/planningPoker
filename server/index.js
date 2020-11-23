@@ -73,7 +73,7 @@ io.on('connect', (socket) => {
         ) => {
             const history = setVotingHistory({room, users, points, averagePoint, averageConvertedToFib, storyTitle, stageId});
             io.to(room).emit('setVotingHistory', { history: history[room] });
-            console.log('----- Voting history', history[room]);
+            console.log(`----- Voting history of ${room} with users ${users}`, history[room]);
             callback();
         }
     );
