@@ -13,6 +13,12 @@ const addUser = ({ id, name, type, room }) => {
     if(existingUser) return { error: 'Please close all open PP project tabs in the browser and come back refresh this page' };
 
     const getAdmin = users.find((user) => user.room === room && user.type === ADMIN_USER_TYPE );
+    /*if(getAdmin && type === ADMIN_USER_TYPE) {
+        const duplicatedAdmin = users.find((user) => user.room === room && user.type === ADMIN_USER_TYPE && getAdmin.id !== id);
+        if (duplicatedAdmin) {
+            return getAdmin;
+        }
+    }*/
     if(type === DEFAULT_USER_TYPE && !getAdmin) return { error: 'Wrong url or Admin ended game session please ask admin to send new url' };
 
     const user = { id, name, displayName, type, room };
@@ -28,7 +34,7 @@ const removeUser = (id) => {
 
 const getUser = (id) => users.find((user) => user.id === id);
 
-const getAdminUser = () => users.find((user) => user.type === ADMIN_USER_TYPE);
+const getAdminUser = (room) => users.find((user) => user.type === ADMIN_USER_TYPE && user.room === room);
 
 const getUsersInRoom = (room) => users.filter((user) => user.room === room);
 

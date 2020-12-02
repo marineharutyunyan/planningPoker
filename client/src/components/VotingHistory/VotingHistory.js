@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from "react";
 import ScrollToBottom from 'react-scroll-to-bottom';
 import ReactEmoji from "react-emoji";
-import {DEFAULT_USER_TYPE, ADMIN_USER_TYPE} from "../utils";
+import {DEFAULT_USER_TYPE} from "../utils";
 
 import './VotingHistory.css';
 
 const VotingHistory = (
     {
         history,
-        userType,
         deleteEstimation,
         isBeingReEstimated,
         highlightLastScore,
@@ -41,7 +40,7 @@ const VotingHistory = (
                             <div className="topWrapper">
                                 <div className="story-title">{stage.storyTitle}</div>
                                 {
-                                    userType === ADMIN_USER_TYPE &&
+                                    (reEstimate || deleteEstimation) &&
                                     <div className="actionsWrapper">
                                         {
                                             !isBeingReEstimated &&
@@ -52,10 +51,10 @@ const VotingHistory = (
                                             >
                                                 replay
                                             </span>
-                                                <span className="material-icons delete"
-                                                      title={"Delete"}
-                                                      onClick={() => deleteEstimation(stage.id)}
-                                                >
+                                            <span className="material-icons delete"
+                                                  title={"Delete"}
+                                                  onClick={() => deleteEstimation(stage.id)}
+                                            >
                                                 delete
                                             </span>
                                             </>
@@ -92,6 +91,11 @@ const VotingHistory = (
             </div>
         </ScrollToBottom>
     );
+};
+
+VotingHistory.defaultProps = {
+    isBeingReEstimated: false,
+    highlightLastScore: false,
 };
 
 export default VotingHistory;

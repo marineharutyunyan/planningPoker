@@ -35,33 +35,35 @@ io.on('connect', (socket) => {
         socket.join(user.room);
         const time = new Date();
         console.log(name,'joined - ', user.name, room, type, 'time - ', time.toLocaleDateString(), time.toLocaleTimeString());
-        socket.emit('message', { user: 'admin', text: `${user.name}, welcome to room ${user.room}.`});
-        socket.broadcast.to(user.room).emit('message', { user: 'admin', text: `${user.name} has joined!` });
-        io.to(user.room).emit('roomData', { room: user.room, users: getUsersInRoom(user.room) });
+
+        socket.emit('message', { user: 'admin', text: `${user.name}, welcome to room ${user.room}.`}); // only sender receives
+        socket.broadcast.to(user.room).emit('message', { user: 'admin', text: `${user.name} has joined!` }); //all receives exept sender
+
+        io.to(user.room).emit('updateUsersData', {users: getUsersInRoom(user.room) });//all receive
         io.to(user.room).emit('setVotingHistory', { history: getVotingHistory(user.room) });
         if (type === DEFAULT_USER_TYPE) {
-            const admin = getAdminUser();
-            admin && io.to(admin.id).emit('userJoined', user);
+            const admin = getAdminUser(user.room);
+            admin && io.to(admin.id).emit('userJoined', user);//specific user receives only.
         }
         callback();
     });
 
     socket.on('sendEstimate', (point, callback) => {
         const user = getUser(socket.id);
-        const admin = getAdminUser();
-        admin && io.to(admin.id).emit('setEstimate', { user: user.name, id: socket.id, point });
+        const admin = getAdminUser(user.room);
+        admin && io.to(admin.id).emit('setEstimateOnCards', { user: user.name, id: socket.id, point });
         callback();
     });
 
     socket.on('sendStoryInfo', ({storyTitle, isGameStarted}, callback) => {
         const user = getUser(socket.id);
-        io.to(user.room).emit('setStoryInfo', {storyTitle, isGameStarted});
+        socket.broadcast.to(user.room).emit('setStoryInfo',  {storyTitle, isGameStarted});
         callback();
     });
 
     socket.on('sendVotingPermission', ({canVote}, callback) => {
         const user = getUser(socket.id);
-        io.to(user.room).emit('setVotingPermission', { canVote });
+        socket.broadcast.to(user.room).emit('setVotingPermission', { canVote });
         callback();
     });
 
@@ -73,38 +75,29 @@ io.on('connect', (socket) => {
         ) => {
             const history = setVotingHistory({room, users, points, averagePoint, averageConvertedToFib, storyTitle, stageId});
             io.to(room).emit('setVotingHistory', { history: history[room] });
-            console.log(`----- Voting history of ${room} with users ${users}`, history[room]);
+            console.log(`----- Voting history of ${room}`, history[room]);
             callback();
         }
     );
 
-    socket.on(
-        'deleteEstimationFromHistory',
-        ({room, id}, callback) => {
-            const history = removeEstimationFromHistory({room, id});
-            io.to(room).emit('setVotingHistory', { history: history[room] });
-            callback();
-        }
-    );
-
-    socket.on('sendMessage', (message, callback) => {
-    const user = getUser(socket.id);
-
-    io.to(user.room).emit('message', { user: user.name, text: message });
-
-    callback();
+    socket.on('deleteEstimationFromHistory', ({room, id}, callback) => {
+        const history = removeEstimationFromHistory({room, id});
+        io.to(room).emit('setVotingHistory', { history: history[room] });
+        callback();
     });
 
     socket.on('disconnect', () => {
     const user = removeUser(socket.id);
 
     if(user) {
+
         io.to(user.room).emit('message', { user: 'Admin', text: `${user.name} has left.` });
         const time = new Date();
-        console.log(`${user.name} has left. time - ${time.toLocaleDateString()} ${time.toLocaleTimeString()}`);
-        io.to(user.room).emit('roomData', { room: user.room, users: getUsersInRoom(user.room)});
+        console.log(`${user.name} has left. ${user.room} time - ${time.toLocaleDateString()} ${time.toLocaleTimeString()}`);
+
+        io.to(user.room).emit('updateUsersData', {users: getUsersInRoom(user.room)});
         if (user.type === DEFAULT_USER_TYPE) {
-            const admin = getAdminUser();
+            const admin = getAdminUser(user.room);
             admin && io.to(admin.id).emit('removePoint', {user: user.name, id: user.id});
         }
     }
