@@ -13,6 +13,7 @@ import {
     DEFAULT_USER_TYPE,
     NO_POINT,
     getUnicID,
+    getEstimators,
     getAveragePoint
 } from "../../utils";
 
@@ -66,8 +67,8 @@ const Admin = ({socket, room, name, userType}) => {
         socket.on('setEstimateOnCards', (data) => {
             points[data.id] = data.point;
             setPoints({...points});
-            debugger;
-            if (users.length>1 && Object.keys(points).length === users.length) {
+            const estimators = getEstimators(users);
+            if (estimators.length > 0 && Object.keys(points).length - 1 === estimators.length) {
                 openCards();
             }
         });
@@ -76,7 +77,7 @@ const Admin = ({socket, room, name, userType}) => {
             setVotingHistory(data.history);
         });
 
-        socket.on('removePoint', ({id}) => {
+        socket.on('userLeft', ({id}) => {
             if (points[id]) {
                 const {[id]: removedPoint, ...updatedPoints} = points;
                 setPoints(updatedPoints);

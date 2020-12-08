@@ -98,7 +98,7 @@ io.on('connect', (socket) => {
         io.to(user.room).emit('updateUsersData', {users: getUsersInRoom(user.room)});
         if (user.type === DEFAULT_USER_TYPE) {
             const admin = getAdminUser(user.room);
-            admin && io.to(admin.id).emit('removePoint', {user: user.name, id: user.id});
+            admin && io.to(admin.id).emit('userLeft', {user: user.name, id: user.id});
         }
     }
     })
