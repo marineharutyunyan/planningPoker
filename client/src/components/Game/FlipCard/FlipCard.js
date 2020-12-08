@@ -25,7 +25,7 @@ export default function FlipCard({name, id, point, openCards, removeUser}) {
 
                     <h2>{ReactEmoji.emojify(name)}</h2>
                 </div>
-                <div className="flip-card-back">
+                <div className="flip-card-back" title={name}>
                     <span className="material-icons cancle removeUser"
                           title={`Remove ${name} from the game`}
                           onClick={() => removeUser(id)}

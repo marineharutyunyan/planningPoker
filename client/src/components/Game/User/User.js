@@ -41,7 +41,7 @@ const User = ({socket, room, name, userType}) => {
 
         socket.on('disconnected', (errorMessage) => {
             setHasError(true);
-            socket.emit('disconnect');
+            socket.disconnect();
             socket.off();
             alert(errorMessage);
         });

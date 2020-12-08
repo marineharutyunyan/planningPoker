@@ -34,7 +34,7 @@ io.on('connect', (socket) => {
 
         socket.join(user.room);
         const time = new Date();
-        console.log(name,'joined - ', user.name, room, type, 'time - ', time.toLocaleDateString(), time.toLocaleTimeString());
+        console.log(type, '-', user.name, 'joined - ', room, 'time - ', time.toLocaleDateString(), time.toLocaleTimeString());
 
         socket.emit('message', { user: 'admin', text: `${user.name}, welcome to room ${user.room}.`}); // only sender receives
         socket.broadcast.to(user.room).emit('message', { user: 'admin', text: `${user.name} has joined!` }); //all receives except sender
@@ -90,10 +90,6 @@ io.on('connect', (socket) => {
         const user = getUser(id);
         const errorMessage = 'You where removed from the game by Admin.'
         user && io.to(user.id).emit('disconnected', errorMessage);
-
-        removeUser(id);
-        socket.emit('updateUsersData', {users: getUsersInRoom(room) });
-        socket.emit('userLeft', {id: id });
         callback();
     });
 
@@ -104,7 +100,7 @@ io.on('connect', (socket) => {
 
         io.to(user.room).emit('message', { user: 'Admin', text: `${user.name} has left.` });
         const time = new Date();
-        console.log(`${user.name} has left. ${user.room} time - ${time.toLocaleDateString()} ${time.toLocaleTimeString()}`);
+        console.log(`${user.type} -------- ${user.name} has left. ${user.room} time - ${time.toLocaleDateString()} ${time.toLocaleTimeString()}`);
 
         io.to(user.room).emit('updateUsersData', {users: getUsersInRoom(user.room)});
         if (user.type === DEFAULT_USER_TYPE) {
