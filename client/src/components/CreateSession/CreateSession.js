@@ -21,6 +21,13 @@ export default function CreateSession() {
 
     return (
         <div className="joinOuterContainer">
+            <Link to="/authorization" className="connectJira">
+                Connect with
+                <img className="jiraImg"
+                     src="https://helpdesk.bottlerocketstudios.com/images/atlassian-jira-logo-large.png"
+                     alt="Jira"
+                />
+            </Link>
             <div className="joinInnerContainer">
                 <h1 className="heading">Welcome to Planning Poker</h1>
                 <div>

@@ -10,6 +10,21 @@
   width: 20%;
 }
 
+.connectJira {
+    position: absolute;
+    top: 18px;
+    right: 30px;
+    font-size: 20px;
+    text-decoration: unset;
+    font-weight: 700;
+    color: #40526e;
+}
+
+.jiraImg {
+    width: 60px;
+    margin: 0 0 -4px 6px;
+}
+
 .joinInput {
   border: none;
   border-radius: 0;
@@ -44,6 +59,14 @@ h4.heading {
 @media (max-width: 1029px) {
   .joinInnerContainer {
     width: 31%;
+  }
+
+  .jiraImg {
+      width: 44px;
+      margin: 0 0 -2px 6px;
+  }
+  .connectJira {
+      font-size: 16px;
   }
 }
 
