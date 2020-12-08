@@ -7,7 +7,7 @@ import {
 
 import './FlipCard.css';
 
-export default function FlipCard({name, point, openCards}) {
+export default function FlipCard({name, id, point, openCards, removeUser}) {
     const className = openCards ?
         'open'
         :
@@ -16,9 +16,23 @@ export default function FlipCard({name, point, openCards}) {
         <div className={`flip-card ${className}`} >
             <div className="flip-card-inner">
                 <div className="flip-card-front">
+                    <span className="material-icons cancle removeUser"
+                          title={`Remove ${name} from the game`}
+                          onClick={() => removeUser(id)}
+                    >
+                        close
+                    </span>
+
                     <h2>{ReactEmoji.emojify(name)}</h2>
                 </div>
                 <div className="flip-card-back">
+                    <span className="material-icons cancle removeUser"
+                          title={`Remove ${name} from the game`}
+                          onClick={() => removeUser(id)}
+                    >
+                        close
+                    </span>
+
                     <h1>{point === NO_POINT ? DEFAULT_POINT : point}</h1>
                     <p>{null}</p>
                 </div>

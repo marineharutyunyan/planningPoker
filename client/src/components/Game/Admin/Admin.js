@@ -13,7 +13,7 @@ import {
     DEFAULT_USER_TYPE,
     NO_POINT,
     getUnicID,
-    getEstimators,
+    getEstimatorsCount,
     getAveragePoint
 } from "../../utils";
 
@@ -47,6 +47,12 @@ const Admin = ({socket, room, name, userType}) => {
         });
     }, [name, type, room]);
 
+    useEffect(() => {
+        const estimators = getEstimatorsCount(users);
+        if (estimators > 0 && Object.keys(points).length - 1 === estimators && !areCardsOpen) {
+            openCards();
+        }
+    }, [points, users]);
 
     useEffect(() => {
 
@@ -67,10 +73,6 @@ const Admin = ({socket, room, name, userType}) => {
         socket.on('setEstimateOnCards', (data) => {
             points[data.id] = data.point;
             setPoints({...points});
-            const estimators = getEstimators(users);
-            if (estimators.length > 0 && Object.keys(points).length - 1 === estimators.length) {
-                openCards();
-            }
         });
 
         socket.on('setVotingHistory', (data) => {
@@ -149,6 +151,10 @@ const Admin = ({socket, room, name, userType}) => {
         socket.emit('deleteEstimationFromHistory', {room, id}, () => {});
     };
 
+    const removeUser = (id) => {
+        socket.emit('removeUserFromGame', {room, id}, () => {});
+    };
+
     const reEstimate = (id, title) => {
         setStoryTitle(title);
         reStartGame(title);
@@ -189,6 +195,8 @@ const Admin = ({socket, room, name, userType}) => {
                                     user.type === DEFAULT_USER_TYPE ?
                                         <div key={i}>
                                             <FlipCard name={user.displayName}
+                                                      id={user.id}
+                                                      removeUser={removeUser}
                                                       openCards={areCardsOpen}
                                                       point={points[user.id] || NO_POINT}
                                             />

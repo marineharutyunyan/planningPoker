@@ -37,7 +37,7 @@ io.on('connect', (socket) => {
         console.log(name,'joined - ', user.name, room, type, 'time - ', time.toLocaleDateString(), time.toLocaleTimeString());
 
         socket.emit('message', { user: 'admin', text: `${user.name}, welcome to room ${user.room}.`}); // only sender receives
-        socket.broadcast.to(user.room).emit('message', { user: 'admin', text: `${user.name} has joined!` }); //all receives exept sender
+        socket.broadcast.to(user.room).emit('message', { user: 'admin', text: `${user.name} has joined!` }); //all receives except sender
 
         io.to(user.room).emit('updateUsersData', {users: getUsersInRoom(user.room) });//all receive
         io.to(user.room).emit('setVotingHistory', { history: getVotingHistory(user.room) });
@@ -83,6 +83,17 @@ io.on('connect', (socket) => {
     socket.on('deleteEstimationFromHistory', ({room, id}, callback) => {
         const history = removeEstimationFromHistory({room, id});
         io.to(room).emit('setVotingHistory', { history: history[room] });
+        callback();
+    });
+
+    socket.on('removeUserFromGame', ({id, room}, callback) => {
+        const user = getUser(id);
+        const errorMessage = 'You where removed from the game by Admin.'
+        user && io.to(user.id).emit('disconnected', errorMessage);
+
+        removeUser(id);
+        socket.emit('updateUsersData', {users: getUsersInRoom(room) });
+        socket.emit('userLeft', {id: id });
         callback();
     });
 

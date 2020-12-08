@@ -38,6 +38,12 @@ export default function Card(
         } else if (!haveVotingPermission && timeoutId) {
             clearBlinking();
         }
+
+        return () => {
+            if(timeoutId) {
+                clearBlinking();
+            }
+        }
     } , [haveVotingPermission, isGameStarted, name]);
 
     const allowedToVote = isGameStarted && haveVotingPermission;

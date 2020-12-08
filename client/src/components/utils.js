@@ -14,8 +14,8 @@ export function getUnicID () {
     return Math.random().toString(36).substring(2) + (new Date()).getTime().toString(36);
 }
 
-export function getEstimators (users) {
-    return users.filter((user) => user.type === DEFAULT_USER_TYPE);
+export function getEstimatorsCount (users) {
+    return users.filter((user) => user.type === DEFAULT_USER_TYPE).length;
 }
 
 export function getAveragePoint (points) {

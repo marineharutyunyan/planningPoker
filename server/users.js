@@ -27,12 +27,13 @@ const addUser = ({ id, name, type, room }) => {
 };
 
 const removeUser = (id) => {
-  const index = users.findIndex((user) => user.id === id);
-
+  const index = getUserIndex(id);
   if(index !== -1) return users.splice(index, 1)[0];
 };
 
 const getUser = (id) => users.find((user) => user.id === id);
+
+const getUserIndex = (id) => users.findIndex((user) => user.id === id);
 
 const getAdminUser = (room) => users.find((user) => user.type === ADMIN_USER_TYPE && user.room === room);
 

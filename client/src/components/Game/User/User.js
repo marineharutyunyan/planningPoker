@@ -39,6 +39,13 @@ const User = ({socket, room, name, userType}) => {
 
     useEffect(() => {
 
+        socket.on('disconnected', (errorMessage) => {
+            setHasError(true);
+            socket.emit('disconnect');
+            socket.off();
+            alert(errorMessage);
+        });
+
         socket.on('setStoryInfo', (data) => {
             setStoryTitle(data.storyTitle);
             setIsGameStarted(data.isGameStarted);
