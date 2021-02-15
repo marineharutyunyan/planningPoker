@@ -23,6 +23,30 @@ export default function Authorization({ location }) {
                 console.error('Error:', error);
             });
     }
+
+    const updateStoryPoint = ( token_type, access_token, id ) => {
+        const point = prompt('Please enter the point');
+        fetch(`https://api.atlassian.com/ex/jira/${id}/rest/api/2/issue/PLN-1`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `${token_type} ${access_token}`
+            },
+            body: JSON.stringify({"fields": {
+                "description": "Maaaaaaa",
+                "customfield_10028": parseInt(point)
+            }})
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('SuccessBacklog:', data);
+            updateStoryPoint()
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+    };
+
     const getBacklog = ( token_type, access_token, data ) => {
         //const {id, name, scope, avatarUrl} = data[0];
         const { id } = data[0];
@@ -36,6 +60,7 @@ export default function Authorization({ location }) {
             .then(response => response.json())
             .then(data => {
                 console.log('SuccessBacklog:', data);
+                updateStoryPoint(token_type, access_token, id)
             })
             .catch((error) => {
                 console.error('Error:', error);

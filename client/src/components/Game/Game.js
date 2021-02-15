@@ -35,13 +35,11 @@ const Game = ({ location }) => {
     }, [ENDPOINT, location.search]);
 
     return (
-        type === ADMIN_USER_TYPE ?
-            <Admin socket={socket.get()} room={room} name={name} userType={type} />
-            :
-            type === DEFAULT_USER_TYPE ?
-                <User socket={socket.get()} room={room} name={name} userType={type} />
-                :
-                null
+        type === ADMIN_USER_TYPE
+            ? <Admin socket={socket.get()} room={room} name={name} userType={type} />
+            : type === DEFAULT_USER_TYPE
+                ? <User socket={socket.get()} room={room} name={name} userType={type} />
+                : null
     );
 };
 
