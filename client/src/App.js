@@ -2,7 +2,8 @@ import React from 'react';
 
 import Game from './components/Game/Game';
 import Join from './components/Join/Join';
-import Authorization from './components/Authorization/AuthorizationDemo';
+import Authorization from './components/Authorization/Authorization';
+import AuthorizationDemo from './components/Authorization/AuthorizationDemo';
 import CreateSession from './components/CreateSession/CreateSession';
 import './App.css';
 
@@ -14,7 +15,8 @@ const App = () => {
             <Route path="/" exact component={CreateSession} />
             <Route path="/join" component={Join} />
             <Route path="/game" component={Game} />
-            <Route path="/authorization" component={Authorization} />
+            <Route path="/callback" component={Authorization} />
+            <Route path="/authorization" component={AuthorizationDemo} />
         </Router>
     );
 };

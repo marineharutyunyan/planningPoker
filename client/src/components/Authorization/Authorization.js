@@ -24,23 +24,41 @@ export default function Authorization({ location }) {
             });
     }
 
+    const getAllFieldsForSpecificProject = ( token_type, access_token, id ) => {
+        fetch(`https://api.atlassian.com/ex/jira/${id}/rest/api/2/issue/createmeta?projectKeys=KEY&expand=projects.issuetypes.fields`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `${token_type} ${access_token}`
+            },
+        })
+        .then(data => {
+            console.log('SuccessAllFields:', data);
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+    };
+
     const updateStoryPoint = ( token_type, access_token, id ) => {
-        const point = prompt('Please enter the point');
-        fetch(`https://api.atlassian.com/ex/jira/${id}/rest/api/2/issue/PLN-1`, {
+        const point = prompt('Please enter the story point for PLN-1');
+        const url = `https://api.atlassian.com/ex/jira/${id}/rest/api/2/issue/PLN-1`;
+        fetch(url , {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `${token_type} ${access_token}`
             },
-            body: JSON.stringify({"fields": {
-                "description": "Maaaaaaa",
-                "customfield_10028": parseInt(point)
-            }})
+            body: JSON.stringify({
+                "fields": {
+                    "description": "Maaaaaaa",
+                    "customfield_10028": parseInt(point)
+                }
+            })
         })
-        .then(response => response.json())
         .then(data => {
             console.log('SuccessBacklog:', data);
-            updateStoryPoint()
+            alert("Thank you, estimate successfully updated !");
         })
         .catch((error) => {
             console.error('Error:', error);
@@ -57,9 +75,9 @@ export default function Authorization({ location }) {
                 'Authorization': `${token_type} ${access_token}`
             },
         })
-            .then(response => response.json())
             .then(data => {
                 console.log('SuccessBacklog:', data);
+                //getAllFieldsForSpecificProject(token_type, access_token, id);
                 updateStoryPoint(token_type, access_token, id)
             })
             .catch((error) => {
