@@ -20,6 +20,7 @@ const Game = ({ location }) => {
     const [type, setType] = useState('');
     const [room, setRoom] = useState('');
 
+    const backlogData = location.state || {};
 
     useEffect(() => {
         const {name, id: room} = queryString.parse(location.search);
@@ -36,7 +37,7 @@ const Game = ({ location }) => {
 
     return (
         type === ADMIN_USER_TYPE
-            ? <Admin socket={socket.get()} room={room} name={name} userType={type} />
+            ? <Admin socket={socket.get()} room={room} name={name} userType={type} backlogData={backlogData} />
             : type === DEFAULT_USER_TYPE
                 ? <User socket={socket.get()} room={room} name={name} userType={type} />
                 : null

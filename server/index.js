@@ -57,13 +57,13 @@ io.on('connect', (socket) => {
 
     socket.on('sendStoryInfo', ({storyTitle, isGameStarted}, callback) => {
         const user = getUser(socket.id);
-        socket.broadcast.to(user.room).emit('setStoryInfo',  {storyTitle, isGameStarted});
+        user && socket.broadcast.to(user.room).emit('setStoryInfo',  {storyTitle, isGameStarted});
         callback();
     });
 
     socket.on('sendVotingPermission', ({canVote}, callback) => {
         const user = getUser(socket.id);
-        socket.broadcast.to(user.room).emit('setVotingPermission', { canVote });
+        user && socket.broadcast.to(user.room).emit('setVotingPermission', { canVote });
         callback();
     });
 
@@ -94,20 +94,19 @@ io.on('connect', (socket) => {
     });
 
     socket.on('disconnect', () => {
-    const user = removeUser(socket.id);
+        const removedUser = removeUser(socket.id);
 
-    if(user) {
+        if(removedUser) {
+            io.to(removedUser.room).emit('message', { user: 'Admin', text: `${removedUser.name} has left.` });
+            const time = new Date();
+            console.log(`${removedUser.type} -------- ${removedUser.name} has left. ${removedUser.room} time - ${time.toLocaleDateString()} ${time.toLocaleTimeString()}`);
 
-        io.to(user.room).emit('message', { user: 'Admin', text: `${user.name} has left.` });
-        const time = new Date();
-        console.log(`${user.type} -------- ${user.name} has left. ${user.room} time - ${time.toLocaleDateString()} ${time.toLocaleTimeString()}`);
-
-        io.to(user.room).emit('updateUsersData', {users: getUsersInRoom(user.room)});
-        if (user.type === DEFAULT_USER_TYPE) {
-            const admin = getAdminUser(user.room);
-            admin && io.to(admin.id).emit('userLeft', {user: user.name, id: user.id});
+            io.to(removedUser.room).emit('updateUsersData', {users: getUsersInRoom(removedUser.room)});
+            if (removedUser.type === DEFAULT_USER_TYPE) {
+                const admin = getAdminUser(removedUser.room);
+                admin && io.to(admin.id).emit('userLeft', {user: removedUser.name, id: removedUser.id});
+            }
         }
-    }
     })
 });
 

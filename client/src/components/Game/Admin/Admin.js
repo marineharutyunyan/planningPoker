@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Redirect } from "react-router-dom";
 import Cookies from 'js-cookie'
 
+import EstimationsResultSubmissionPopup from '../Topic/EstimationsResultSubmissionPopup';
 import VotingHistory from '../../VotingHistory/VotingHistory';
 import SessionUrl from '../../CreateSession/SessionUrl';
 import FlipCard from '../FlipCard/FlipCard.js';
@@ -18,8 +19,9 @@ import {
 } from "../../utils";
 
 
-const Admin = ({socket, room, name, userType}) => {
+const Admin = ({socket, room, name, userType, backlogData}) => {
 
+    const {backlog} = backlogData.backlog && backlogData.backlog.length ? backlogData : [];
     const [users, setUsers] = useState([]);
     const [points, setPoints] = useState({});
     const [stageId, setStageId] = useState('');
@@ -31,6 +33,7 @@ const Admin = ({socket, room, name, userType}) => {
     const [isGameStarted, setIsGameStarted] = useState(false);
     const [isBeingReEstimated, setIsBeingReEstimated] = useState(false);
     const [highlightLastScore, setHighlightLastScore] = useState(false);
+    const [showEstimationConfirmPopup, setShowEstimationConfirmPopup] = useState(false);
 
     useEffect(() => {
         setHighlightLastScore(false);
@@ -57,7 +60,7 @@ const Admin = ({socket, room, name, userType}) => {
     useEffect(() => {
 
         socket.on('userJoined', (data) => {
-            if (isGameStarted && storyTitle && !hasError) {
+            if (isGameStarted && storyTitle && !hasError && socket.connected) {
                 socket.emit('sendStoryInfo', {
                     storyTitle,
                     isGameStarted: true
@@ -99,6 +102,7 @@ const Admin = ({socket, room, name, userType}) => {
     const openCards = () => {
         const {average: averagePoint, averageConvertedToFib} = getAveragePoint(points);
         setOpenCards(true);
+        setShowEstimationConfirmPopup(true);
         socket.emit('sendVotingPermission', {canVote: false}, () => {});
         socket.emit(
             'sendVotingHistoryUpdate',
@@ -179,7 +183,8 @@ const Admin = ({socket, room, name, userType}) => {
             <>
                 <div className="sectionOne">
                     <div className="topicContainer">
-                        <Topic openCards={openCards}
+                        <Topic backlog={backlog}
+                               openCards={openCards}
                                startGame={startGame}
                                storyTitle={storyTitle}
                                reStartGame={reStartGame}
@@ -221,6 +226,16 @@ const Admin = ({socket, room, name, userType}) => {
                     <h2 className="title mt-40">Invite teammates</h2>
                     <SessionUrl room={room} />
                 </div>
+                {
+                    showEstimationConfirmPopup &&
+                    history.length &&
+                    backlogData.id &&
+                    <EstimationsResultSubmissionPopup setShowPopup={setShowEstimationConfirmPopup}
+                                                      storyTitle={storyTitle}
+                                                      history={history[0]}
+                                                      authCredentials={backlogData}
+                    />
+                }
             </>
         );
 };

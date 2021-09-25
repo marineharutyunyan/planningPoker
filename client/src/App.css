@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono&family=Roboto:wght@300;400;500&display=swap');
+
 * {
     box-sizing: border-box;
 }
@@ -22,8 +24,7 @@ body {
 }
 
 #root {
-   /* height: 100vh;
-    display: flex;*/
+    height: 100%;
     width: 100%;
 }
 

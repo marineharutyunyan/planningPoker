@@ -5,7 +5,7 @@ import { ADMIN_USER_TYPE, getUnicID } from "../utils";
 
 import './CreateSession.css';
 
-export default function CreateSession() {
+export default function CreateSession({ location }) {
     const buttonRef = useRef(null);
     const [name, setName] = useState('');
     const unicId = getUnicID();
@@ -39,7 +39,12 @@ export default function CreateSession() {
                            onKeyDown={e => (e.key === 'Enter' && name) && buttonRef.current.click()}
                     />
                 </div>
-                <Link onClick={onCreateSession} to={`/game?id=${unicId}&name=${name}`}>
+                <Link onClick={onCreateSession} to={{
+                            pathname: `/game`,
+                            search: `?id=${unicId}&name=${name}`,
+                            state: location.state
+                        }}
+                >
                     <button ref={buttonRef} className={'button mt-20'} type="submit">Start</button>
                 </Link>
             </div>
