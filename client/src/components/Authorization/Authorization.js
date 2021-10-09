@@ -123,7 +123,7 @@ export default function Authorization({ location }) {
                 :
                 <div className="joinOuterContainer">
                     <div className="joinInnerContainer">
-                        <h1 className="heading">{code} - {state} - {testAPI}</h1>
+                        <h1 className="heading">Please select the project</h1>
                         {
                             projects && <SelectProject data={projects} onSelect={setSelectedProject} />
                         }

@@ -21,13 +21,16 @@ export default function CreateSession({ location }) {
 
     return (
         <div className="joinOuterContainer">
-            <Link to="/authorization" className="connectJira">
-                Connect with
-                <img className="jiraImg"
-                     src="https://helpdesk.bottlerocketstudios.com/images/atlassian-jira-logo-large.png"
-                     alt="Jira"
-                />
-            </Link>
+            {
+                 !location.state &&
+                 <Link to={{ pathname: "https://auth.atlassian.com/authorize?audience=api.atlassian.com&client_id=UjZJ3xXvXyrftnikidpY5O2VfmRjtpwA&scope=read%3Ajira-user%20read%3Ajira-work%20write%3Ajira-work&redirect_uri=http%3A%2F%2Flocalhost%2Fcallback&state=$marine&response_type=code&prompt=consent" }} target="_blank" className="connectJira">
+                    Connect with
+                    <img className="jiraImg"
+                         src="https://helpdesk.bottlerocketstudios.com/images/atlassian-jira-logo-large.png"
+                         alt="Jira"
+                    />
+                </Link>
+            }
             <div className="joinInnerContainer">
                 <h1 className="heading">Welcome to Planning Poker</h1>
                 <div>
