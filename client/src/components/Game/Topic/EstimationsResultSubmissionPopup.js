@@ -20,7 +20,10 @@ export default function EstimationsResultSubmissionPopup({
     setShowPopup,
     history,
     storyTitle,
-    authCredentials
+    authCredentials,
+    reEstimate,
+    startGame,
+    deleteEstimation
 }) {
     const classes = useStyles();
     const [open, setOpen] = React.useState(true);
@@ -55,6 +58,15 @@ export default function EstimationsResultSubmissionPopup({
     const handleClose = () => {
         setShowPopup(false)
         setOpen(false);
+        deleteEstimation(history.id);
+    };
+
+    const handleReEstimate = () => {
+        setShowPopup(false)
+        setOpen(false);
+        reEstimate(history.id, storyTitle);
+        startGame();
+        deleteEstimation(history.id);
     };
 
 
@@ -68,6 +80,8 @@ export default function EstimationsResultSubmissionPopup({
     return (
         <div className={classes.root}>
             <Dialog
+                fullWidth={true}
+                maxWidth={'sm'}
                 open={open}
                 onClose={handleClose}
                 aria-labelledby="alert-dialog-title"
@@ -97,10 +111,13 @@ export default function EstimationsResultSubmissionPopup({
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose} color="primary">
+                    <Button onClick={handleClose} color="error">
                         Cancle
                     </Button>
-                    <Button onClick={handleConfirm} color="primary" autoFocus>
+                    <Button onClick={handleReEstimate} color="primary" >
+                        Revote
+                    </Button>
+                    <Button onClick={handleConfirm} color="secondary"  variant="contained" autoFocus>
                         Submit Estimate
                     </Button>
                 </DialogActions>

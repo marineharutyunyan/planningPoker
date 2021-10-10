@@ -3,6 +3,7 @@ import { Redirect } from "react-router-dom";
 import queryString from 'query-string';
 import './Authorization.css';
 import SelectProject from './SelectProject.js';
+import CircularProgress from '@northstar/core/CircularProgress';
 
 export default function Authorization({ location }) {
     const { code, state } = queryString.parse(location.search);
@@ -110,34 +111,39 @@ export default function Authorization({ location }) {
 
     return (
         backlog ?
-                <Redirect to={{
-                    pathname: '/',
-                    state: {
-                        selectedProject,
-                        backlog,
-                        accessToken,
-                        tokenType,
-                        id
+            <Redirect to={{
+                pathname: '/',
+                state: {
+                    selectedProject,
+                    backlog,
+                    accessToken,
+                    tokenType,
+                    id
+                }
+            }} />
+            :
+            <div className="joinOuterContainer">
+                <div className="joinInnerContainer">
+                    {
+                        projects ?
+                            <>
+                                <h1 className="heading">Select the project</h1>
+                                <SelectProject data={projects} onSelect={setSelectedProject} />
+                                <button className={'button mt-20'}
+                                    onClick={e  =>  {
+                                        e.preventDefault();
+                                        if (selectedProject !== '') {
+                                            getBacklog(selectedProject);
+                                        }
+                                    }}
+                                >
+                                    Next
+                                </button>
+                            </>
+                                :
+                                <CircularProgress />
                     }
-                }} />
-                :
-                <div className="joinOuterContainer">
-                    <div className="joinInnerContainer">
-                        <h1 className="heading">Please select the project</h1>
-                        {
-                            projects && <SelectProject data={projects} onSelect={setSelectedProject} />
-                        }
-                        <button className={'button mt-20'}
-                                onClick={e  =>  {
-                                    e.preventDefault();
-                                    if (selectedProject !== '') {
-                                        getBacklog(selectedProject);
-                                    }
-                                }}
-                        >
-                            Next
-                        </button>
-                    </div>
                 </div>
+            </div>
     );
 }

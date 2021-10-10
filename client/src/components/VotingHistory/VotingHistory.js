@@ -11,6 +11,7 @@ const VotingHistory = (
         deleteEstimation,
         isBeingReEstimated,
         highlightLastScore,
+        startGame,
         reEstimate,
         reStartGame
 }) => {
@@ -20,6 +21,7 @@ const VotingHistory = (
     const onReEstimate = (id, title) => {
         setItemId(id);
         reEstimate(id, title);
+        startGame();
     };
 
     const onCancleReEstimate = () => {

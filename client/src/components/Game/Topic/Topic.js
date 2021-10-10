@@ -3,6 +3,8 @@ import './Topic.css';
 import Select from '@northstar/core/Select';
 import MenuItem from '@northstar/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
+import FormControl from '@northstar/core/FormControl';
+import InputLabel from '@northstar/core/InputLabel';
 import {
   withStyles,
 } from '@material-ui/core/styles';
@@ -31,7 +33,7 @@ export default function Topic({
     const isDisabled = isGameStarted && !areCardsOpen
 
     const onSelectChange = ({target: {value}}) => {
-        if(!(isGameStarted && !areCardsOpen) ) {
+        if(!(isDisabled) ) {
             setStoryTitle(value);
         }
     };
@@ -39,32 +41,36 @@ export default function Topic({
     return (
         <div className="user-story-info-container" >
             {
-                backlog ?
-                    <Select variant="outlined"
-
-                            onChange={onSelectChange}
-                            disabled={isDisabled}
-                            defaultValue=" "
-                            fullWidth
-                    >
-                        {
-                            backlog.map((value, index) => {
-                                return <MenuItem key={index} name={value.key} value={`${value.key}: ${value.fields.summary}`}>{value.key}: {value.fields.summary}</MenuItem>
-                            })
-                        }
-                    </Select>
+                backlog && !isDisabled?
+                    <FormControl>
+                        <InputLabel>User story name</InputLabel>
+                        <Select variant="outlined"
+                                label="User Story Name"
+                                onChange={onSelectChange}
+                                disabled={isDisabled}
+                                defaultValue={storyTitle}
+                                fullWidth
+                        >
+                            {
+                                backlog.map((value, index) => {
+                                    return <MenuItem key={index} name={value.key} value={`${value.key}: ${value.fields.summary}`}>{value.key}: {value.fields.summary}</MenuItem>
+                                })
+                            }
+                        </Select>
+                    </FormControl>
                     :
                     <form className="form" noValidate autoComplete="off">
                         <CssTextField
                             label="Story Description"
                             fullWidth
                             multiline={true}
+                            disabled={isDisabled}
                             value={storyTitle}
-                            onChange={({target: {value}}) => !(isGameStarted && !areCardsOpen) ? setStoryTitle(value): null}
+                            onChange={({target: {value}}) => !(isDisabled) ? setStoryTitle(value): null}
                             onKeyPress={e => e.key === 'Enter' ? startGame(e) : null}
                         />
                         {/*{
-                            !(isGameStarted && !areCardsOpen) &&
+                            !(isDisabled) &&
                             storyTitle &&
                             <span className="clearIcon" onClick={() => setStoryTitle("")}>X</span>
                         }*/}
@@ -72,7 +78,7 @@ export default function Topic({
                 }
             <div className="action-buttons-wrapper">
                 <button className="button send-button mt-20"
-                        disabled={isGameStarted && !areCardsOpen}
+                        disabled={isDisabled}
                         onClick={startGame}
                 >
                     Start Voting

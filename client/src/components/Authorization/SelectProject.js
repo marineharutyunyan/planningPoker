@@ -12,20 +12,18 @@ export default function SelectProject({ data, onSelect }) {
     };
 
     return (
-        <div style={{ textAlign: 'center' }}>
-            <FormControl>
-                <InputLabel>Select Project</InputLabel>
-                <Select label="Project Name" onChange={onChange}>
-                    <MenuItem value="">
-                        <em>None</em>
-                    </MenuItem>
-                    {
-                        projects.map((value, index) => {
-                            return <MenuItem key={index} value={value.key}>{value.key}</MenuItem>
-                        })
-                    }
-                </Select>
-            </FormControl>
-        </div>
+        <FormControl>
+            <InputLabel>Project Name</InputLabel>
+            <Select onChange={onChange} label="Project Name"  variant="outlined">
+                <MenuItem value="">
+                    <em>None</em>
+                </MenuItem>
+                {
+                    projects.map((value, index) => {
+                        return <MenuItem key={index} value={value.key}>{value.key}</MenuItem>
+                    })
+                }
+            </Select>
+        </FormControl>
     );
 }

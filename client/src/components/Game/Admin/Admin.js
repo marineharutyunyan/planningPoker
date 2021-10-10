@@ -123,7 +123,7 @@ const Admin = ({socket, room, name, userType, backlogData}) => {
     };
 
     const startGame = (event) => {
-        event.preventDefault();
+        event && event.preventDefault();
         !isBeingReEstimated && reStartGame();
         if(storyTitle && storyTitle.trim().length) {
             socket.emit('sendStoryInfo', {
@@ -217,6 +217,7 @@ const Admin = ({socket, room, name, userType, backlogData}) => {
                 <div className="sectionTwo">
                     <h2 className="title">Estimation History</h2>
                     <VotingHistory history={history}
+                                   startGame={startGame}
                                    reEstimate={reEstimate}
                                    reStartGame={reStartGame}
                                    deleteEstimation={deleteEstimation}
@@ -234,6 +235,9 @@ const Admin = ({socket, room, name, userType, backlogData}) => {
                                                       storyTitle={storyTitle}
                                                       history={history[0]}
                                                       authCredentials={backlogData}
+                                                      reEstimate={reEstimate}
+                                                      startGame={startGame}
+                                                      deleteEstimation={deleteEstimation}
                     />
                 }
             </>
