@@ -1,9 +1,11 @@
 import React, { useState, useEffect} from 'react';
 import { Redirect } from "react-router-dom";
 import queryString from 'query-string';
+import api from "./api";
 import './Authorization.css';
 import SelectProject from './SelectProject.js';
 import CircularProgress from '@northstar/core/CircularProgress';
+import { filterBacklogIssues } from "../utils";
 
 export default function Authorization({ location }) {
     const { code, state } = queryString.parse(location.search);
@@ -56,29 +58,11 @@ export default function Authorization({ location }) {
         });
     };
 
-    const filterBacklogIssues = ( issues ) => {
-        return issues.filter(issue => issue.fields.customfield_10020 === null);
-    };
-
-    const getBacklog = ( selectedProject ) => {
-    const url = `https://api.atlassian.com/ex/jira/${id}/rest/api/2/search?jql=project%20%3D%20${selectedProject}`;
-    //if in this response customfield_10020 custom field's value is null then it's in backlog
-        fetch(url, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `${tokenType} ${accessToken}`
-            },
-        })
-            .then(response => response.json())
-            .then(data => {
-                const backlogIssues = filterBacklogIssues(data.issues);
-                setBacklog(backlogIssues);
-                console.log('Success Get issues list:', data, 'backlog issues list', backlogIssues);
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
+    const getBacklog = async ( selectedProject ) => {
+        const data = await api.fetchIssues(tokenType, accessToken, id, selectedProject);
+        const backlogIssues = filterBacklogIssues(data);
+        setBacklog(backlogIssues);
+        console.log('Success Get issues list:', data, 'backlog issues list', backlogIssues);
     };
 
     useEffect(() => {

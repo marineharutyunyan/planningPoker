@@ -6,6 +6,7 @@ import EstimationsResultSubmissionPopup from '../Topic/EstimationsResultSubmissi
 import VotingHistory from '../../VotingHistory/VotingHistory';
 import SessionUrl from '../../CreateSession/SessionUrl';
 import FlipCard from '../FlipCard/FlipCard.js';
+import api from '../../Authorization/api.js';
 import Topic from '../Topic/Topic';
 
 import './Admin.css';
@@ -15,13 +16,15 @@ import {
     NO_POINT,
     getUnicID,
     getEstimatorsCount,
-    getAveragePoint
+    getAveragePoint,
+    filterBacklogIssues
 } from "../../utils";
 
 
 const Admin = ({socket, room, name, userType, backlogData}) => {
 
-    const {backlog} = backlogData.backlog && backlogData.backlog.length ? backlogData : [];
+    const {backlog: backlogDefaultData} = backlogData.backlog && backlogData.backlog.length ? backlogData : [];
+    const [backlog, setBacklog] = useState(backlogDefaultData);
     const [users, setUsers] = useState([]);
     const [points, setPoints] = useState({});
     const [stageId, setStageId] = useState('');
@@ -166,6 +169,12 @@ const Admin = ({socket, room, name, userType, backlogData}) => {
         setIsBeingReEstimated(true);
     };
 
+    const updateBacklog = async (token_type, access_token, id, selectedProject) => {
+        const data = await api.fetchIssues(token_type, access_token, id, selectedProject);
+        const backlogIssues = filterBacklogIssues(data);
+        setBacklog(backlogIssues);
+        console.log('Success Get issues list:', data, 'backlog issues list', backlogIssues);
+    }
     /*
         console.log("RENDERING");
         console.log("------------------------");
@@ -237,6 +246,7 @@ const Admin = ({socket, room, name, userType, backlogData}) => {
                                                       authCredentials={backlogData}
                                                       reEstimate={reEstimate}
                                                       startGame={startGame}
+                                                      updateBacklog={updateBacklog}
                                                       deleteEstimation={deleteEstimation}
                     />
                 }

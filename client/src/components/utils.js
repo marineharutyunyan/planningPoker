@@ -19,7 +19,6 @@ export function getEstimatorsCount (users) {
 }
 
 export function getAveragePoint (points) {
-
     if(isEmptyObject(points)){
         return {average: 0, averageConvertedToFib: 0};
     } else {
@@ -34,4 +33,12 @@ export function getAveragePoint (points) {
         const averageConvertedToFib = fib.find(num => parseInt(num) >= average);
         return average === 0 ? {average, averageConvertedToFib: 0} : {average, averageConvertedToFib};
     }
+}
+
+export function filterBacklogIssues (issues) {
+    //if in this response customfield_10020 custom field's value is null then it's in backlog
+    //if in this response customfield_10026 custom field's value is null or 0 then it has no story point
+    const storyPoint = 'customfield_10026';
+    const sprintInfo = 'customfield_10020';
+    return issues.filter(issue => issue.fields[sprintInfo] === null && (issue.fields[storyPoint] === null || issue.fields[storyPoint] === 0));
 }

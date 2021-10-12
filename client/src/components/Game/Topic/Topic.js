@@ -41,14 +41,13 @@ export default function Topic({
     return (
         <div className="user-story-info-container" >
             {
-                backlog && !isDisabled?
+                backlog && backlog.length > 0 && !isDisabled ?
                     <FormControl>
                         <InputLabel>User story name</InputLabel>
                         <Select variant="outlined"
                                 label="User Story Name"
                                 onChange={onSelectChange}
                                 disabled={isDisabled}
-                                defaultValue={storyTitle}
                                 fullWidth
                         >
                             {

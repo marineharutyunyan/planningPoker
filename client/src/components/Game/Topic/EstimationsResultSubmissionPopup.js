@@ -23,7 +23,8 @@ export default function EstimationsResultSubmissionPopup({
     authCredentials,
     reEstimate,
     startGame,
-    deleteEstimation
+    deleteEstimation,
+    updateBacklog
 }) {
     const classes = useStyles();
     const [open, setOpen] = React.useState(true);
@@ -41,7 +42,7 @@ export default function EstimationsResultSubmissionPopup({
             },
             body: JSON.stringify({
                 "fields": {
-                    "description": "Maaaaaaa",
+                    //"description": "Maaaaaaa",
                     "customfield_10026": parseInt(point)
                 }
             })
@@ -71,8 +72,9 @@ export default function EstimationsResultSubmissionPopup({
 
 
     const handleConfirm = () => {
-        const {tokenType, accessToken, id} = authCredentials
-        updateStoryPoint(tokenType, accessToken, id)
+        const {tokenType, accessToken, id, selectedProject} = authCredentials
+        updateStoryPoint(tokenType, accessToken, id);
+        updateBacklog(tokenType, accessToken, id, selectedProject);
         setShowPopup(false)
         setOpen(false);
     };
