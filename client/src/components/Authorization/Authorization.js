@@ -12,6 +12,7 @@ export default function Authorization({ location }) {
     const [testAPI, setTestAPI] = useState('');
     const [accessToken, setAccessToken] = React.useState('');
     const [tokenType, setTokenType] = React.useState('');
+    const [jiraUrl, setJiraUrl] = React.useState('');
     const [id, setId] = React.useState(null);
     const [projects, setProjects] = React.useState(null);
     const [backlog, setBacklog] = React.useState(null);
@@ -30,8 +31,9 @@ export default function Authorization({ location }) {
             .then(response => response.json())
             .then(data => {
                 console.log('SuccessCloudId:', data);
-                const {id} = data[0];
+                const {id, url} = data[0];
                 setId(id);
+                setJiraUrl(url)
                 getProjects(token_type, access_token, id)
             })
             .catch((error) => {
@@ -100,6 +102,7 @@ export default function Authorization({ location }) {
                 state: {
                     selectedProject,
                     backlog,
+                    jiraUrl,
                     accessToken,
                     tokenType,
                     id

@@ -5,6 +5,8 @@ import MenuItem from '@northstar/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
 import FormControl from '@northstar/core/FormControl';
 import InputLabel from '@northstar/core/InputLabel';
+import Typography from '@northstar/core/Typography';
+import Tooltip from '@northstar/core/Tooltip';
 import {
   withStyles,
 } from '@material-ui/core/styles';
@@ -24,6 +26,7 @@ export default function Topic({
      startGame,
      reStartGame,
      isGameStarted,
+     authCredentials,
      storyTitle,
      setStoryTitle,
      areCardsOpen,
@@ -52,7 +55,32 @@ export default function Topic({
                         >
                             {
                                 backlog.map((value, index) => {
-                                    return <MenuItem key={index} name={value.key} value={`${value.key}: ${value.fields.summary}`}>{value.key}: {value.fields.summary}</MenuItem>
+                                    return <MenuItem key={index}
+                                                     name={value.key}
+                                                     value={`${value.key}: ${value.fields.summary}`}
+                                    >
+                                        <span style={{
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                flexWrap: 'wrap',
+                                            }}
+                                        >
+                                            <Tooltip interactive title={
+                                                <React.Fragment>
+                                                     <Typography>
+                                                         {`Click `}
+                                                         <a href={`${authCredentials.jiraUrl}/browse/${value.key}`} target="_blank">
+                                                             here
+                                                         </a>
+                                                         {` for details`}
+                                                    </Typography>
+                                                </React.Fragment>
+                                            }>
+                                                <span className="material-icons infoIcon"> info </span>
+                                            </Tooltip>
+                                            {value.key}: {value.fields.summary}
+                                        </ span>
+                                    </MenuItem>
                                 })
                             }
                         </Select>

@@ -173,6 +173,7 @@ const Admin = ({socket, room, name, userType, backlogData}) => {
         const data = await api.fetchIssues(token_type, access_token, id, selectedProject);
         const backlogIssues = filterBacklogIssues(data);
         setBacklog(backlogIssues);
+        backlogIssues.length === 0 && setStoryTitle('');
         console.log('Success Get issues list:', data, 'backlog issues list', backlogIssues);
     }
     /*
@@ -193,6 +194,7 @@ const Admin = ({socket, room, name, userType, backlogData}) => {
                 <div className="sectionOne">
                     <div className="topicContainer">
                         <Topic backlog={backlog}
+                               authCredentials={backlogData}
                                openCards={openCards}
                                startGame={startGame}
                                storyTitle={storyTitle}
@@ -240,6 +242,7 @@ const Admin = ({socket, room, name, userType, backlogData}) => {
                     showEstimationConfirmPopup &&
                     history.length &&
                     backlogData.id &&
+                    backlog && backlog.length > 0 &&
                     <EstimationsResultSubmissionPopup setShowPopup={setShowEstimationConfirmPopup}
                                                       storyTitle={storyTitle}
                                                       history={history[0]}

@@ -21,7 +21,7 @@ const VotingHistory = (
     const onReEstimate = (id, title) => {
         setItemId(id);
         reEstimate(id, title);
-        startGame();
+        //startGame();
     };
 
     const onCancleReEstimate = () => {

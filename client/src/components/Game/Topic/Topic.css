@@ -12,6 +12,22 @@
     flex-direction: column;
 }
 
+.infoIcon {
+    cursor: pointer;
+    width: 26px;
+    height: 26px;
+    border: none;
+    background-color: transparent;
+    background-size: 26px 26px;
+    opacity: 0.5;
+    color: #848485;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+ }
+
+
 .clearIcon {
     border: none;
     background: white;
